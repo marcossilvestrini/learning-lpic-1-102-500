@@ -1,4 +1,4 @@
-$project = "F:\CERTIFICACAO\lpic-1-101500\"
+$project = "F:\CERTIFICACAO\lpic-1-102500\"
 Set-Location $project
 git status
 $out = git status
