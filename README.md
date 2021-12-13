@@ -74,69 +74,147 @@ Installation and configuration of some packages will also be covered\
 - [Download Packages](https://pkgs.org/)
 - [Commands Examples](https://www.geeksforgeeks.org/)
 - [Vim Tutorial](https://www.openvim.com/)
+- [Linux Shell Scripting Tutorial](https://bash.cyberciti.biz/guide/Main_Page)
 - [LPIC-1 Wiki](https://wiki.lpi.org/wiki/LPIC-1_Objectives_V5.0#Objectives:_Exam_102)
 - [LPIC-1 101-500 Objectives](https://www.lpi.org/our-certifications/exam-102-objectives)
 - [Learning Material](https://learning.lpi.org/en/learning-materials/102-500/)
 - [Moc Exam By ITexams](https://www.itexams.com/exam/102-500)
 
-
 ## Topic 105: Shells and Shell Scripting
 
 ### 105.1 Customize and use the shell environment
 
-Weight: 4
+**Weight:** 4
 
-Description: Candidates should be able to customize shell environments to meet users' needs.
+**Description:** Candidates should be able to customize shell environments to meet users' needs.\
 Candidates should be able to modify global and user profiles.
 
-Key Knowledge Areas:
+**Key Knowledge Areas:**
 
-Set environment variables (e.g. PATH) at login or when spawning a new shell.
-Write Bash functions for frequently used sequences of commands.
-Maintain skeleton directories for new user accounts.
+Set environment variables (e.g. PATH) at login or when spawning a new shell.\
+Write Bash functions for frequently used sequences of commands.\
+Maintain skeleton directories for new user accounts.\
 Set command search path with the proper directory.
-The following is a partial list of the used files, terms and utilities:
 
-.
-source
-/etc/bash.bashrc
-/etc/profile
-env
-export
-set
-unset
-~/.bash_profile
-~/.bash_login
-~/.profile
-~/.bashrc
-~/.bash_logout
-function
+#### 105.1 Important Commands
+
+##### env - run a program in a modified environment
+
+```sh
+
+```
+
+##### command export
+
+```sh
+
+```
+
+##### command set
+
+```sh
+
+```
+
+##### command unset
+
+```sh
+
+```
+
+##### command source
+
+```sh
+
+```
+
+#### 105.1 Important Files
+
+##### /etc/bash.bashrc
+
+System-wide .bashrc file for interactive bash shells. To enable the settings/commands in this file for login shells as well, this file has to be sourced in /etc/profile.
+
+##### /etc/profile
+
+/etc/profile contains Linux system wide environment and startup programs.\
+It is used by all users with bash, ksh, sh shell.\
+Usually used to set PATH variable, user limits, and other settings for user.\
+It only runs for login shell.\
+If you wanted to make large changes or application specific changes use /etc/profile.d directory.
+
+##### ~/.bash_profile
+
+The ~/.bash_profile ($HOME/.bash_profile) file is executed when you login using console or remotely using ssh.
+
+##### ~/.bash_login
+
+When bash is invoked as an interactive login shell, it will run commands from .bash_login file.
+
+Order\
+Interactive login bash first reads and executes commands from the file /etc/profile, if that file exists. After reading that file, it looks for the following file in that order and reads and executes commands from the first one that exists and is readable by the user session:
+
+1. ~/.bash_profile\
+2. ~/.bash_login\
+3. ~/.profile
+
+##### ~/.profile
+
+.profile file in Linux comes under the System startup files(defines user environment after reading the initialization files that you have set up when you log in to shell).
+
+File like /etc/profile controls variables for profile of all users of the system whereas, .profile allows you to customize your own environment.
+
+The .profile file is present in your home ($HOME) directory and lets you customize your individual working environment.
+
+.profile file controls the following by default:
+
+1. Shells to open
+2. Prompt appearance
+3. Keyboard Sound.
+4. The .profile file contains your individual profile that overrides the variables set in the /etc/profile file.
+
+##### ~/.bashrc
+
+##### ~/.bash_logout
+
+#### 105.1 Cited Objects
+
+>function\
 alias
 
 ### 105.2 Customize or write simple scripts
 
-Weight: 4
+**Weight:** 4
 
-Description: Candidates should be able to customize existing scripts, or write simple new Bash scripts.
+**Description:** Candidates should be able to customize existing scripts, or write simple new Bash scripts.
 
-Key Knowledge Areas:
+**Key Knowledge Areas:**
 
-Use standard sh syntax (loops, tests).
-Use command substitution.
-Test return values for success or failure or other information provided by a command.
-Execute chained commands.
-Perform conditional mailing to the superuser.
-Correctly select the script interpreter through the shebang (#!) line.
+Use standard sh syntax (loops, tests).\
+Use command substitution.\
+Test return values for success or failure or other information provided by a command.\
+Execute chained commands.\
+Perform conditional mailing to the superuser.\
+Correctly select the script interpreter through the shebang (#!) line.\
 Manage the location, ownership, execution and suid-rights of scripts.
-The following is a partial list of the used files, terms and utilities:
 
-for
-while
-test
-if
+#### 105.2 Important Commands
+
+##### test - check file types and compare values
+
+```sh
+
+```
+
 read
 seq
 exec
+
+##### 102.2 Cited Objects
+
+>for\
+while
+if
+
 ||
 &&
 
@@ -583,10 +661,3 @@ ssh_known_hosts
 gpg
 gpg-agent
 ~/.gnupg/
-
-## Future Change Considerations
-
-Future changes to the objective will/may include:
-
-Remove ifup/ifdown and legacy net-tools command
-Remove TCP wrappers
