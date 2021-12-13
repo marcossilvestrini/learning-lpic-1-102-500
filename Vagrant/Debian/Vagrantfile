@@ -1,0 +1,58 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+# INSTALL PLUGIN RELLOAD
+unless Vagrant.has_plugin?("vagrant-reload")
+  puts 'Installing vagrant-reload Plugin...'
+  system('vagrant plugin install vagrant-reload')
+end
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  #config.vm.box = "debian/buster64"
+  config.vm.box = "debian/bullseye64"
+
+  # VM ubuntu-server
+  config.vm.define "debian"  do |debian|
+
+    # VARIABLE HOSTNAME
+    APP_NAME= "debian"
+
+    # HOSTNAME
+    debian.vm.hostname = APP_NAME
+
+    # NETWORK
+    debian.vm.network "public_network" ,ip: "192.168.0.134",mode: "bridge" ,bridge: [
+    "ens32",
+    "Marvell AQtion 5Gbit Network Adapter"
+    ]
+
+    # MOUNTS
+    debian.vm.synced_folder ".", "/vagrant", disabled: true
+    debian.vm.synced_folder "./security", "/security"
+    #debian.vm.synced_folder "./install", "/totvs/install", type: "rsync",rsync__args: ["-r", "--include=*"]
+
+    # PROVIDER
+    debian.vm.provider "virtualbox" do |vb|
+      vb.linked_clone = true
+      vb.name = APP_NAME
+      vb.memory = 2048
+      vb.cpus = 1
+    end
+
+    # PROVISION
+    # SSH,FIREWALLD AND SELINUX
+    debian.vm.provision "shell", inline: <<-SHELL
+      cat /security/id_rsa.pub >> .ssh/authorized_keys
+    SHELL
+
+    # # PACKAGES FOR PROVISION
+    # debian.vm.provision "shell", inline: <<-SHELL
+    #   dnf install python3 -y
+    # SHELL
+
+  end
+
+end
