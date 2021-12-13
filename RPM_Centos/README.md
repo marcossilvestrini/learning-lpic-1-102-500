@@ -17,8 +17,8 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 
 - [CentOS Docs](https://wiki.centos.org/)
 - [Apache Configure Virtual Host](https://www.digitalocean.com/community/tutorials/how-to-set-up-apache-virtual-hosts-on-centos-7)
--[Samba](https://linuxize.com/post/how-to-install-and-configure-samba-on-centos-7/)
--[Samba Configuration File](https://www.samba.org/samba/docs/current/man-html/smb.conf.5.html)
+- [Samba](https://linuxize.com/post/how-to-install-and-configure-samba-on-centos-7/)
+- [Samba Configuration File](https://www.samba.org/samba/docs/current/man-html/smb.conf.5.html)
 
 ## Base
 
