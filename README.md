@@ -99,6 +99,51 @@ Set command search path with the proper directory.
 
 #### 105.1 Important Commands
 
+##### su - run a command with substitute user and group ID
+
+```sh
+#launch an interactive login shell as user2
+su - user2, su -l user2 or su --login user2
+
+#starts a shell without interactive login as user2.
+su user2
+
+#starts an interactive login shell as root.
+su - root or su - inicia um shell de login interativo como root.
+
+#starts an interactive shell without login as root
+su root ou su
+```
+
+##### sudo, sudoedit — execute a command as another user
+
+```sh
+#starts an interactive login shell as user2.
+sudo su - user2, sudo su -l user2 or sudo su --login user2
+
+#starts a shell without interactive login as user2.
+sudo su user2 
+
+#starts a shell without interactive login as user2.
+sudo -u user2 -s 
+
+#starts an interactive login shell as root.
+sudo su - root or sudo su - 
+
+#starts an interactive login shell as root.
+sudo -i 
+
+# starts an interactive login shell as root, executes the command, and returns to the original user.
+sudo -i <some_command>
+
+#starts a shell without interactive login as root.
+sudo su root or sudo su 
+
+#starts a shell without login as root.
+sudo -s or sudo -u root -s 
+
+```
+
 ##### env - run a program in a modified environment
 
 ```sh
