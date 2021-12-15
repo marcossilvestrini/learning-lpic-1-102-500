@@ -171,7 +171,8 @@ sudo -s or sudo -u root -s
 ##### command source
 
 ```sh
-
+#execute commands from a file in the current shell
+source ~/.bashrc
 ```
 
 #### 105.1 Important Files
@@ -231,6 +232,13 @@ For example, $HOME/.bash_logout. This file is useful if you want to run task or 
 ##### Resume of precedence order of execution in files of shell login
 
 ![image](https://user-images.githubusercontent.com/62715900/146197143-1fb3071a-0185-4146-98e0-f0f061fa9ade.png)
+
+##### /etc/adduser.conf
+
+The  file  /etc/adduser.conf contains defaults for the programs adduser(8) , addgroup(8),deluser(8) and delgroup(8).\
+Each line holds a single value pair  in  the  form  option=value.\
+Double or single quotes are allowed around the value, as is whitespace around the equals sign.\
+Comment lines must have a hash sign (#) in the first column.
 
 #### 105.1 Cited Objects
 
