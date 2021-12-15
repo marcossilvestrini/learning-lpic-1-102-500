@@ -122,25 +122,25 @@ su root ou su
 sudo su - user2, sudo su -l user2 or sudo su --login user2
 
 #starts a shell without interactive login as user2.
-sudo su user2 
+sudo su user2
 
 #starts a shell without interactive login as user2.
-sudo -u user2 -s 
+sudo -u user2 -s
 
 #starts an interactive login shell as root.
-sudo su - root or sudo su - 
+sudo su - root or sudo su -
 
 #starts an interactive login shell as root.
-sudo -i 
+sudo -i
 
 # starts an interactive login shell as root, executes the command, and returns to the original user.
 sudo -i <some_command>
 
 #starts a shell without interactive login as root.
-sudo su root or sudo su 
+sudo su root or sudo su
 
 #starts a shell without login as root.
-sudo -s or sudo -u root -s 
+sudo -s or sudo -u root -s
 
 ```
 
