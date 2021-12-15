@@ -228,6 +228,11 @@ The .bash_logout file is the individual login shell cleanup file.\
 It is executed when a login shell exits. This file exists in the user's home directory.\
 For example, $HOME/.bash_logout. This file is useful if you want to run task or another script or command automatically at logout. For example, clear the mysql command line history stored in ~/.mysql_history or to make a backup of files you can use this file.
 
+
+##### Resume of precedence order of execution in files of shell login
+
+![image](https://user-images.githubusercontent.com/62715900/146197143-1fb3071a-0185-4146-98e0-f0f061fa9ade.png)
+
 #### 105.1 Cited Objects
 
 >function\
