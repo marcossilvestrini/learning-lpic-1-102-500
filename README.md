@@ -147,25 +147,41 @@ sudo -s or sudo -u root -s
 ##### env - run a program in a modified environment
 
 ```sh
+#list all environment variables
+env
 
+#running a program in a modified environment
+env -i bash
 ```
 
 ##### command export
 
 ```sh
-
+#convert local variable in environment variable
+export myvar
+export myvar=**foo**
 ```
 
 ##### command set
 
 ```sh
+#list all variables and functions in actual shell
+set
 
 ```
 
 ##### command unset
 
 ```sh
+#removed variable
+unset myvar
+```
 
+##### command printenv
+
+```sh
+#print valeue of variable
+printenv myvar
 ```
 
 ##### command source
@@ -175,11 +191,100 @@ sudo -s or sudo -u root -s
 source ~/.bashrc
 ```
 
+##### command let - The let command is used to evaluate arithmetic expressions on shell variables
+
+Syntax:
+let [expression]
+
+Basic arithmetic operators : The addition(+), subtraction(-),
+multiplication(*), division(/) and modulus(%) operators can be used in the expression with the let command.
+
+```sh
+#examples:
+let "myvar =2" "myvar1=1" "myvar2=myvar1+myvar"; echo $myvar2
+let "myvar =2" "myvar1=1" "myvar2=myvar1-myvar"; echo $myvar2
+let "myvar =2" "myvar1=1" "myvar2=myvar1*myvar"; echo $myvar2
+let "myvar =2" "myvar1=1" "myvar2=myvar1/myvar"; echo $myvar2
+let "myvar =2" "myvar1=1" "myvar2=myvar1%myvar"; echo $myvar2
+```
+
+Post-increment(var++) / Post-decrement(var–) operator : This operator is used to interpret the integer value then increase/decrease the integer variable by 1.
+
+```sh
+#example:
+let "myvar=2" "myvar2=myvar++" ; echo $myvar $myvar2
+```
+
+In the above example, myvar2 gets the value of myvar2 before the increment occurs.
+
+Pre-increment(++var) / Pre-decrement(–var) operator : This operator increases/decreases the integer value by 1 and then interpret the integer variable.
+
+```sh
+#Example:
+let "myvar=10" "myvar2=--myvar"; echo $myvar $myvar2
+```
+
+In the above example, the change in value occurs first then the value gets stored in myvar2.
+
+Unary plus(+exp) / Unary minus(-exp) : This operator is used to multiply a given expression by 1 or -1.
+
+```sh
+#Example:
+let "myvar=10" "myvar= -myvar" ; echo $myvar
+```
+
+In the above example, The value of myvar changes from positive to negative with unary minus operator.
+
+Bit-wise negation(~) : This operator is used to negate every bit of the integer value i.e., turns 0 to 1 and 1 to 0.
+
+```sh
+#Example:
+let "myvar=0" "myvar= ~myvar"; echo $myvar
+```
+
+In the above example, The value myvar is ‘0000…00’ in binary while the negation is ‘1111…11’ which is the 2’s complement value of -1.
+
+Exponent(**) operator : This operator is used to raise one quantity to the power of another.
+
+```sh
+Example:
+    let "myvar= 5 ** 2" ; echo $myvar
+```
+
+Bitwise shift left / Bitwise shift right : This operator is used to shift the order of the bits either to the left or right.
+
+```sh
+Example:
+let "myvar = 5 << 2"; echo $myvar
+```
+
+Bitwise AND operator : This operator does a bitwise comparison between two bits and returns 1 if both are 1 else returns 0.
+
+```sh
+Example:
+let "myvar=5" "myvar2=4" "myvar3 = myvar & myvar2" ; echo $myvar3
+```
+
+Bitwise OR operator : This operator does a bitwise comparison between two bits and returns 1 if atleast one the bits is 1, else returns 0.
+
+```sh
+Example:
+let "myvar=7" "myvar2=4" "myvar3= myvar | myvar2" ; echo $myvar3
+```
+
+Bitwise XOR operator : This operator does a bitwise comparison between two bits and returns 0 if they are alike, else returns 1.
+
+```sh
+Example:
+let "myvar=7" "myvar2=4" "myvar3= myvar ^ myvar2" ; echo $myvar3
+```
+
 #### 105.1 Important Files
 
 ##### /etc/bash.bashrc
 
-System-wide .bashrc file for interactive bash shells. To enable the settings/commands in this file for login shells as well, this file has to be sourced in /etc/profile.
+System-wide .bashrc file for interactive bash shells.\
+To enable the settings/commands in this file for login shells as well, this file has to be sourced in /etc/profile.
 
 ##### /etc/profile
 
