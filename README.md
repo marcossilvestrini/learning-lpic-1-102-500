@@ -174,7 +174,10 @@ set
 
 ```sh
 #removed variable
-unset myvar
+unset -v myvar
+
+#removed function
+unset -f myfunction
 ```
 
 ##### command printenv
@@ -279,6 +282,41 @@ Example:
 let "myvar=7" "myvar2=4" "myvar3= myvar ^ myvar2" ; echo $myvar3
 ```
 
+##### command alias
+
+```sh
+#create alias
+alias hello='echo Hello $USER'
+
+#delete alias
+unalias hello
+```
+
+##### function
+
+```sh
+#simple function
+function myfunction1{
+    echo "This is a simple function in bash"
+}
+myfunction1
+
+#simple function
+myfunction2(){
+    echo "Welcome $USER"
+}
+myfunction2
+
+#function with parameters
+myfunction3(){
+    echo "Scriptpath: $0"
+    echo "Param 1 : $1"
+    echo "Param 2 : $2"
+    echo "Number of Params : $#"
+}
+myfunction3 foo bar
+```
+
 #### 105.1 Important Files
 
 ##### /etc/bash.bashrc
@@ -344,11 +382,6 @@ The  file  /etc/adduser.conf contains defaults for the programs adduser(8) , add
 Each line holds a single value pair  in  the  form  option=value.\
 Double or single quotes are allowed around the value, as is whitespace around the equals sign.\
 Comment lines must have a hash sign (#) in the first column.
-
-#### 105.1 Cited Objects
-
->function\
-alias
 
 ### 105.2 Customize or write simple scripts
 
