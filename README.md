@@ -416,6 +416,131 @@ if [ -x /bin/bash ] ; then
 fi
 ```
 
+Assuming the path to a file or directory was stored in the variable $VAR,the following expressions can be used as arguments to test or inside square brackets:
+
+```-a "$VAR"```
+Evaluate if the path in VAR exists in the filesystem and it is a file.
+
+```-b "$VAR"```
+Evaluate if the path in VAR is a special block file.
+
+```-c "$VAR"```
+Evaluate if the path in VAR is a special character file.
+
+```-d "$VAR"```
+Evaluate if the path in VAR is a directory.
+
+```-e "$VAR"```
+Evaluate if the path in VAR exists in the filesystem.
+
+```-f "$VAR"```
+Evaluate if the path in VAR exists and it is a regular file.
+
+```-g "$VAR"```
+Evaluate if the path in VAR has the SGID permission.
+
+```-h "$VAR"```
+Evaluate if the path in VAR is a symbolic link.
+
+```-L "$VAR"```
+Evaluate if the path in VAR is a symbolic link (like -h).
+
+```-k "$VAR"```
+Evaluate if the path in VAR has the sticky bit permission.
+
+```-p "$VAR"```
+Evaluate if the path in VAR is a pipe file.
+
+```-r "$VAR"```
+Evaluate if the path in VAR is readable by the current user.
+
+```-s "$VAR"```
+Evaluate if the path in VAR exists and it is not empty.
+
+```-S "$VAR"```
+Evaluate if the path in VAR is a socket file.
+
+```-t "$VAR"```
+Evaluate if the path in VAR is open in a terminal.
+
+```-u "$VAR"```
+Evaluate if the path in VAR has the SUID permission.
+
+```-w "$VAR"```
+Evaluate if the path in VAR is writable by the current user.
+
+```-x "$VAR"```
+Evaluate if the path in VAR is executable by the current user.
+
+```-O "$VAR"```
+Evaluate if the path in VAR is owned by the current user.
+
+```-G "$VAR"```
+Evaluate if the path in VAR belongs to the effective group of the current user.
+
+```-N "$VAR"```
+Evaluate if the path in VAR has been modified since the last time it was accessed.
+
+```"$VAR1" -nt "$VAR2"```
+Evaluate if the path in VAR1 is newer than the path in VAR2, according to their modification dates.
+
+```"$VAR1" -ot "$VAR2"```
+Evaluate if the path in VAR1 is older than VAR2.
+
+```"$VAR1" -ef "$VAR2"```
+This expression evaluates to True if the path in VAR1 is a hardlink to VAR2.
+
+There are also tests for arbitrary text variables, described as follows:
+
+```-z "$TXT"```
+Evaluate if variable TXT is empty (zero size).
+
+```-n "$TXT" or test "$TXT"```
+Evaluate if variable TXT is not empty.
+
+```"$TXT1" = "$TXT2" or "$TXT1" == "$TXT2"```
+Evaluate if TXT1 and TXT2 are equal.
+
+```"$TXT1" != "$TXT2"```
+Evaluate if TXT1 and TXT2 are not equal.
+
+```"$TXT1" < "$TXT2"```
+Evaluate if TXT1 comes before TXT2, in alphabetical order.
+
+```"$TXT1" > "$TXT2"```
+Evaluate if TXT1 comes after TXT2, in alphabetical order.
+
+Numerical comparisons have their own set of test options:
+
+```$NUM1 -lt $NUM2```
+Evaluate if NUM1 is less than NUM2.
+
+```$NUM1 -gt $NUM2```
+Evaluate if NUM1 is greater than NUM2.
+
+```$NUM1 -le $NUM2```
+Evaluate if NUM1 is less or equal to NUM2.
+
+```$NUM1 -ge $NUM2```
+Evaluate if NUM1 is greater or equal to NUM2.
+
+```$NUM1 -eq $NUM2```
+Evaluate if NUM1 is equal to NUM2.
+
+```$NUM1 -ne $NUM2```
+Evaluate if NUM1 is not equal to NUM2.
+
+All tests can receive the following modifiers:
+
+```! EXPR```
+Evaluate if the expression EXPR is false.
+
+```EXPR1 -a EXPR2```
+Evaluate if both EXPR1 and EXPR2 are true.
+
+```EXPR1 -o EXPR2```
+Evaluate if at least one of the two expressions are true.
+
 ##### read - read from a file descriptor
 
 ```sh
@@ -534,6 +659,30 @@ echo ${#SIZES[1]}
 echo ${#SIZES[@]}
 echo ${#SIZES[*]}
 
+```
+
+##### conditional construct case
+
+```sh
+#example 1 - Script for check format package
+
+#!/bin/bash
+
+DISTRO=$1
+
+echo -n "Distribution $DISTRO uses "
+case "$DISTRO" in
+  debian | ubuntu | mint)
+    echo -n "the DEB"
+  ;;
+  centos | fedora | opensuse )
+    echo -n "the RPM"
+  ;;
+  *)
+    echo -n "an unknown"
+  ;;
+esac
+echo " package format."
 ```
 
 ## Topic 106: User Interfaces and Desktops
