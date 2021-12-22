@@ -404,13 +404,31 @@ Manage the location, ownership, execution and suid-rights of scripts.
 ##### test - check file types and compare values
 
 ```sh
+#example 1
 
+if test -x /bin/bash ; then
+  echo "Confirmed: /bin/bash is executable."
+fi
+
+#example 2
+if [ -x /bin/bash ] ; then
+  echo "Confirmed: /bin/bash is executable."
+fi
 ```
 
 ##### read - read from a file descriptor
 
 ```sh
+#example 1
+read myinput
+echo $myinput
 
+#example 2
+read -p "Type your first name and last name:"
+echo $NAME $SURNAME
+
+#example 3 for hide input
+read -s PASSWORD
 ```
 
 ##### seq - print a sequence of numbers
@@ -421,17 +439,102 @@ Manage the location, ownership, execution and suid-rights of scripts.
 
 ##### exec, execl, execlp, execle, execv, execvp, execvpe - execute a file
 
-```sh
+exec command in Linux is used to execute a command from the bash itself.\
+This command does not create a new process it just replaces the bash with the command to be executed.\
+If the exec command is successful, it does not return to the calling process.
 
+Syntax:
+
+```sh
+exec [-cl] [-a name] [command [arguments]] [redirection ...]
 ```
 
-##### 105.2 Cited Objects
+```sh
+#example execute a command and exit current bash
+exec ls
+
+#example exec without a command
+bash
+exec > tmp
+ls
+echo "This message will not be displayed"
+exit
+cat tmp
+```
+
+##### printf - format and print data
+
+```sh
+#!/bin/bash
+
+# Get the operating system's generic name
+OS=$(uname -o)
+
+# Get the amount of free memory in bytes
+FREE=$(( 1000 * `sed -nre '2s/[^[:digit:]]//gp' < /proc/meminfo` ))
+
+printf "Operating system:\t%s\nUnallocated RAM:\t%d MB\n" $OS $(($FREE / 1024 ** 2))
+```
+
+#### 105.2 Cited Objects
 
 >for\
 while\
 if\
 ||\
 &&
+
+##### Variables
+
+```sh
+$*
+#All the arguments passed to the script.
+
+$@
+#All the arguments passed to the script. If used with double quotes, as in "$@", every argument will be enclosed by double quotes.
+
+$#
+#The number of arguments.
+
+$0
+#The name of the script file.
+
+$!
+#PID of the last executed program.
+
+$$
+#PID of the current shell.
+
+$?
+#Numerical exit status code of the last finished command.
+
+#Length of variable
+echo ${#myvar}
+```
+
+##### Arrays
+
+```sh
+#Example 1 simple array in bash
+declare -a SIZES
+
+#Example 2 simple array in bash
+SIZES=( 1048576 1073741824 )
+
+#get content in specific element
+echo ${SIZES[0]}
+
+#set content in specific element
+SIZES[0]=1048576
+
+#length of an element in an array
+echo ${#SIZES[1]}
+
+#number of elements in an array is returned if @ or * are used as the index
+echo ${#SIZES[@]}
+echo ${#SIZES[*]}
+
+```
 
 ## Topic 106: User Interfaces and Desktops
 

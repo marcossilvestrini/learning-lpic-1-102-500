@@ -1,1 +1,0 @@
-/home/marcos.silvestrini/vagrant-debian/vagrant-up
