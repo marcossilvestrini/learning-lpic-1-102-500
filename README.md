@@ -295,19 +295,19 @@ unalias hello
 ##### function
 
 ```sh
-#simple function
+#simple examnple function 1
 function myfunction1{
     echo "This is a simple function in bash"
 }
 myfunction1
 
-#simple function
+#simple examnple function 2
 myfunction2(){
     echo "Welcome $USER"
 }
 myfunction2
 
-#function with parameters
+#simple examnple function 3
 myfunction3(){
     echo "Scriptpath: $0"
     echo "Param 1 : $1"
@@ -646,6 +646,9 @@ declare -a SIZES
 #Example 2 simple array in bash
 SIZES=( 1048576 1073741824 )
 
+#example 3 - user mapfile
+mapfile -t LIST < /etc/passwd
+
 #get content in specific element
 echo ${SIZES[0]}
 
@@ -664,7 +667,8 @@ echo ${#SIZES[*]}
 ##### conditional construct case
 
 ```sh
-#example 1 - Script for check format package
+#indicate the corresponding software packaging
+#format for a given Linux distribution
 
 #!/bin/bash
 
@@ -683,6 +687,84 @@ case "$DISTRO" in
   ;;
 esac
 echo " package format."
+```
+
+##### loop for
+
+```sh
+#syntax
+for VARNAME in LIST
+do
+  COMMANDS
+done
+
+#example 1
+
+#!/bin/bash
+
+for NUM in 1 1 2 3 5 8 13
+do
+  echo -n "$NUM is "
+  if [ $(( $NUM % 2 )) -ne 0 ]
+  then
+    echo "odd."
+  else
+    echo "even."
+  fi
+done
+
+#example 2
+
+#!/bin/bash
+
+SEQ=( 1 1 2 3 5 8 13 )
+
+for (( IDX = 0; IDX < ${#SEQ[*]}; IDX++ ))
+do
+  echo -n "${SEQ[$IDX]} is "
+  if [ $(( ${SEQ[$IDX]} % 2 )) -ne 0 ]
+  then
+    echo "odd."
+  else
+    echo "even."
+  fi
+done
+```
+
+##### loop while
+
+```sh
+#example
+
+#!/bin/bash
+x=1
+while [ $x -le 5 ]
+do
+  echo "Welcome $x times"
+  x=$(( $x + 1 ))
+done
+```
+
+##### loop until
+
+```sh
+#!/bin/bash
+
+SEQ=( 1 1 2 3 5 8 13 )
+
+IDX=0
+
+until [ $IDX -eq ${#SEQ[*]} ]
+do
+  echo -n "${SEQ[$IDX]} is "
+  if [ $(( ${SEQ[$IDX]} % 2 )) -ne 0 ]
+  then
+    echo "odd."
+  else
+    echo "even."
+  fi
+  IDX=$(( $IDX + 1 ))
+done
 ```
 
 ## Topic 106: User Interfaces and Desktops
