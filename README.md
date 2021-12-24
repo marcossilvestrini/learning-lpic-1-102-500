@@ -418,127 +418,127 @@ fi
 
 Assuming the path to a file or directory was stored in the variable $VAR,the following expressions can be used as arguments to test or inside square brackets:
 
-```-a "$VAR"```
+```-a "$VAR"```\
 Evaluate if the path in VAR exists in the filesystem and it is a file.
 
-```-b "$VAR"```
+```-b "$VAR"```\
 Evaluate if the path in VAR is a special block file.
 
-```-c "$VAR"```
+```-c "$VAR"```\
 Evaluate if the path in VAR is a special character file.
 
-```-d "$VAR"```
+```-d "$VAR"```\
 Evaluate if the path in VAR is a directory.
 
-```-e "$VAR"```
+```-e "$VAR"```\
 Evaluate if the path in VAR exists in the filesystem.
 
-```-f "$VAR"```
+```-f "$VAR"```\
 Evaluate if the path in VAR exists and it is a regular file.
 
-```-g "$VAR"```
+```-g "$VAR"```\
 Evaluate if the path in VAR has the SGID permission.
 
-```-h "$VAR"```
+```-h "$VAR"```\
 Evaluate if the path in VAR is a symbolic link.
 
-```-L "$VAR"```
+```-L "$VAR"```\
 Evaluate if the path in VAR is a symbolic link (like -h).
 
-```-k "$VAR"```
+```-k "$VAR"```\
 Evaluate if the path in VAR has the sticky bit permission.
 
-```-p "$VAR"```
+```-p "$VAR"```\
 Evaluate if the path in VAR is a pipe file.
 
-```-r "$VAR"```
+```-r "$VAR"```\
 Evaluate if the path in VAR is readable by the current user.
 
-```-s "$VAR"```
+```-s "$VAR"```\
 Evaluate if the path in VAR exists and it is not empty.
 
-```-S "$VAR"```
+```-S "$VAR"```\
 Evaluate if the path in VAR is a socket file.
 
-```-t "$VAR"```
+```-t "$VAR"```\
 Evaluate if the path in VAR is open in a terminal.
 
-```-u "$VAR"```
+```-u "$VAR"```\
 Evaluate if the path in VAR has the SUID permission.
 
-```-w "$VAR"```
+```-w "$VAR"```\
 Evaluate if the path in VAR is writable by the current user.
 
-```-x "$VAR"```
+```-x "$VAR"```\
 Evaluate if the path in VAR is executable by the current user.
 
-```-O "$VAR"```
+```-O "$VAR"```\
 Evaluate if the path in VAR is owned by the current user.
 
-```-G "$VAR"```
+```-G "$VAR"```\
 Evaluate if the path in VAR belongs to the effective group of the current user.
 
-```-N "$VAR"```
+```-N "$VAR"```\
 Evaluate if the path in VAR has been modified since the last time it was accessed.
 
-```"$VAR1" -nt "$VAR2"```
+```"$VAR1" -nt "$VAR2"```\
 Evaluate if the path in VAR1 is newer than the path in VAR2, according to their modification dates.
 
-```"$VAR1" -ot "$VAR2"```
+```"$VAR1" -ot "$VAR2"```\
 Evaluate if the path in VAR1 is older than VAR2.
 
-```"$VAR1" -ef "$VAR2"```
+```"$VAR1" -ef "$VAR2"```\
 This expression evaluates to True if the path in VAR1 is a hardlink to VAR2.
 
 There are also tests for arbitrary text variables, described as follows:
 
-```-z "$TXT"```
+```-z "$TXT"```\
 Evaluate if variable TXT is empty (zero size).
 
-```-n "$TXT" or test "$TXT"```
+```-n "$TXT" or test "$TXT"```\
 Evaluate if variable TXT is not empty.
 
-```"$TXT1" = "$TXT2" or "$TXT1" == "$TXT2"```
+```"$TXT1" = "$TXT2" or "$TXT1" == "$TXT2"```\
 Evaluate if TXT1 and TXT2 are equal.
 
-```"$TXT1" != "$TXT2"```
+```"$TXT1" != "$TXT2"```\
 Evaluate if TXT1 and TXT2 are not equal.
 
-```"$TXT1" < "$TXT2"```
+```"$TXT1" < "$TXT2"```\
 Evaluate if TXT1 comes before TXT2, in alphabetical order.
 
-```"$TXT1" > "$TXT2"```
+```"$TXT1" > "$TXT2"```\
 Evaluate if TXT1 comes after TXT2, in alphabetical order.
 
 Numerical comparisons have their own set of test options:
 
-```$NUM1 -lt $NUM2```
+```$NUM1 -lt $NUM2```\
 Evaluate if NUM1 is less than NUM2.
 
-```$NUM1 -gt $NUM2```
+```$NUM1 -gt $NUM2```\
 Evaluate if NUM1 is greater than NUM2.
 
-```$NUM1 -le $NUM2```
+```$NUM1 -le $NUM2```\
 Evaluate if NUM1 is less or equal to NUM2.
 
-```$NUM1 -ge $NUM2```
+```$NUM1 -ge $NUM2```\
 Evaluate if NUM1 is greater or equal to NUM2.
 
-```$NUM1 -eq $NUM2```
+```$NUM1 -eq $NUM2```\
 Evaluate if NUM1 is equal to NUM2.
 
-```$NUM1 -ne $NUM2```
+```$NUM1 -ne $NUM2```\
 Evaluate if NUM1 is not equal to NUM2.
 
 All tests can receive the following modifiers:
 
-```! EXPR```
+```! EXPR```\
 Evaluate if the expression EXPR is false.
 
-```EXPR1 -a EXPR2```
+```EXPR1 -a EXPR2```\
 Evaluate if both EXPR1 and EXPR2 are true.
 
-```EXPR1 -o EXPR2```
+```EXPR1 -o EXPR2```\
 Evaluate if at least one of the two expressions are true.
 
 ##### read - read from a file descriptor
@@ -559,7 +559,21 @@ read -s PASSWORD
 ##### seq - print a sequence of numbers
 
 ```sh
+#example - seq LAST
+seq 10
 
+#example - seq FIRST LAST
+seq 4 20
+
+#example - seq FIRST INCREMENT LAST
+seq 2 3 16
+
+#example - seq -f "FORMAT" FIRST INCREMENT LAST
+seq -f "File%02g" 10
+
+#example - seq -s "STRING" FIRST INCREMENT LAST
+seq -s "-" 10
+seq -s "-" 0 2 30
 ```
 
 ##### exec, execl, execlp, execle, execv, execvp, execvpe - execute a file
@@ -600,6 +614,115 @@ FREE=$(( 1000 * `sed -nre '2s/[^[:digit:]]//gp' < /proc/meminfo` ))
 
 printf "Operating system:\t%s\nUnallocated RAM:\t%d MB\n" $OS $(($FREE / 1024 ** 2))
 ```
+
+##### useradd - create a new user or update default new user information
+
+```sh
+sudo useradd jon
+
+# personalize useradd defaults
+sudo vi  /etc/default/useradd
+
+# create home dir
+sudo useradd -m jon
+
+#personalize skel(home files)
+sudo mkdir /my-skel
+sudo  cp -r /etc/skel /my-skel
+sudo touch /my-skel/skel/my-personal-file.txt
+sudo useradd -m -k /my-skel/skel/ jon
+sudo ls -la /home/jon
+```
+
+##### passwd - update user's authentication tokens
+
+```sh
+#set password
+sudo passwd jon
+
+#block account
+sudo passwd -l jon
+
+#unblock account
+sudo passwd -u jon
+
+#set shell
+sudo usermod -s /bin/tcsh michael
+
+#set gecos
+sudo usermod -c "Michael User Account" michael
+```
+
+##### userdel - delete a user account and related files
+
+```sh
+#remove user
+sudo userdel jon
+
+#remove home dir
+sudo userdel -r jon
+```
+
+##### groupadd - create a new group
+
+```sh
+#create group
+sudo groupadd admins
+
+#create group whith specific GID
+groupadd -g 1090 developer
+```
+
+##### groupmod - modify a group definition on the system
+
+```sh
+#modify group name
+sudo groupmod -n infraestructure infra
+
+#modify GID
+sudo groupmod -g 1050
+```
+
+### groupdel - delete group
+
+```sh
+sudo groupdel admins
+```
+
+#### 105.2 Important Files
+
+**/etc/login.defs**
+
+In Linux, the /etc/login.defs file specifies the configuration parameters that control the creation of users and groups. In addition, the commands shown in the previous sections take default values from this file.
+
+The most important directives are:
+
+UID_MIN and UID_MAX\
+The range of user IDs that can be assigned to new ordinary users.
+
+GID_MIN and GID_MAX\
+The range of group IDs that can be assigned to new ordinary groups.
+
+CREATE_HOME\
+Specify whether a home directory should be created by default for new users.
+
+USERGROUPS_ENAB\
+Specify whether the system should by default create a new group for each new user account with the same name as the user, and whether deleting the user account should also remove the user’s primary group if it no longer contains members.
+
+MAIL_DIR\
+The mail spool directory.
+
+PASS_MAX_DAYS\
+The maximum number of days a password may be used.
+
+PASS_MIN_DAYS\
+The minimum number of days allowed between password changes.
+
+PASS_MIN_LEN\
+The minimum acceptable password length.
+
+PASS_WARN_AGE\
+The number of warning days before a password expires.
 
 #### 105.2 Cited Objects
 
