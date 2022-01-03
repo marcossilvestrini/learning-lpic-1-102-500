@@ -159,7 +159,7 @@ env -i bash
 ```sh
 #convert local variable in environment variable
 export myvar
-export myvar=**foo**
+export myvar=foo
 ```
 
 ##### command set
@@ -295,19 +295,19 @@ unalias hello
 ##### function
 
 ```sh
-#simple examnple function 1
+#simple example function 1
 function myfunction1{
     echo "This is a simple function in bash"
 }
 myfunction1
 
-#simple examnple function 2
+#simple example function 2
 myfunction2(){
     echo "Welcome $USER"
 }
 myfunction2
 
-#simple examnple function 3
+#simple example function 3
 myfunction3(){
     echo "Scriptpath: $0"
     echo "Param 1 : $1"
