@@ -904,8 +904,9 @@ Understanding of the X11 architecture.\
 Basic understanding and knowledge of the X Window configuration file.\
 Overwrite specific aspects of Xorg configuration, such as keyboard layout.\
 Understand the components of desktop environments, such as display managers and window managers.\
-Manage access to the X server and display applications on remote X servers.\
-Awareness of Wayland.\
+Manage access to the X server and display applications on remote X servers.
+
+![image](https://user-images.githubusercontent.com/62715900/147991540-aa80332b-7bbd-49ce-92a0-1b659d59ccdf.png)
 
 #### 106.1 Importat Files
 
@@ -941,7 +942,8 @@ The .xsession-errors file is where the X Window system logs all errors that occu
 >xhost\
 xauth\
 DISPLAY\
-X
+X\
+man xkeyboard-config: List keyboard layouts
 
 ### 106.2 Graphical Desktops
 

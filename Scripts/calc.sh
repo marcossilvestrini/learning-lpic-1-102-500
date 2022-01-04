@@ -6,6 +6,12 @@
     Date: 22/12/2021
 MULTILINE-COMMENT
 
+#Set localizations for prevent bugs in operations
+LANG=C
+
+#Import Functions
+. functions.sh
+
 while :; do
     echo -e "
     Calculator
@@ -20,18 +26,23 @@ while :; do
     case "$OPTION" in
     1)
         echo -e "SUM"
+        func_sum
         ;;
     2)
         echo -e "SUB"
+        func_sub
         ;;
     3)
         echo -e "MULT"
+        func_mult
         ;;
     4)
         echo -e "DIV"
+        func_div
         ;;
     5)
         echo -e "POT"
+        func_pot
         ;;
     6)
         echo -e "EXIT"
@@ -42,11 +53,5 @@ while :; do
         break
         ;;
     esac
-    # if [ $option -eq 6 ]; then
-    #     break
-    # fi
-    # echo "Calc"
-    # sleep 10
-    # clear
 
 done
