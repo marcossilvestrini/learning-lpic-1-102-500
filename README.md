@@ -76,6 +76,7 @@ Installation and configuration of some packages will also be covered\
 - [Vim Tutorial](https://www.openvim.com/)
 - [Linux Shell Scripting Tutorial](https://bash.cyberciti.biz/guide/Main_Page)
 - [Command Not Found](https://command-not-found.com/)
+- [Wayland](https://wayland.freedesktop.org/)
 - [LPIC-1 102-500 Wiki](https://wiki.lpi.org/wiki/LPIC-1_Objectives_V5.0#Objectives:_Exam_102)
 - [LPIC-1 102-500 Objectives](https://www.lpi.org/our-certifications/exam-102-objectives)
 - [LPIC-1 102-500 Learning Material](https://learning.lpi.org/en/learning-materials/102-500/)
@@ -141,7 +142,6 @@ sudo su root or sudo su
 
 #starts a shell without login as root.
 sudo -s or sudo -u root -s
-
 ```
 
 ##### env - run a program in a modified environment
@@ -908,6 +908,24 @@ Manage access to the X server and display applications on remote X servers.
 
 ![image](https://user-images.githubusercontent.com/62715900/147991540-aa80332b-7bbd-49ce-92a0-1b659d59ccdf.png)
 
+Wayland\
+Wayland is intended as a simpler replacement for X, easier to develop and maintain.\
+GNOME and KDE are expected to be ported to it.
+
+In wayland the compositor is the display server.\
+We transfer the control of KMS and evdev to the compositor.\
+The wayland protocol lets the compositor send the input events directly to the clients and lets the client send the damage event directly to the compositor:
+
+![image](https://user-images.githubusercontent.com/62715900/148104634-a86764e4-a1f5-4227-95a0-a05b81420a86.png)
+
+1 - The kernel gets an event and sends it to the compositor. This is similar to the X case, which is great, since we get to reuse all the input drivers in the kernel.
+
+2 - The compositor looks through its scenegraph to determine which window should receive the event. The scenegraph corresponds to what's on screen and the compositor understands the transformations that it may have applied to the elements in the scenegraph. Thus, the compositor can pick the right window and transform the screen coordinates to window-local coordinates, by applying the inverse transformations. The types of transformation that can be applied to a window is only restricted to what the compositor can do, as long as it can compute the inverse transformation for the input events.
+
+3 - As in the X case, when the client receives the event, it updates the UI in response. But in the wayland case, the rendering happens in the client, and the client just sends a request to the compositor to indicate the region that was updated.
+
+4 - The compositor collects damage requests from its clients and then recomposites the screen. The compositor can then directly issue an ioctl to schedule a pageflip with KMS.
+
 #### 106.1 Important Commands
 
 ##### localectl - Control the system locale and keyboard layout settings
@@ -921,6 +939,21 @@ localectl list-locales
 
 #list keyboard keymaps
 localectl list-keymaps
+```
+
+##### xdpyinfo - display information utility for X
+
+```sh
+#display information
+xdpyinfo
+```
+
+##### Xorg - X11R7 X server
+
+```sh
+#create a basic Xorg configuration file
+sudo Xorg -configure
+sudo mv xorg.conf.new /etc/X11/xorg.conf
 ```
 
 #### 106.1 Important Files
@@ -1365,7 +1398,7 @@ Retrieve systemd journal data from a rescue system or file system copy.\
 Understand interaction of rsyslog with systemd-journald.\
 Configuration of logrotate.\
 Awareness of syslog and syslog-ng.\
-Terms and Utilities:
+
 
 #### 108.2 Important Commands
 
