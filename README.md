@@ -908,7 +908,22 @@ Manage access to the X server and display applications on remote X servers.
 
 ![image](https://user-images.githubusercontent.com/62715900/147991540-aa80332b-7bbd-49ce-92a0-1b659d59ccdf.png)
 
-#### 106.1 Importat Files
+#### 106.1 Important Commands
+
+##### localectl - Control the system locale and keyboard layout settings
+
+```sh
+#Set keyboard layout
+localectl --no-convert set-x11-keymap "gr(polytonic)" chromebook
+
+#list keyboard locales
+localectl list-locales
+
+#list keyboard keymaps
+localectl list-keymaps
+```
+
+#### 106.1 Important Files
 
 ##### /etc/X11/xorg.conf
 
@@ -932,6 +947,11 @@ You are free to add configuration files there, but they must have a .conf suffix
 These files are parsed by the X server upon startup and are treated like part of the traditional xorg.conf configuration file.\
 Note that on conflicting configuration, the file read last will be processed.\
 For this reason, the most generic configuration files should be ordered first by name. The configuration entries in the xorg.conf file are processed at the end.
+
+##### /usr/share/X11/xorg.conf.d/
+
+Configuration files provided by the distribution.\
+The configuration files located within /etc/X11/xorg.conf.d/ are parsed prior to the /etc/X11/xorg.conf file if it exists on the system.
 
 ##### ~/.xsession-errors
 
