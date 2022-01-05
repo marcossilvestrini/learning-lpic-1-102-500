@@ -48,10 +48,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       cat /security/id_rsa.pub >> .ssh/authorized_keys
     SHELL
 
-    # # PACKAGES FOR PROVISION
-    # debian.vm.provision "shell", inline: <<-SHELL
-    #   dnf install python3 -y
-    # SHELL
+    # PACKAGES FOR PROVISION
+    debian.vm.provision "shell", inline: <<-SHELL
+      dnf install python3 -y
+    SHELL
 
   end
 

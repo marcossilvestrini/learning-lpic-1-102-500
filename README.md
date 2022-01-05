@@ -908,7 +908,8 @@ Manage access to the X server and display applications on remote X servers.
 
 ![image](https://user-images.githubusercontent.com/62715900/147991540-aa80332b-7bbd-49ce-92a0-1b659d59ccdf.png)
 
-Wayland\
+#### Wayland
+
 Wayland is intended as a simpler replacement for X, easier to develop and maintain.\
 GNOME and KDE are expected to be ported to it.
 
