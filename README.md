@@ -49,6 +49,8 @@ Installation and configuration of some packages will also be covered\
 - [Explainshell](https://explainshell.com/)
 - [GNU GNOME](https://www.gnu.org/press/gnome-1.0.html)
 - [GNOME](https://www.gnome.org/)
+- [XFCE](https://xfce.org/)
+- [KDE Plasma](https://kde.org/plasma-desktop/)
 - [Harmony](https://en.wikipedia.org/wiki/Harmony_(toolkit))
 - [Kernel](https://www.kernel.org/)
 - [FSF](https://www.fsf.org/campaigns/)
@@ -907,6 +909,50 @@ Understand the components of desktop environments, such as display managers and 
 Manage access to the X server and display applications on remote X servers.
 
 ![image](https://user-images.githubusercontent.com/62715900/147991540-aa80332b-7bbd-49ce-92a0-1b659d59ccdf.png)
+
+#### Install and Configure Xorg Server
+
+##### RHEL Base(Oracle Linux 8)
+
+```sh
+#Enable repo for x11-apps
+sudo dnf config-manager --set-enabled ol8_codeready_builder
+
+#Update dnf index
+sudo dnf update -y
+
+#Install xorg packages
+sudo dnf install xorg-x11-server-Xorg.x86_64 xorg-x11-xauth.x86_64 xorg-x11-server-utils.x86_64 xorg-x11-utils.x86_64 xorg-x11-apps.x86_64 -y
+```
+
+##### Debian Base
+
+```sh
+#Update apt index
+sudo apt update -y
+
+#Install xorg packages
+sudo apt install xserver-xorg -y
+
+#Configure Xorg
+sudo Xorg -configure
+sudo mv /root/xorg.conf.new /etc/X11/xorg.conf
+```
+
+##### Configure ssh
+
+```sh
+sudo vi /etc/ssh/sshd_config
+X11Forwading yes
+X11DisplayOffset 10
+X11UseLocalhost no
+
+sudo systemctl restart sshd
+
+#Test Xorg Server
+ssh -X shovon@192.168.21.131
+xclock
+```
 
 #### Wayland
 

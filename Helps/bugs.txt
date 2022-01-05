@@ -1,11 +1,11 @@
-Fix vagrant ssh in windows powershell
+Fix vagrant ssh vagrant@127.0.0.1: Permission denied (publickey) in windows powershell
 
 Option 1
 
 The problem can be that the sshClient windows feature intercepting the operation,
 try opening powershell as admin and run the following:
 
-Remove-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+Remove-WindowsCapability -Online -Name OpenSSH.Client0.0.1.0
 
 if that doesn't solve then install sshclient again:
 
