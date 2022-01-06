@@ -693,7 +693,7 @@ sudo groupdel admins
 
 #### 105.2 Important Files
 
-**/etc/login.defs**
+##### /etc/login.defs
 
 In Linux, the /etc/login.defs file specifies the configuration parameters that control the creation of users and groups. In addition, the commands shown in the previous sections take default values from this file.
 
@@ -1055,6 +1055,89 @@ man xkeyboard-config: List keyboard layouts
 
 Awareness of major desktop environments\
 Awareness of protocols to access remote desktop sessions\
+
+#### Install xRDP(Centos 8\RHEL 8)
+
+```sh
+#Enable Epel repo
+sudo dnf install epel-release
+
+#Install xRDP
+sudo dnf install xrdp
+
+#Enable xRDP so it starts on boot
+sudo systemctl enable xrdp --now
+
+#Configure Firewall
+sudo firewall-cmd --add-port=3389/tcp --permanent
+sudo firewall-cmd --reload
+
+#Allow Specific IP Range(Replace 1.2.3.4/32, in the above example, with the IP range you want to whitelist)
+sudo firewall-cmd --new-zone=xrdp --permanent
+sudo firewall-cmd --zone=xrdp --add-port=3389/tcp --permanent
+sudo firewall-cmd --zone=xrdp --add-source=1.2.3.4/32 --permanent
+sudo firewall-cmd --reload
+
+#Configuring xRDP(If change this file, restart service xrdp after)
+sudo vi /etc/xrdp/xrdp.ini
+```
+
+#### Switching Between Desktop Environments
+
+To switch between desktop environments you need to create a file:\
+.Xclients in your home directory, in which you specify the desktop environment you want to launch and make it an executable.
+
+#### Modify runlevel for GUI or default
+
+```sh
+#graphical
+sudo systemctl set-default graphical
+
+#without graphical and mult user
+sudo set-default multi-user.target
+
+#reboot your server for apply nem runlevel for access GUI
+```
+
+#### Instal and Configure GNOME Desktop Environment(Centos 8\RHEL 8)
+
+```sh
+# Install desktop environment
+sudo dnf groupinstall "Server with GUI"
+
+#create the .Xclients file containing the line gnome-session
+echo "gnome-session" > ~/.Xclients
+chmod a+x ~/.Xclients
+sudo systemctl restart xrdp.service
+```
+
+#### Instal and Configure KDE Desktop Environment(Centos 8\RHEL 8)
+
+```sh
+#Enable repo codeready_builder
+sudo dnf config-manager --set-enabled ol8_codeready_builder
+
+#install desktop environment
+sudo dnf groupinstall -y "KDE Plasma Workspaces"
+
+#create .Xclients file and enable KDE Plasma Desktop as the desktop environment
+echo "startkde" > ~/.Xclients
+chmod a+x ~/.Xclients
+sudo systemctl restart xrdp.service
+```
+
+#### Instal and Configure XFCE Desktop Environment(Centos 8)
+
+```sh
+#Install desktop environment
+sudo dnf install -y epel-release
+sudo dnf groupinstall -y "Xfce"
+
+#create the .Xclients file containing xfce4-session:
+echo "xfce4-session" > ~/.Xclients
+chmod a+x ~/.Xclients
+sudo systemctl restart xrdp.service
+```
 
 #### 106.2 Cited Objects
 
@@ -1445,7 +1528,6 @@ Retrieve systemd journal data from a rescue system or file system copy.\
 Understand interaction of rsyslog with systemd-journald.\
 Configuration of logrotate.\
 Awareness of syslog and syslog-ng.\
-
 
 #### 108.2 Important Commands
 
