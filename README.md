@@ -79,6 +79,7 @@ Installation and configuration of some packages will also be covered\
 - [Linux Shell Scripting Tutorial](https://bash.cyberciti.biz/guide/Main_Page)
 - [Command Not Found](https://command-not-found.com/)
 - [Wayland](https://wayland.freedesktop.org/)
+- [xRDP](https://bytexd.com/xrdp-centos/)
 - [LPIC-1 102-500 Wiki](https://wiki.lpi.org/wiki/LPIC-1_Objectives_V5.0#Objectives:_Exam_102)
 - [LPIC-1 102-500 Objectives](https://www.lpi.org/our-certifications/exam-102-objectives)
 - [LPIC-1 102-500 Learning Material](https://learning.lpi.org/en/learning-materials/102-500/)
