@@ -1126,13 +1126,36 @@ Create and manage special purpose and limited accounts.\
 ##### chage - change user password expiry information
 
 ```sh
+#view the account aging information
+chage -l vagrant
 
+#set the last password change date to your specified date
+sudo chage -d 2022-01-09 jon
+
+#specify the date when the account should expire
+sudo chage -E 2022-01-11 jon
+
+#specify the maximum and minimum number of days between password change
+sudo chage -M 1 jon
+
+#specify the number of days the account should be inactive after its expiry
+sudo chage -I 3 jon
+
+#set number of days prior to the expiry date when the warning should be given
+sudo chage -W 5 jon
 ```
 
 ##### getent - get entries from Name Service Switch libraries
 
 ```sh
+#sintaxe
+getent database-nss key
 
+#find user
+getent passwd vagrant
+
+#find group
+getent group developers
 ```
 
 ##### groupadd - create a new group
@@ -1243,7 +1266,47 @@ The root user can view this file using the cat command itself:
 
 ##### /etc/group
 
-The /etc/group file is a text file that defines the groups on the Linux and Unix systems.
+The /etc/group is a text file that defines the groups to which users belong under Linux and Unix operating system. Under Linux/Unix, multiple users can be categorized into groups. Unix file system permissions are organized into three classes, user, group, and others.
+
+The use of groups allows additional abilities to be delegated in an organized fashion, such as access to disks, printers, and other peripherals. This also helps to enable the superuser to delegate some administrative tasks to normal users.
+
+groupname:group-password:GID:username-list
+
+1. Group Name
+This first column shows the group name.
+
+2. Group Password
+By default, there is no password in a group. But it can store encrypted passwords. So, this is useful to implement a privileged group.
+
+3. Group ID (GID)
+There must be a group ID for the user. You can see this number in your /etc/password file.
+
+4. Member List
+A comma-delimited list of the users belonging to the group.
+
+##### /etc/gshadow
+
+The /etc/gshadow file is readable only by the root user and contains an encrypted password for each group, as well as group membership and administrator information. The information about each group’s separated by a colon. This is not an important file nowadays. The system admin uses it rarely.
+
+groupname:encrypted-password:group-administrator:group-members
+
+1. Group Name
+This is the name of the group. When you create a new user without defining a group name, the system automatically assigns the group name with the same as the user name.
+
+2. Encrypted Password Of Group
+The encrypted password for the group. If set, non-members of the group can join the group by typing the password for that group using the newgrp command. If the value of this field is ! then no user is allowed to access the group using the newgrp command. A value of !! is treated the same as a value of! However, it also indicates that a password has never been set before. If the value is null, only group members can log into the group.
+
+3. Group Administrator
+All the members of the group, listed here with a comma. You can add or remove group members using the gpasswd command
+
+4. Group Members
+All the members of the group listed here are regular members. But, there is a comma to separate them, i.e. a non-administrative member of the groups.
+
+##### /etc/nsswitch.conf
+
+The /etc/nsswitch.conf file configures how the system uses various databases and name resolution mechanisms.\
+The first field of entries in this file identifies the name of the database.\
+The second field defines a list of resolution mechanisms in the order in which the system attempts to resolve queries on the database.
 
 ##### /etc/skel/
 
