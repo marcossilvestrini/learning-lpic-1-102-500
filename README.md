@@ -1502,7 +1502,11 @@ crontab -e
 ##### at, batch, atq, atrm - queue, examine, or delete jobs for later execution
 
 ```sh
-
+#schedule  for execute command after 1 minute
+at now +1 minutes
+enter
+touch /home/vagrant/logs/cron-exec-$(date "+%Y_%m_%d_%H_%M_%S").log
+ctr+D
 ```
 
 ##### systemctl
