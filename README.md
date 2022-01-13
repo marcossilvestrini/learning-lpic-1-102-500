@@ -1395,59 +1395,97 @@ The comma separated value in a field specifies that the command needs to be exec
 |*     | Every month|
 |*     |Every day of the week|
 
-6.To schedule a job for certain range of time (e.g. Only on Weekdays)
+#### To schedule a job for certain range of time (e.g. Only on Weekdays)
 
 If you wanted a job to be scheduled for every hour with in a specific range of time then use the following.
 
-Cron Job everyday during working hours :
+Cron Job everyday during working hours :\
 This example checks the status of the database everyday (including weekends) during the working hours 9 a.m – 6 p.m
+
+```ssh
 00 09-18 * * * /home/maverick/bin/check-db-status
-00 – 0th Minute (Top of the hour)
-09-18 – 9 am, 10 am, 11 am, 12 am, 1 pm, 2 pm, 3 pm, 4 pm, 5 pm, 6 pm
-* – Every day
-* – Every month
-* – Every day of the week
+```
+
+|Value | Explanation|
+|----  |----------------------------|
+|00    |0th Minute (Top of the hour)|
+|09-18 |9 am, 10 am, 11 am, 12 am, 1 pm, 2 pm, 3 pm, 4 pm, 5 pm, 6 pm|
+|*     |Every day|
+|*     |Every month|
+|*     |Every day of the week|
 
 Cron Job every weekday during working hours :
 This example checks the status of the database every weekday (i.e excluding Sat and Sun) during the working hours 9 a.m – 6 p.m.
-00 09-18 * * 1-5 /home/maverick/bin/check-db-status
-00 – 0th Minute (Top of the hour)
-09-18 – 9 am, 10 am, 11 am, 12 am, 1 pm, 2 pm, 3 pm, 4 pm, 5 pm, 6 pm
-* – Every day
-* – Every month
-1-5 -Mon, Tue, Wed, Thu and Fri (Every Weekday)
 
-7.To schedule a background Cron job for every 10 minutes.
+```ssh
+00 09-18 * * 1-5 /home/maverick/bin/check-db-status
+```
+
+|Value | Explanation|
+|----  |----------------------------|
+|00    |0th Minute (Top of the hour)|
+|09-18 |9 am, 10 am, 11 am, 12 am, 1 pm, 2 pm, 3 pm, 4 pm, 5 pm, 6 pm|
+|*     |Every day|
+|*     |Every month|
+|1-5   |Mon, Tue, Wed, Thu and Fri (Every Weekday)|
+
+#### To schedule a background Cron job for every 10 minutes
+
 Use the following, if you want to check the disk space every 10 minutes.
 
+```sh
 */10 * * * * /home/maverick/check-disk-space
+```
+
 It executes the specified command check-disk-space every 10 minutes through out the year. But you may have a requirement of executing the command only during certain hours or vice versa. The above examples shows how to do those things.Instead of specifying values in the 5 fields, we can specify it using a single keyword as mentioned below.
 
 There are special cases in which instead of the above 5 fields you can use @ followed by a keyword — such as reboot, midnight, yearly, hourly.
 
 Cron special keywords and its meaning
 
-Keyword    Equivalent
-@yearly    0 0 1 1 *
-@daily     0 0 * * *
-@hourly    0 * * * *
-@reboot    Run at startup.
-8.To schedule a job for first minute of every year using @yearly
+
+
+|Keyword | Equivalent|
+|----       |----------------------------|
+|@hourly    |0 * * * *|
+|@daily     |0 0 * * *|
+|@weekly    |0 0 * * 0|
+|@monthly   |0 0 1 * *|
+|@annually  |0 0 1 1 *|
+|@yearly    |0 0 1 1 *|
+|@reboot    |Run at startup|
+
+#### To schedule a job for first minute of every year using @yearly
+
 If you want a job to be executed on the first minute of every year, then you can use the @yearly cron keyword as shown below.This will execute the system annual maintenance using annual-maintenance shell script at 00:00 on Jan 1st for every year.
 
+```sh
 @yearly /home/maverick/bin/annual-maintenance
-9.To schedule a Cron job beginning of every month using @monthly
+```
+
+#### To schedule a Cron job beginning of every month using @monthly
+
 It is as similar as the @yearly as above. But executes the command monthly once using @monthly cron keyword.This will execute the shell script tape-backup at 00:00 on 1st of every month.
 
+```sh
 @monthly /home/maverick/bin/tape-backup
-10.To schedule a background job every day using @daily
+```
+
+#### To schedule a background job every day using @daily
+
 Using the @daily cron keyword, this will do a daily log file cleanup using cleanup-logs shell script at 00:00 on every day.
 
+```sh
 @daily /home/maverick/bin/cleanup-logs "day started"
-11.To execute a linux command after every reboot using @reboot
+```
+
+#### To execute a linux command after every reboot using @reboot
+
 Using the @reboot cron keyword, this will execute the specified command once after the machine got booted every time.
 
+```sh
 @reboot CMD
+```
 
 #### 107.2 Important Commands
 
@@ -1461,19 +1499,7 @@ crontab -l
 crontab -e
 ```
 
-##### at
-
-```sh
-
-```
-
-##### atq
-
-```sh
-
-```
-
-##### atrm
+##### at, batch, atq, atrm - queue, examine, or delete jobs for later execution
 
 ```sh
 
@@ -1491,7 +1517,7 @@ crontab -e
 
 ```
 
-107.2 Important Files
+#### 107.2 Important Files
 
 ##### /etc/cron.{d,daily,hourly,monthly,weekly}/
 
