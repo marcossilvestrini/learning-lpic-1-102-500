@@ -1502,23 +1502,36 @@ crontab -e
 ##### at, batch, atq, atrm - queue, examine, or delete jobs for later execution
 
 ```sh
+#schedule a job for specific time
+at 09:30 AM
+enter
+ls touch foo.txt
+ctr+D
+
 #schedule  for execute command after 1 minute
 at now +1 minutes
 enter
 touch /home/vagrant/logs/cron-exec-$(date "+%Y_%m_%d_%H_%M_%S").log
 ctr+D
+
+#execute job with commands in file
+at now +5 minutes -f commands.txt
+
+#list jobs
+atq
+at -l
+
+#delete jobs
+atrm 14
+at -d 14
 ```
 
-##### systemctl
+##### systemd-run - Run programs in transient scope units, service units
 
 ```sh
-
-```
-
-##### systemd-run
-
-```sh
-
+#examples
+systemd-run --on-calendar='2019-10-06 11:30' date
+systemd-run --on-active="2m" ./foo.sh
 ```
 
 #### 107.2 Important Files
@@ -1531,6 +1544,31 @@ Cron is one of the most useful tool in Linux or UNIX like operating systems.\
 The cron service (daemon) runs in the background and constantly checks the /etc/
 crontab file, /etc/cron.*/ directories. It also checks the /var/spool/cron/ directory.
 
+##### /etc/crontab
+
+The Linux crontab file (/etc/crontab) is defined in a specific format. Each line can be blank, a comment (which begins with #), a variable, or a command. Blank lines in Linux crontab(/etc/crontab) file and comments are ignored.
+
+Cron is controlled by a set of files called "crontabs". The master (system-wide) file is /etc/crontab. The crontab files for the users are located in /var/spool/cron/. In /var/spool/cron, the files are given the same name as a user's login ID.
+
+The crontab file, /etc/crontab, automatically executes items in several subdirectories (as specified in the crontab file, shown below) at regular periods.
+
+##### /etc/cron.allow ,/etc/cron.deny
+
+To allow or deny access to specific users, crontab uses the files /etc/cron.allow and /etc/cron.deny.\
+Based on the existence of /etc/cron.allow and /etc/cron.deny files, crontab decides whom to give access to cron in following order.
+
+If cron.allow exists – only the users listed in the file cron.allow will get an access to crontab.\
+If cron.allow does not exist – all users except the users listed into cron.deny can use crontab
+If neither of the file exists – only the root can use crontab\
+If a user is listed in both cron.allow and cron.deny – that user can use crontab.
+
+##### /var/spool/cron/ , /etc/cron.d
+
+/var/spool/cron is where the individual user crontabs live. As user, crontab -e edits the corresponding file in /var/spool/cron.
+
+/etc/cron.d is a directory that is scanned for modular crontab files. The syntax is slightly different for files in that directory.\
+The cron entries have an additional field for a user to run the cron entries as. This is the same as a systemwide /etc/crontab file.
+
 ##### /etc/at.deny , /etc/at.allow
 
 The /etc/at.allow and /etc/at.deny files determine which user can submit commands for later execution via at(1) or batch(1).
@@ -1542,20 +1580,6 @@ The superuser may always use at.
 If the file /etc/at.allow exists, only usernames mentioned in it are allowed to use at.
 
 If /etc/at.allow does not exist, /etc/at.deny is checked.
-
-##### /etc/crontab
-
-The Linux crontab file (/etc/crontab) is defined in a specific format. Each line can be blank, a comment (which begins with #), a variable, or a command. Blank lines in Linux crontab(/etc/crontab) file and comments are ignored.
-
-Cron is controlled by a set of files called "crontabs". The master (system-wide) file is /etc/crontab. The crontab files for the users are located in /var/spool/cron/. In /var/spool/cron, the files are given the same name as a user's login ID.
-
-The crontab file, /etc/crontab, automatically executes items in several subdirectories (as specified in the crontab file, shown below) at regular periods.
-
-##### /etc/cron.allow
-
-##### /etc/cron.deny
-
-##### /var/spool/cron/
 
 ### 107.3 Localisation and internationalisation
 
