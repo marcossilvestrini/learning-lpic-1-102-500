@@ -11,6 +11,10 @@ if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
 fi
 export PATH
 
+#Set Time Zone
+TZ='America/Sao_Paulo'
+export TZ
+
 # Fun Cowsay
 COWS=(/usr/share/cowsay/cows/*)
 RAND_COW=$(($RANDOM % $(ls /usr/share/cowsay/cows/*.cow | wc -l)))

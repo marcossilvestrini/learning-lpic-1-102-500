@@ -24,6 +24,10 @@ wt -d "" -p "Command Promt" vagrant status ; split-pane -d "" vagrant status
 -----------------------------------------
 
 -----------------------------------------
+Windows - Folder of Apps Windows Store
+shell:AppsFolder
+-----------------------------------------
+
 Windows  - list PackageFullName windows apps
 get-appxpackage
 
