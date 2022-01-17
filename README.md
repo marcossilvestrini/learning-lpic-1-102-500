@@ -919,6 +919,9 @@ localectl list-locales
 
 #list keyboard keymaps
 localectl list-keymaps
+
+#set locale
+localectl set-locale LANG=en_US.UTF-8
 ```
 
 ##### xdpyinfo - display information utility for X
@@ -1597,25 +1600,41 @@ Configure timezone settings and environment variables.
 ##### tzselect - view timezones
 
 ```sh
-
+#set timezone
+tzselect
 ```
 
 ##### timedatectl - Control the system time and date
 
 ```sh
-
+#show timezone
+timedatectl
 ```
 
 ##### date - print or set the system date and time
 
 ```sh
-
+#show timezone in UTC
+date
 ```
+
+##### locale - get locale-specific information
+
+```sh
+#print all locale variables
+locale
+```
+
+Some localisation settings change how programs deal with alphabetical ordering and number formats.\
+Whilst conventional programs are usually prepared to correctly choose a common locale for such situations, scripts can behave unexpectedly when trying to correctly alphabetically order a list of items, for example.\
+For this reason, it is recommended to set the environment variable LANG to the common C locale, as in LANG=C, so the script produces unambiguous results, regardless the localisation definitions used in the system where it is executed.\
+The C locale only conducts a simple bytewise comparison, so it will also perform better than the others.
 
 ##### iconv - convert text from one character encoding to another
 
 ```sh
-
+#convert ISO-8859-1 encoding to UTF-8 encoding
+iconv -f ISO-8859-1 -t UTF-8 original.txt > converted.txt
 ```
 
 #### 107.3 Important Files
@@ -1632,7 +1651,11 @@ On some distributions, the /etc/localtime file contains a symbolic link to the t
 
 Directory for system-wide timezone information (system timezone directory). This directory contains timezone data files.
 
-##### /usr/bin/locale
+##### /etc/locale.conf
+
+System wide locale settings are configured in the file /etc/locale.conf.\
+Variable LANG and other locale related variables are assigned in this file like an ordinary shell variable.
+In Debian 11 or later this file is /etc/default/locale
 
 #### 107.3 Cited Objects
 
