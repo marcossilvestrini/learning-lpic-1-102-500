@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#Set timezone
+ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+sudo hwclock --systohc
+
 # SSH,FIREWALLD AND SELINUX
 cat /home/vagrant/security/id_rsa.pub >>/home/vagrant/.ssh/authorized_keys
 sudo systemctl stop firewalld

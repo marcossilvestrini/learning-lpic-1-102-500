@@ -1616,6 +1616,17 @@ timedatectl
 ```sh
 #show timezone in UTC
 date
+date -u
+
+#show date in ISO 8601
+date -I
+
+#show date in IRFC 5322
+date -R
+
+#display the last modification time of FILE
+-r, --reference=FILE
+date -f foo.txt
 ```
 
 ##### locale - get locale-specific information
