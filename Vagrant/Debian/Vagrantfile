@@ -11,31 +11,30 @@ unless Vagrant.has_plugin?("vagrant-reload")
 end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  #config.vm.box = "debian/buster64"
   config.vm.box = "debian/bullseye64"
 
   # VM ubuntu-server
-  config.vm.define "debian"  do |debian|
+  config.vm.define "debian_lpic_102"  do |debian_lpic_102|
 
     # VARIABLE HOSTNAME
-    APP_NAME= "debian"
+    APP_NAME= "debian-lpic-102"
 
     # HOSTNAME
-    debian.vm.hostname = APP_NAME
+    debian_lpic_102.vm.hostname = APP_NAME
 
     # NETWORK
-    debian.vm.network "public_network" ,ip: "192.168.0.134",mode: "bridge" ,bridge: [
+    debian_lpic_102.vm.network "public_network" ,ip: "192.168.0.134",mode: "bridge" ,bridge: [
     "ens32",
     "Marvell AQtion 5Gbit Network Adapter"
     ]
 
     # MOUNTS
-    debian.vm.synced_folder ".", "/vagrant", disabled: true
-    debian.vm.synced_folder "./security", "/security"
-    #debian.vm.synced_folder "./install", "/totvs/install", type: "rsync",rsync__args: ["-r", "--include=*"]
+    debian_lpic_102.vm.synced_folder ".", "/vagrant", disabled: true
+    debian_lpic_102.vm.synced_folder "./security", "/security"
+    #debian_lpic_102.vm.synced_folder "./install", "/totvs/install", type: "rsync",rsync__args: ["-r", "--include=*"]
 
     # PROVIDER
-    debian.vm.provider "virtualbox" do |vb|
+    debian_lpic_102.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
       vb.name = APP_NAME
       vb.memory = 4096
@@ -44,7 +43,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # PROVISION
     # SSH,FIREWALLD AND SELINUX
-    debian.vm.provision "shell", inline: <<-SHELL
+    debian_lpic_102.vm.provision "shell", inline: <<-SHELL
       cat /security/id_rsa.pub >> .ssh/authorized_keys
     SHELL
 

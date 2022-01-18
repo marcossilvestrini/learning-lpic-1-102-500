@@ -1,8 +1,13 @@
 #!/bin/bash
 
+# Set bash session
+rm ~/.bashrc
+cp ~/configs/.bashrc ~/
+
 #Set timezone
-ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
-sudo hwclock --systohc
+# sudo rm /etc/localtime
+# sudo ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+# sudo hwclock --systohc
 
 # SSH,FIREWALLD AND SELINUX
 cat /home/vagrant/security/id_rsa.pub >>/home/vagrant/.ssh/authorized_keys
