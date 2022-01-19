@@ -1609,6 +1609,18 @@ tzselect
 ```sh
 #show timezone
 timedatectl
+
+#set hardware clock time
+timedatectl set-time '2011-11-25 14:00:00'
+
+#list timezones
+timedatectl list-timezones
+
+#set timezone
+timedatectl set-timezone America/Sao_Paulo
+
+#disable ntp service
+timedatectl set-ntp no
 ```
 
 ##### date - print or set the system date and time
@@ -1627,6 +1639,10 @@ date -R
 #display the last modification time of FILE
 -r, --reference=FILE
 date -f foo.txt
+
+#set date and time(recommend use systemctl)
+sudo date --set="11 Nov 2011 11:11:11"
+sudo hwclock --systohc
 ```
 
 ##### locale - get locale-specific information
@@ -1695,6 +1711,20 @@ Configure the correct timezone.\
 Basic NTP configuration using ntpd and chrony.\
 Knowledge of using the pool.ntp.org service.\
 Awareness of the ntpq command.
+
+#### 108.1 Important commands
+
+##### hwclock - time clocks utility
+
+```sh
+#view the time as maintained on the real-time clock
+sudo hwclock
+sudo hwclock --verbose
+
+#set date and time
+hwclock --set --date "4/12/2019 11:15:19"
+
+```
 
 #### 108.1 Important Files
 
