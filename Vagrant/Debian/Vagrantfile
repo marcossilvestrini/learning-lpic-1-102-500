@@ -30,8 +30,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # MOUNTS
     debian_lpic_102.vm.synced_folder ".", "/vagrant", disabled: true
-    debian_lpic_102.vm.synced_folder "./security", "/security"
-    #debian_lpic_102.vm.synced_folder "./install", "/totvs/install", type: "rsync",rsync__args: ["-r", "--include=*"]
+    debian_lpic_102.vm.synced_folder "./security", "/home/vagrant/security"
+    debian_lpic_102.vm.synced_folder "./configs", "/home/vagrant/configs"
 
     # PROVIDER
     debian_lpic_102.vm.provider "virtualbox" do |vb|
@@ -42,10 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     # PROVISION
-    # SSH,FIREWALLD AND SELINUX
-    debian_lpic_102.vm.provision "shell", inline: <<-SHELL
-      cat /security/id_rsa.pub >> .ssh/authorized_keys
-    SHELL
+    debian_lpic_102.vm.provision "shell", path: "scripts/install.sh"
 
   end
 

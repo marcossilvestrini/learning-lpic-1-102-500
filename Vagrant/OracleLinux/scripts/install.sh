@@ -1,13 +1,11 @@
 #!/bin/bash
 
-# Set bash session
-rm ~/.bashrc
-cp ~/configs/.bashrc ~/
+#Set profile in /etc/profile
+sudo cp -f /home/vagrant/configs/profile /etc
 
-#Set timezone
-# sudo rm /etc/localtime
-# sudo ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
-# sudo hwclock --systohc
+# Set bash session
+rm /home/vagrant/.bashrc
+cp -f /home/vagrant/configs/.bashrc /home/vagrant
 
 # SSH,FIREWALLD AND SELINUX
 cat /home/vagrant/security/id_rsa.pub >>/home/vagrant/.ssh/authorized_keys
@@ -30,4 +28,3 @@ cd /tmp
 rm -rf cowsay-files
 git clone https://github.com/paulkaefer/cowsay-files.git
 sudo cp -R /tmp/cowsay-files/cows/ /usr/share/cowsay/cows
-cp -f /home/vagrant/configs/.bashrc /home/vagrant

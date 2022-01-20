@@ -31,8 +31,6 @@ unless Vagrant.has_plugin?("vagrant-vbguest")
   system('vagrant plugin install vagrant-vbguest')
 end
 
-vagrant plugin install vagrant-vbguest
-
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = BOX_NAME
   config.vm.box_url = "#{BOX_URL}/#{BOX_NAME}.json"
@@ -45,7 +43,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "ol8-lpic-102"  do |ol8_lpic_102|
 
     # VARIABLE HOSTNAME
-   APP_NAME= "ol8-lpic-102-srv01"
+   APP_NAME= "ol8-lpic-102"
 
     # HOSTNAME
     ol8_lpic_102.vm.hostname =APP_NAME
