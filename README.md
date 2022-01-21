@@ -45,8 +45,6 @@ Installation and configuration of some packages will also be covered\
 - [Globbing](https://linuxhint.com/bash_globbing_tutorial/)
 - [Quoting](https://www.gnu.org/software/bash/manual/html_node/Quoting.html)
 - [Regular Expressions](https://www.gnu.org/software/grep/manual/html_node/Regular-Expressions.html)
-- [Bash RC Generator](http://bashrcgenerator.com/)
-- [Explainshell](https://explainshell.com/)
 - [GNU GNOME](https://www.gnu.org/press/gnome-1.0.html)
 - [GNOME](https://www.gnome.org/)
 - [XFCE](https://xfce.org/)
@@ -54,6 +52,7 @@ Installation and configuration of some packages will also be covered\
 - [Harmony](https://en.wikipedia.org/wiki/Harmony_(toolkit))
 - [Kernel](https://www.kernel.org/)
 - [FSF](https://www.fsf.org/campaigns/)
+- [Debian Free Software Guidelines](https://www.debian.org/social_contract#guidelines)
 - [Free Software Directory](https://directory.fsf.org/wiki/Free_Software_Directory:Free_software_replacements)
 - [Free Software](https://www.gnu.org/philosophy/free-sw.html)
 - [Copyleft](https://www.gnu.org/licenses/copyleft.en.html)
@@ -69,17 +68,19 @@ Installation and configuration of some packages will also be covered\
 - [Filesystem Hierarchy Standard](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)
 - [File Hierarchy Structure](https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.pdf)
 - [Linux Standard Base](https://en.wikipedia.org/wiki/Linux_Standard_Base)
-- [Bugzila](https://bugzilla.kernel.org/)
-- [DistroTest](https://distrotest.net/index.php)
-- [Katacoda](https://www.katacoda.com/)
-- [Debian Free Software Guidelines](https://www.debian.org/social_contract#guidelines)
-- [Download Packages](https://pkgs.org/)
-- [Commands Examples](https://www.geeksforgeeks.org/)
-- [Vim Tutorial](https://www.openvim.com/)
-- [Linux Shell Scripting Tutorial](https://bash.cyberciti.biz/guide/Main_Page)
-- [Command Not Found](https://command-not-found.com/)
+- [NTP](https://www.ntppool.org/en/)
 - [Wayland](https://wayland.freedesktop.org/)
 - [xRDP](https://bytexd.com/xrdp-centos/)
+- [Download Packages](https://pkgs.org/)
+- [Bugzila](https://bugzilla.kernel.org/)
+- [Command Not Found](https://command-not-found.com/)
+- [DistroTest](https://distrotest.net/index.php)
+- [Katacoda](https://www.katacoda.com/)
+- [Bash RC Generator](http://bashrcgenerator.com/)
+- [Explainshell](https://explainshell.com/)
+- [Vim Tutorial](https://www.openvim.com/)
+- [Linux Shell Scripting Tutorial](https://bash.cyberciti.biz/guide/Main_Page)
+- [Commands Examples](https://www.geeksforgeeks.org/)
 - [LPIC-1 102-500 Wiki](https://wiki.lpi.org/wiki/LPIC-1_Objectives_V5.0#Objectives:_Exam_102)
 - [LPIC-1 102-500 Objectives](https://www.lpi.org/our-certifications/exam-102-objectives)
 - [LPIC-1 102-500 Learning Material](https://learning.lpi.org/en/learning-materials/102-500/)
@@ -1621,6 +1622,12 @@ timedatectl set-timezone America/Sao_Paulo
 
 #disable ntp service
 timedatectl set-ntp no
+
+#check status  timedatectl SNTP
+systemctl status systemd-timesyncd
+
+#status of timedatectl SNTP synchronisation
+timedatectl show-timesync --all
 ```
 
 ##### date - print or set the system date and time
@@ -1724,6 +1731,22 @@ sudo hwclock --verbose
 #set date and time
 hwclock --set --date "4/12/2019 11:15:19"
 
+```
+
+##### chronyc - command-line interface for chrony daemon
+
+```sh
+#information about NTP and system time
+chronyc tracking
+
+#information about the last valid NTP update:
+chrony ntpdata
+
+# information about the NTP servers that are used to synchronise time:
+chronyc sources
+
+#manually step the system clock:
+chronyc makestep
 ```
 
 #### 108.1 Important Files
