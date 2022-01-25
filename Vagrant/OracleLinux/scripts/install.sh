@@ -19,6 +19,7 @@ sudo dnf -y upgrade
 #sudo dnf makecache --refresh
 
 # Install packages
+sudo dnf -y install vim
 sudo dnf -y install git
 sudo dnf -y install fortune-mod
 

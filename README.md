@@ -1790,6 +1790,59 @@ Understand interaction of rsyslog with systemd-journald.\
 Configuration of logrotate.\
 Awareness of syslog and syslog-ng.\
 
+#### Log Types
+
+Because logs are variable data, they are normally found in /var/log.\
+Roughly speaking, they can be classified into system logs and service or program logs.
+
+##### /var/log/auth.log
+
+Activities related to authentication processes: logged users, sudo information, cron jobs, failed login attempts, etc.
+
+##### /var/log/syslog
+
+A centralized file for practically all of the logs captured by rsyslogd. Because it includes so much information, logs are distributed across other files according to the configuration supplied in /etc/rsyslog.conf.
+
+##### /var/log/debug
+
+Debug information from programs.
+
+##### /var/log/kern.log
+
+Kernel messages.
+
+##### /var/log/messages
+
+Informative messages which are not related to the kernel but to other services. It is also the default remote client log destination in a centralized log server implementation.
+
+##### /var/log/daemon.log
+
+Information related to daemons or services running in the background.
+
+##### /var/log/mail.log
+
+Information related to the email server, e.g. postfix.
+
+##### /var/log/Xorg.0.log
+
+Information related to the graphics card.
+
+##### /var/run/utmp and /var/log/wtmp
+
+Successful logins.
+
+##### /var/log/btmp
+
+Failed login attempts, e.g. brute force attack via ssh.
+
+##### /var/log/faillog
+
+Failed authentication attempts.
+
+##### /var/log/lastlog
+
+Date and time of recent user logins.
+
 #### 108.2 Important Commands
 
 ##### logger - enter messages into the system log
@@ -1799,6 +1852,33 @@ Awareness of syslog and syslog-ng.\
 ##### journalctl - Query the systemd journal
 
 ##### systemd-cat - Connect a pipeline or program's output with the journal
+
+###### utmpdump - dump UTMP and WTMP files in raw format
+
+```sh
+#print btmp content
+utmpdump /var/log/btmp
+
+```
+
+##### lastlog - reports the most recent login of all users or of a given user
+
+```sh
+#view lastlog of  all logins
+lastlog
+
+#print the lastlog record of the specified user(s)
+lastlog -u vagrant
+```
+
+##### zless or zmore
+
+```sh
+#read a gzip arquive file
+zless /var/log/auth.log.3.gz
+zmore /var/log/foo.log.gz
+
+```
 
 #### 108.2 Important Files
 

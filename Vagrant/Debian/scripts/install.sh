@@ -9,3 +9,6 @@ cp -f /home/vagrant/configs/.bashrc /home/vagrant
 
 # Set ssh
 cat /home/vagrant/security/id_rsa.pub >>/home/vagrant/.ssh/authorized_keys
+
+# Install vim
+sudo apt install vim -y
