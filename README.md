@@ -1753,7 +1753,13 @@ chronyc makestep
 
 ##### /etc/ntp.conf
 
+NTP configuration file
+
+The daemon, ntpd, reads the configuration file at system start or when the service is restarted
+
 ##### /etc/chrony.conf
+
+The default configuration file for chronyd.
 
 #### 108.1 Cited Objects
 
@@ -1847,11 +1853,27 @@ Date and time of recent user logins.
 
 ##### logger - enter messages into the system log
 
+```sh
+
+```
+
 ##### logrotate ‐ rotates, compresses, and mails system logs
+
+```sh
+
+```
 
 ##### journalctl - Query the systemd journal
 
+```sh
+
+```
+
 ##### systemd-cat - Connect a pipeline or program's output with the journal
+
+```sh
+
+```
 
 ###### utmpdump - dump UTMP and WTMP files in raw format
 
@@ -1884,7 +1906,14 @@ zmore /var/log/foo.log.gz
 
 ##### /etc/rsyslog.conf
 
+Daemon rsyslogd configuration file
+
+All system and kernel messages get passed to rsyslogd. For every log message received Rsyslog looks at its configuration file, /etc/rsyslog.conf to determine how to handle that message.\
+Rsyslog looks through the configuration file for all rule statements which match that message and handles the message as each rule statement dictates.
+
 ##### /var/log/
+
+This directory contains logs from the OS itself, services, and various applications running on the system
 
 ##### /etc/logrotate.conf
 
@@ -1893,6 +1922,91 @@ zmore /var/log/foo.log.gz
 ##### /etc/systemd/journald.conf
 
 ##### /var/log/journal/
+
+#### Configure Central Log Server with rsyslog
+
+##### Configure server
+
+Check status rsyslog
+
+```sh
+systemctl status rsyslog
+```
+
+Enable modules in /etc/rsyslog.conf (or /etc/rsyslog.d/remote.conf)
+
+```sh
+sudo vim /etc/rsyslog.conf
+```
+
+![image](https://user-images.githubusercontent.com/62715900/151597940-63802d13-741d-4b2b-8d99-5f378c619220.png)
+
+Check configuration
+
+```ssh
+sudo systemctl restart rsyslog
+netstat -nltp | grep 514
+```
+
+Open port in firewall
+
+```sh
+sudo firewall-cmd --permanent --add-port 514/tcp
+sudo firewall-cmd --reload
+```
+
+Create a model
+
+```sh
+#Template
+$template RemoteLogs,"/var/log/remotehosts/%HOSTNAME%/%$NOW%.%syslogseverity-text%.log"
+if $FROMHOST-IP=='YOUR_CLIENT_IP' then ?RemoteLogs
+& stop
+
+#Example:
+sudo vim /etc/rsyslog.conf (or /etc/rsyslog.d/remote.conf)
+
+#Content to append in file:
+$template RemoteLogs,"/var/log/remotehosts/%HOSTNAME%/%$NOW%.%syslogseverity-text%.log"
+if $FROMHOST-IP=='192.168.0.135' then ?RemoteLogs
+& stop
+
+#Restart daemon
+sudo systemctl restart rsyslog
+```
+
+##### Configure client
+
+Check status rsyslog
+
+```sh
+systemctl status rsyslog
+```
+
+Configure daemon
+
+```sh
+sudo vim /etc/rsyslog.conf (or /etc/rsyslog.d/remote.conf)
+
+#Content to append in file:
+*.* @@YOUR_SERVER_RSYSLOG:514
+
+#Example
+*.* @@debian-server:514
+
+#Restart daemon
+sudo systemctl restart rsyslog
+```
+
+Test configuration
+
+```sh
+logger -t OL8-CLIENT Hi from 192.168.1.135
+```
+
+This message append in server, file /var/log/remotehosts/YOUR_CLIENT/2022-01-28.notice.log
+
+![image](https://user-images.githubusercontent.com/62715900/151604307-bd095484-c4f1-4b72-9d61-af06ccd7c39e.png)
 
 ### 108.3 Mail Transfer Agent (MTA) basics
 
