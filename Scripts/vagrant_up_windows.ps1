@@ -5,7 +5,7 @@ $ol8 = "F:\CERTIFICACAO\lpic-1-102500\Vagrant\OracleLinux\"
 #up debian
 Set-Location $debian
 vagrant up
-Copy-Item cp .\.vagrant\machines\debian_lpic_102\virtualbox\private_key F:\Projetos\vagrant-pk\debian
+Copy-Item .\.vagrant\machines\debian_lpic_102\virtualbox\private_key F:\Projetos\vagrant-pk\debian
 
 
 #up centos
