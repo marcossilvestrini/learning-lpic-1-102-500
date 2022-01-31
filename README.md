@@ -1854,7 +1854,8 @@ Date and time of recent user logins.
 ##### logger - enter messages into the system log
 
 ```sh
-
+#Append message em central log server
+logger -t OL8-CLIENT Hi from 192.168.1.135
 ```
 
 ##### logrotate ‐ rotates, compresses, and mails system logs
@@ -1958,17 +1959,23 @@ sudo firewall-cmd --reload
 Create a model
 
 ```sh
-#Template
+#Some Templates for implement
+#1-
 $template RemoteLogs,"/var/log/remotehosts/%HOSTNAME%/%$NOW%.%syslogseverity-text%.log"
 if $FROMHOST-IP=='YOUR_CLIENT_IP' then ?RemoteLogs
 & stop
 
-#Example:
+#2-
+$template RemoteLogs,"/var/log/RemoteLogs/%HOSTNAME%/%PROGRAMNAME%.log"
+*.* ?RemoteLogs
+& stop
+
+#Implement Example 2 template:
 sudo vim /etc/rsyslog.conf (or /etc/rsyslog.d/remote.conf)
 
 #Content to append in file:
-$template RemoteLogs,"/var/log/remotehosts/%HOSTNAME%/%$NOW%.%syslogseverity-text%.log"
-if $FROMHOST-IP=='192.168.0.135' then ?RemoteLogs
+$template RemoteLogs,"/var/log/RemoteLogs/%HOSTNAME%/%PROGRAMNAME%.log"
+*.* ?RemoteLogs
 & stop
 
 #Restart daemon
@@ -1986,10 +1993,30 @@ systemctl status rsyslog
 Configure daemon
 
 ```sh
-sudo vim /etc/rsyslog.conf (or /etc/rsyslog.d/remote.conf)
+# Opensuse: /etc/rsyslog.d/remote.conf
+# Not recomended: /etc/rsyslog.conf
+
+sudo vim /etc/rsyslog.d/50-default.conf
 
 #Content to append in file:
-*.* @@YOUR_SERVER_RSYSLOG:514
+
+#Default rules for rsyslog.
+#
+#For more information see rsyslog.conf(5) and /etc/rsyslog.conf
+
+*.* @@YOUR_IP_SERVER_RSYSLOG:514
+
+#
+# First some standard log files.  Log by facility.
+#
+auth,authpriv.*                 /var/log/auth.log
+*.*;auth,authpriv.none          -/var/log/syslog
+cron.*                         /var/log/cron.log
+daemon.*                       -/var/log/daemon.log
+kern.*                          -/var/log/kern.log
+lpr.*                          -/var/log/lpr.log
+mail.*                          -/var/log/mail.log
+user.*                         -/var/log/user.log
 
 #Example
 *.* @@debian-server:514
