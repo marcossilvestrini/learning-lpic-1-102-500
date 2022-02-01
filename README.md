@@ -1858,12 +1858,6 @@ Date and time of recent user logins.
 logger -t OL8-CLIENT Hi from 192.168.1.135
 ```
 
-##### logrotate ‐ rotates, compresses, and mails system logs
-
-```sh
-
-```
-
 ##### journalctl - Query the systemd journal
 
 ```sh
@@ -1918,7 +1912,17 @@ This directory contains logs from the OS itself, services, and various applicati
 
 ##### /etc/logrotate.conf
 
+The main logrotate configuration file.\
+When logrotate runs, it reads its configuration files to determine where to find the log files that it needs to rotate, how often the files should be rotated, and how many archived logs to keep.
+
 ##### /etc/logrotate.d/
+
+That directory contains most of the pplication-specific configuration files.\
+Depending on how much is installed on your server, this directory might contain no files or several.\
+In general, applications that are installed through your package manager will also create a config file in /etc/logrotate.d.
+
+Usually the directory contains a configuration file for your syslog service, which logrotate reads when it rotates the system logs.\
+This file contains an entry for various system logs, along with some commands similar to those contained in logrotate.conf.
 
 ##### /etc/systemd/journald.conf
 
