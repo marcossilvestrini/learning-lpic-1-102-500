@@ -1796,6 +1796,42 @@ Understand interaction of rsyslog with systemd-journald.\
 Configuration of logrotate.\
 Awareness of syslog and syslog-ng.\
 
+#### Rsyslog Facility Table
+
+
+|Number|Keyword       |Description                                  |
+|------|------------- |---------------------------------------------|
+|0     |kern          |Linux kernel messages                        |
+|1     |user          |User-level messages                          |
+|2     |mail          |Mail system                                  |
+|3     |daemon        |System daemons                               |
+|4     |auth, authpriv|Security/Authorization messages              |
+|5     |syslog        |syslogd messages                             |
+|6     |lpr           |Line printer subsystem                       |
+|7     |news          |Network news subsystem                       |
+|8     |uucp          |UUCP (Unix-to-Unix Copy Protocol) subsystem  |
+|9     |cron          |Clock daemon                                 |
+|10    |auth, authpriv|Security/Authorization messages              |
+|11    |ftp           |FTP (File Transfer Protocol) daemon          |
+|12    |ntp           |NTP (Network Time Protocol) daemon           |
+|13    |security      |Log audit                                    |
+|14    |console       |Log alert                                    |
+|15    |cron          |Clock daemon                                 |
+|16-23 |local0 through local7||Local use 0 - 7                      |
+
+#### Rsyslog Priority Level Table
+
+|Code |Severity |Keyword |Description|
+|-----|-------------|-------------|---------------------------------|
+|0    |Emergency    |emerg, panic |System is unusable               |
+|1    |Alert        |alert        |Action must be taken immediately |
+|2    |Critical     |crit         |Critical conditions              |
+|3    |Error        |err, error   |Error conditions                 |
+|4    |Warning      |warn, warning|Warning conditions               |
+|5    |Notice       |notice       |Normal but significant condition |
+|6    |Informational|info         |Informational messages           |
+|7    |Debug        |debug        |Debug-level messages             |
+
 #### Log Types
 
 Because logs are variable data, they are normally found in /var/log.\
@@ -1861,6 +1897,58 @@ logger -t OL8-CLIENT Hi from 192.168.1.135
 ##### journalctl - Query the systemd journal
 
 ```sh
+#querying the Journal Content
+journalctl
+
+#reverse order:
+journalctl -r
+
+#print the most recent journal messages and keep printing new entries as they are appended to the journal
+journalctl -f
+
+#jump to the end of the journal
+journalctl -e
+
+#print the value most recent lines (if no <value> is specified, it defaults to 10):
+journalctl -n 5
+
+#equivalent to using the dmesg command:
+journalctl -k
+journalctl --dmesg
+
+#list boots
+journalctl --list-boots
+
+#filter a specific boot messages
+journalctl -b 0
+
+#filter by severity/priority
+journalctl -b -0 -p err
+journalctl -p err
+journalctl -p 3
+
+journalctl -b -1 -p crit
+journalctl -b -1 -p 2
+journalctl -p 2
+
+#filter by Time Interval
+journalctl --since "19:00:00" --until "19:01:00"
+sudo journalctl --since "2 minutes ago"
+sudo journalctl --since "-2 minutes"
+journalctl --since "today" --until "21:00:00"
+
+#filter by program
+journalctl /usr/sbin/sshd
+journalctl /sbin/nginx
+
+#filter by unit (list units: systemctl list-units)
+journalctl -u nginx.service
+
+#filter by field FACILITY
+journalctl SYSLOG_FACILITY=1
+
+#filter by field PRIORITY
+
 
 ```
 
@@ -1926,7 +2014,11 @@ This file contains an entry for various system logs, along with some commands si
 
 ##### /etc/systemd/journald.conf
 
+Configuration file of daemon systemd-journald
+
 ##### /var/log/journal/
+
+Directory with persistent log files of journalctl
 
 #### Configure Central Log Server with rsyslog
 
@@ -1985,6 +2077,27 @@ $template RemoteLogs,"/var/log/RemoteLogs/%HOSTNAME%/%PROGRAMNAME%.log"
 #Restart daemon
 sudo systemctl restart rsyslog
 ```
+
+#### Configure journalctl for persistent log files
+
+```sh
+#enable in config file
+sudo vim /etc/systemd/journald.conf
+```
+
+![image](https://user-images.githubusercontent.com/62715900/152253525-17d36c65-3318-419a-9dd8-0bd12eb643df.png)
+
+```sh
+#restart daemon
+sudo systemctl restart systemd-journald
+
+#check daemon status
+sudo systemctl status systemd-journald
+
+#check persistent files
+ls -l /var/log/journal/<machine_id>/
+```
+
 
 ##### Configure client
 
