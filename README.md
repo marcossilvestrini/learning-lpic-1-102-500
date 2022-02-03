@@ -1897,6 +1897,8 @@ logger -t OL8-CLIENT Hi from 192.168.1.135
 ##### journalctl - Query the systemd journal
 
 ```sh
+#excute commands as root or sudo
+
 #querying the Journal Content
 journalctl
 
@@ -1933,8 +1935,8 @@ journalctl -p 2
 
 #filter by Time Interval
 journalctl --since "19:00:00" --until "19:01:00"
-sudo journalctl --since "2 minutes ago"
-sudo journalctl --since "-2 minutes"
+journalctl --since "2 minutes ago"
+journalctl --since "-2 minutes"
 journalctl --since "today" --until "21:00:00"
 
 #filter by program
@@ -1946,16 +1948,54 @@ journalctl -u nginx.service
 
 #filter by field FACILITY
 journalctl SYSLOG_FACILITY=1
+journalctl SYSLOG_FACILITY=1  SYSLOG_FACILITY=2
 
 #filter by field PRIORITY
+journalctl PRIORITY=3
+journalctl PRIORITY=1 PRIORITY=3
 
+#filter by PID
+journalctl _PID=1
 
+#filter by _BOOT_ID
+journalctl _BOOT_ID=83df3e8653474ea5aed19b41cdb45b78
+
+#filter by TRANSPORT
+journalctl _TRANSPORT=journal
+journalctl _TRANSPORT=syslog
+journalctl _TRANSPORT=driver
+journalctl _TRANSPORT=audit
+
+#Fields are not mutually exclusive so you can use more than one in the same query.
+#However, only messages that match the value of both fields simultaneously will be shown:
+journalctl PRIORITY=3 SYSLOG_FACILITY=0
+
+#Unless you use the + separator to combine two expressions in the manner of a logical OR:
+journalctl PRIORITY=3 + SYSLOG_FACILITY=0
+
+#check how much disk space is currently being occupied by journal files (both archived and active)
+journalctl --disk-usage
+
+#manually clean archived journal files at any time with any of the following three options:
+journalctl --vacuum-time=1months
+journalctl --vacuum-size=100M
+journalctl --vacuum-files=10
+
+#rescue system’s
+#Thus, it is necessary that you mount the faulty system’s rootfs (/dev/sda1)
+#on the rescue system’s filesystem and proceed to read the journal files like so:
+journalctl -D /media/carol/faulty.system/var/log/journal/
 ```
 
 ##### systemd-cat - Connect a pipeline or program's output with the journal
 
 ```sh
+#manual entries in the System Journal
+echo "And so does this line." | systemd-cat
+systemd-cat echo "And so does this line too."
 
+#specifiying a priority level with the -p option
+systemd-cat -p emerg echo "This is not a real emergency."
 ```
 
 ###### utmpdump - dump UTMP and WTMP files in raw format
@@ -2078,27 +2118,6 @@ $template RemoteLogs,"/var/log/RemoteLogs/%HOSTNAME%/%PROGRAMNAME%.log"
 sudo systemctl restart rsyslog
 ```
 
-#### Configure journalctl for persistent log files
-
-```sh
-#enable in config file
-sudo vim /etc/systemd/journald.conf
-```
-
-![image](https://user-images.githubusercontent.com/62715900/152253525-17d36c65-3318-419a-9dd8-0bd12eb643df.png)
-
-```sh
-#restart daemon
-sudo systemctl restart systemd-journald
-
-#check daemon status
-sudo systemctl status systemd-journald
-
-#check persistent files
-ls -l /var/log/journal/<machine_id>/
-```
-
-
 ##### Configure client
 
 Check status rsyslog
@@ -2151,6 +2170,29 @@ logger -t OL8-CLIENT Hi from 192.168.1.135
 This message append in server, file /var/log/remotehosts/YOUR_CLIENT/2022-01-28.notice.log
 
 ![image](https://user-images.githubusercontent.com/62715900/151604307-bd095484-c4f1-4b72-9d61-af06ccd7c39e.png)
+
+#### Configure journalctl for persistent log files
+
+```sh
+#Method 1 : create a dir
+mkdir /var/log/journal/
+
+#Method 2: enable in config file
+sudo vim /etc/systemd/journald.conf
+```
+
+![image](https://user-images.githubusercontent.com/62715900/152253525-17d36c65-3318-419a-9dd8-0bd12eb643df.png)
+
+```sh
+#restart daemon
+sudo systemctl restart systemd-journald
+
+#check daemon status
+sudo systemctl status systemd-journald
+
+#check persistent files
+ls -l /var/log/journal/<machine_id>/
+```
 
 ### 108.3 Mail Transfer Agent (MTA) basics
 
