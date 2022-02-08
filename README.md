@@ -2304,6 +2304,131 @@ Manage user print queues.\
 Troubleshoot general printing problems.\
 Add and remove jobs from configured printer queues.\
 
+#### 108.4 Important Commands
+
+##### lpadmin - configure cups printers and classes
+
+```sh
+#printer’s queue may also be installed using the legacy LPD/LPR commands
+sudo lpadmin -p ENVY-4510 -L "office" -v socket://192.168.150.25 -m everywhere
+
+#shared on the network
+sudo lpadmin -p FRONT-DESK -o printer-is-shared=true
+
+#configure a print queue to only accept print jobs from specific users
+sudo lpadmin -p FRONT-DESK -u allow:carol,frank,grace
+
+#denied user access to a specific print queue
+sudo lpadmin -p FRONT-DESK -u deny:dave
+
+#denied group access to a specific print queue
+sudo lpadmin -p FRONT-DESK -u deny:@sales,@marketing
+
+#set printer policy
+sudo lpadmin -p FRONT-DESK -o printer-error-policy=abort-job
+
+#remove printer
+sudo lpadmin -x FRONT-DESK
+```
+
+##### lpinfo - show available devices or drivers (deprecated)
+
+```sh
+#query the locally installed PPD files to see what are available
+sudo lpinfo --make-and-model "HP Envy 4510" -m
+```
+
+##### lpoptions - display or set printer options and defaults
+
+```sh
+#set default printer
+lpoptions -d ENVY-4510
+```
+
+##### lpr - print files
+
+```sh
+#send a print job to a printer’s queue
+lpr report.txt
+```
+
+##### lpstat - print cups status information
+
+```sh
+#list printers
+lpstat -p -d
+lpstat -v
+```
+
+##### lpq - show printer queue status
+
+```sh
+#show all printers queue status
+lpq -a
+```
+
+##### lprm - cancel print jobs
+
+```sh
+#cancel specific jon
+lprm 20
+
+#cancel all jobs
+lprm -
+```
+
+##### cancel - cancel jobs
+
+```sh
+#cancel specific jon
+cancel ACCOUNTING-LASERJET-20
+
+#cancel all jobs
+cancel
+```
+
+##### cupsaccept/cupsreject - accept/reject jobs sent to a destination
+
+```sh
+#reject print jobs
+sudo cupsreject -r "Printer to be removed" FRONT-DESK
+```
+
+#### Use Cups PDF Printer
+
+```sh
+#install packages(Debian)
+sudo apt install -y cups cups-client printer-driver-cups-pdf
+
+#define PDF printer as default
+lpoptions -d PDF
+
+#generate a some PDF
+lp -d PDF /etc/services
+```
+
+#### 108.4 Important Files
+
+***/etc/cups/cupsd.conf***
+
+This file contains the configuration settings for the CUPS service itself.
+
+***/etc/printcap***
+
+This is the legacy file that was used by the LPD (Line Printer Daemon) protocol before the advent of CUPS. CUPS will still create this file on systems for backwards compatibility and it is often-times a symbolic link to /run/cups/printcap. Each line in this file contains a printer that the system has access to.
+
+***/etc/cups/printers.conf***
+
+This file contains each printer that is configured to be used by the CUPS system. Each printer and its associated print queue in this file is enclosed within a <Printer></Printer> stanza. This file provides the individual printer listings found within /etc/printcap.
+
+***Warning***
+
+No modifications to the /etc/cups/printers.conf file should be made at the command line while the CUPS service is running.
+
+***/etc/cups/ppd/***
+
+This is not a configuration file but a directory that holds the PostScript Printer Description (PPD) files for the printers that use them. Each printer’s operating capabilities will be stored within a PPD file (ending in the .ppd extension). These are plain-text files and follow a specific format.
+
 #### 108.4 Cited Objects
 
 >CUPS configuration files, tools and utilities\
