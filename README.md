@@ -2398,7 +2398,7 @@ sudo cupsreject -r "Printer to be removed" FRONT-DESK
 
 ```sh
 #install packages(Debian)
-sudo apt install -y cups cups-client printer-driver-cups-pdf
+sudo apt-get -y install cups  cups-pdf
 
 #define PDF printer as default
 lpoptions -d PDF

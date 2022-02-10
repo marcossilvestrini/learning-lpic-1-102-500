@@ -30,3 +30,9 @@ cd /tmp
 rm -rf cowsay-files
 git clone https://github.com/paulkaefer/cowsay-files.git
 sudo cp -R /tmp/cowsay-files/cows/ /usr/share/cowsay/cows
+
+#intall and configure cups
+sudo dnf -y install cups cups-devel
+sudo cp -f /home/vagrant/configs/cupsd.conf /etc/cups/
+sudo systemctl restart cups
+sudo systemctl enable cups
