@@ -2462,23 +2462,13 @@ Knowledge of the basic features of IPv6.\
 |Class D   |224.0.0.0 to 239.255.255.255  |Reserved for multicast groups.|
 |Class E   |240.0.0.0 to 254.255.255.254  |Reserved for future use, or research and development purposes.|
 
-#### IP conversions
+#### IP class standard mask
 
-|Bit Position       |7|6|5|4|3|2|1|0|
-|:-------           |:--|:--|:--|:--|:--|:--|:--|:--|
-|                   |1|1|1|1|1|1|1|1|
-|Decimal            |128|64|32|16|8|4|2|1|
-
-```linux
-Convert 172.24.24.36 in binary:\
-172: 128+32+8+4 = 10101100\
-24:  16+8       = 00011000\
-24:  16+8       = 00011000\
-36:  32+4       = 00100100\
-
-Result:\
-10101100.00011000.00011000.00100100
-```
+|Class     |First Octet|Range                      |Default Mask      |
+|:---------|:----------|:------------------------  |:-----------------|
+|A         |1-126      |1.0.0.0 – 126.255.255.255  |255.0.0.0 / 8     |
+|B         |128-191    |128.0.0.0 – 191.255.255.255|255.255.0.0 / 16  |
+|C         |192-223    |192.0.0.0 – 223.255.255.255|255.255.255.0 / 24|
 
 #### Netmask Conversions
 
@@ -2518,6 +2508,56 @@ Result:\
 |/31             |255.255.255.254 |0xfffffffe |11111111 |11111111 |11111111 |11111110|
 |/32             |255.255.255.255 |0xffffffff |11111111 |11111111 |11111111 |11111111|
 
+#### IP conversions
+
+|Bit Position       |7|6|5|4|3|2|1|0|
+|:-------           |:--|:--|:--|:--|:--|:--|:--|:--|
+|                   |1|1|1|1|1|1|1|1|
+|Decimal            |128|64|32|16|8|4|2|1|
+
+```linux
+Convert 172.24.24.36 in binary:\
+172: 128+32+8+4 = 10101100\
+24:  16+8       = 00011000\
+24:  16+8       = 00011000\
+36:  32+4       = 00100100\
+
+Result:\
+10101100.00011000.00011000.00100100
+```
+
+#### Identifying the Network and Broadcast Addresses
+
+Through an IP Address and a Mask, we can identify the network address and the broadcast address, and thus define the range of IPs for the network/subnet.
+
+The network address is obtained by using a “Logical AND” between the IP address and the mask in their binary formats. Let’s take the example using IP ***192.168.8.12*** and mask ***255.255.255.192***.
+
+Converting from decimal to binary format, as we saw earlier, we have:
+
+|Binary|Decimal|
+|:-----|:------|
+11000000.10101000.00001000.00001100|192.168.8.12|
+|11111111.11111111.11111111.11000000|255.255.255.192|
+
+With “Logical AND”, we have 1 and 1 = 1, 0 and 0 = 0, 1 and 0 = 0, so:
+
+|Binary|Decimal|
+|:-----|:------|
+|11000000.10101000.00001000.00001100|192.168.8.12|
+|11111111.11111111.11111111.11000000|255.255.255.192|
+|11000000.10101000.00001000.00000000|192.168.8.0|
+
+So the network address for that subnet is 192.168.8.0.
+
+Now to obtain the broadcast address, we must use the network address where all bits related to the host address to 1:
+
+|Binary|Decimal|
+|:-----|:------|
+|11000000.10101000.00001000.00000000|192.168.8.0|
+|11111111.11111111.11111111.11000000|255.255.255.192|
+|11000000.10101000.00001000.00111111|192.168.8.63|
+
+The broadcast address is then 192.168.8.63
 
 #### Default services port
 
@@ -2565,28 +2605,51 @@ Awareness of systemd-networkd.\
 
 #### 109.2 Important Commands
 
-##### nmcli - command-line tool for controlling NetworkManager
-
-```sh
-
-```
-
 ##### hostnamectl - Control the system hostname
 
 ```sh
+# Show current system hostname and related information
+hostnamectl
+hostnamectl status
 
+#set static hostname
+sudo hostnamectl set-hostname debian-lpic
+
+#set static hostname, but not pretty and transient
+sudo hostnamectl --static set-hostname debian-server
+
+#set pretty hostname
+sudo hostnamectl --pretty set-hostname "LAN LPC1 102-500"
+
+#transient hostname
+sudo hostnamectl --transient set-hostname generic-host
+
+#set the deployment environment description
+sudo hostnamectl set-deployment "development"
+
+#set the location string for the system
+sudo hostnamectl set-location "Virtual Box Machine Farm"
 ```
 
 ##### ifup - bring a network interface up
 
 ```sh
-
+#up interface enp3s5
+sudo ifup enp3s5
 ```
 
 ##### ifdown - take a network interface down
 
 ```sh
+#disable interface enp3s5
+sudo ifdown eth1
+```
 
+##### nmcli - command-line tool for controlling NetworkManager
+
+```sh
+#list all devices
+nmcli device
 ```
 
 #### 109.2 Important Files

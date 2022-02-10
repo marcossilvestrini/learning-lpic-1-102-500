@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#Set secondary DNS server
+sudo cp -f /home/vagrant/configs/resolv.conf /etc
+
 #Set profile in /etc/profile
 sudo cp -f /home/vagrant/configs/profile /etc
 
@@ -13,12 +16,14 @@ cat /home/vagrant/security/id_rsa.pub >>/home/vagrant/.ssh/authorized_keys
 # Install packages
 sudo apt install -y vim
 sudo apt install -y net-tools
+sudo apt install -y network-manager
+
+#Install X11 Server
+sudo apt install xserver-xorg -y
+sudo Xorg -configure
+sudo mv /root/xorg.conf.new /etc/X11/xorg.conf
 
 #install cups and drivers
 sudo apt-get -y install cups cups-pdf
-
-#configure cups
 sudo cp /home/vagrant/configs/cupsd.conf /etc/cups/
-
-#restart cups stack for apply new settings
 sudo systemctl restart cups*
