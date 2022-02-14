@@ -38,19 +38,14 @@ Installation and configuration of some packages will also be covered\
 - [GNU Tar](https://www.gnu.org/software/tar/)
 - [GNU Make](https://www.gnu.org/software/make/)
 - [GNU Emacs](https://en.wikipedia.org/wiki/Emacs)
-- [Bourne Again Shell](https://www.gnu.org/software/bash/manual/)
-- [Shebang](https://bash.cyberciti.biz/guide/Shebang)
-- [Environment Variables](https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/)
-- [GNU Globbing](https://man7.org/linux/man-pages/man7/glob.7.html)
-- [Globbing](https://linuxhint.com/bash_globbing_tutorial/)
-- [Quoting](https://www.gnu.org/software/bash/manual/html_node/Quoting.html)
-- [Regular Expressions](https://www.gnu.org/software/grep/manual/html_node/Regular-Expressions.html)
-- [GNU GNOME](https://www.gnu.org/press/gnome-1.0.html)
-- [GNOME](https://www.gnome.org/)
-- [XFCE](https://xfce.org/)
-- [KDE Plasma](https://kde.org/plasma-desktop/)
-- [Harmony](https://en.wikipedia.org/wiki/Harmony_(toolkit))
 - [Kernel](https://www.kernel.org/)
+- [List Linux Distribution](https://en.wikipedia.org/wiki/List_of_Linux_distributions)
+- [Distro Watch](https://distrowatch.com/)
+- [Comparison Linux Distributions](https://en.wikipedia.org/wiki/Comparison_of_Linux_distributions)
+- [Linux Standard Base](https://en.wikipedia.org/wiki/Linux_Standard_Base)
+- [Linux Man Pages](https://www.kernel.org/doc/man-pages/)
+- [Filesystem Hierarchy Standard](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)
+- [File Hierarchy Structure](https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.pdf)
 - [FSF](https://www.fsf.org/campaigns/)
 - [Debian Free Software Guidelines](https://www.debian.org/social_contract#guidelines)
 - [Free Software Directory](https://directory.fsf.org/wiki/Free_Software_Directory:Free_software_replacements)
@@ -62,14 +57,21 @@ Installation and configuration of some packages will also be covered\
 - [Creative Commons](https://creativecommons.org/)
 - [GNU Lesser General Public License](https://www.gnu.org/licenses/lgpl-3.0.html)
 - [License LTS](https://en.wikipedia.org/wiki/Long-term_support)
-- [List Linux Distribution](https://en.wikipedia.org/wiki/List_of_Linux_distributions)
-- [Distro Watch](https://distrowatch.com/)
-- [Comparison Linux Distributions](https://en.wikipedia.org/wiki/Comparison_of_Linux_distributions)
-- [Filesystem Hierarchy Standard](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)
-- [File Hierarchy Structure](https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.pdf)
-- [Linux Standard Base](https://en.wikipedia.org/wiki/Linux_Standard_Base)
+- [Bourne Again Shell](https://www.gnu.org/software/bash/manual/)
+- [Shebang](https://bash.cyberciti.biz/guide/Shebang)
+- [Environment Variables](https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/)
+- [GNU Globbing](https://man7.org/linux/man-pages/man7/glob.7.html)
+- [Globbing](https://linuxhint.com/bash_globbing_tutorial/)
+- [Quoting](https://www.gnu.org/software/bash/manual/html_node/Quoting.html)
+- [Regular Expressions](https://www.gnu.org/software/grep/manual/html_node/Regular-Expressions.html)
 - [NTP](https://www.ntppool.org/en/)
+- [X11 Org](https://www.x.org/wiki/)
 - [Wayland](https://wayland.freedesktop.org/)
+- [GNU GNOME](https://www.gnu.org/press/gnome-1.0.html)
+- [GNOME](https://www.gnome.org/)
+- [XFCE](https://xfce.org/)
+- [KDE Plasma](https://kde.org/plasma-desktop/)
+- [Harmony](https://en.wikipedia.org/wiki/Harmony_(toolkit))
 - [xRDP](https://bytexd.com/xrdp-centos/)
 - [Download Packages](https://pkgs.org/)
 - [Bugzila](https://bugzilla.kernel.org/)
@@ -1373,12 +1375,6 @@ All the members of the group, listed here with a comma. You can add or remove gr
 4. Group Members
 All the members of the group listed here are regular members. But, there is a comma to separate them, i.e. a non-administrative member of the groups.
 
-##### /etc/nsswitch.conf
-
-The /etc/nsswitch.conf file configures how the system uses various databases and name resolution mechanisms.\
-The first field of entries in this file identifies the name of the database.\
-The second field defines a list of resolution mechanisms in the order in which the system attempts to resolve queries on the database.
-
 ##### /etc/skel/
 
 The /etc/skel/ directory is for "skeleton" user files, which are used to populate a home directory when a user is first created.
@@ -2530,7 +2526,7 @@ Result:\
 
 Through an IP Address and a Mask, we can identify the network address and the broadcast address, and thus define the range of IPs for the network/subnet.
 
-The network address is obtained by using a “Logical AND” between the IP address and the mask in their binary formats. Let’s take the example using IP ***192.168.8.12*** and mask ***255.255.255.192***.
+The network address is obtained by using a "Logical AND" between the IP address and the mask in their binary formats. Let’s take the example using IP ***192.168.8.12*** and mask ***255.255.255.192***.
 
 Converting from decimal to binary format, as we saw earlier, we have:
 
@@ -2539,7 +2535,7 @@ Converting from decimal to binary format, as we saw earlier, we have:
 11000000.10101000.00001000.00001100|192.168.8.12|
 |11111111.11111111.11111111.11000000|255.255.255.192|
 
-With “Logical AND”, we have 1 and 1 = 1, 0 and 0 = 0, 1 and 0 = 0, so:
+With "Logical AND", we have 1 and 1 = 1, 0 and 0 = 0, 1 and 0 = 0, so:
 
 |Binary|Decimal|
 |:-----|:------|
@@ -2603,6 +2599,35 @@ Understand basic TCP/IP host configuration.\
 Configure ethernet and wi-fi network using NetworkManager.\
 Awareness of systemd-networkd.\
 
+In Linux distributions that use the systemd naming scheme, all interface names start with a two-character prefix that signifies the interface type:
+
+en\
+Ethernet
+
+ib\
+InfiniBand
+
+sl\
+Serial line IP (slip)
+
+wl\
+Wireless local area network (WLAN)
+
+ww\
+Wireless wide area network (WWAN)
+
+From higher to lower priority, the following rules are used by the operating system to name and number the network interfaces:
+
+1 - Name the interface after the index provided by the BIOS or by the firmware of embedded devices, e.g. eno1.
+
+2 - Name the interface after the PCI express slot index, as given by the BIOS or firmware, e.g. ens1.
+
+3 - Name the interface after its address at the corresponding bus, e.g. enp3s5.
+
+4 - Name the interface after the interface’s MAC address, e.g. enx78e7d1ea46da.
+
+5 - Name the interface using the legacy convention, e.g. eth0.
+
 #### 109.2 Important Commands
 
 ##### hostnamectl - Control the system hostname
@@ -2645,22 +2670,135 @@ sudo ifup enp3s5
 sudo ifdown eth1
 ```
 
-##### nmcli - command-line tool for controlling NetworkManager
+##### nmcli - command-line tool for controlling NetworkManager(NetworkManager)
+
+Command nmcli separates all network related properties controlled by NetworkManager in categories called objects:
+
+*general*\
+NetworkManager’s general status and operations.
+
+*networking*\
+Overall networking control.
+
+*radio*\
+NetworkManager radio switches.
+
+*connection*\
+NetworkManager’s connections.
+
+*device*\
+Devices managed by NetworkManager.
+
+*agent*\
+NetworkManager secret agent or polkit agent.
+
+*monitor*\
+Monitor NetworkManager changes.
 
 ```sh
 #list all devices
 nmcli device
 ```
 
+```sh
+#overall connectivity status of the system
+nmcli general
+nmcli general status
+```
+
+```sh
+#scan wifi network
+nmcli device wifi list
+```
+
+```ssh
+#connet a wifi network
+nmcli device wifi connect Hypnotoad
+```
+
+```ssh
+#connet a wifi network with password
+nmcli device wifi connect Hypnotoad password MyPassword
+```
+
+If the wi-fi network hides its SSID name, nmcli can still connect to it with the extra hidden yes arguments:
+
+```sh
+nmcli device wifi connect Hypnotoad password MyPassword hidden yes
+```
+
+if the system has more than one wi-fi adapter, the one to be used may be indicated with ifname.\
+For example, to connect using the adapter named wlo1:
+
+```sh
+nmcli device wifi connect Hypnotoad password MyPassword ifname wlo1
+```
+
+```sh
+#list connections names and their UUIDs
+nmcli connection show
+```
+
+```sh
+#deactivate connection
+ nmcli connection down Hypnotoad
+ ```
+
+```sh
+#activate connection
+ nmcli connection up Hypnotoad
+ ```
+
+```sh
+#deactivate connection by device
+ nmcli device  disconnect wlo2
+ ```
+
+```sh
+#activate connection by device
+ nmcli device connect eth1
+ ```
+
+ ```sh
+#disable wireless adapter
+ nmcli radio wifi off
+ ```
+
+```sh
+#enable wireless adapter
+ nmcli radio wifi on
+ ```
+
+```sh
+#delete network connection
+nmcli connection delete "System eth1"
+```
+
+```sh
+#re-scan available access points
+nmcli device wifi rescan
+```
+
 #### 109.2 Important Files
 
 ##### /etc/hostname
 
+Local hostname configuration file.\
+Use hostnamectl for alter this file.
+
 ##### /etc/hosts
+
+Static information about host name
 
 ##### /etc/nsswitch.conf
 
+The /etc/nsswitch.conf file configures how the system uses various databases and name resolution mechanisms.\
+The first field of entries in this file identifies the name of the database.\
+The second field defines a list of resolution mechanisms in the order in which the system attempts to resolve queries on the database.
+
 ##### /etc/resolv.conf
+
+Resolver configuration file
 
 ### 109.3 Basic network troubleshooting
 

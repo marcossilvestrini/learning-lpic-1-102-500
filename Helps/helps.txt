@@ -38,3 +38,7 @@ Example open Google Chat:
 $target=(get-appxpackage | Where-Object {$_.Name -like "*google*"}).PackageFullName
 start "shell:appsFolder\mail.google.com-98783EC6_1.0.0.1_neutral__vq8mrer2vmnwe!Google Chat"
 ------------------------------------------
+
+Windows - profifa-pull-left
+cd $HOME
+notepad $PROFILE
