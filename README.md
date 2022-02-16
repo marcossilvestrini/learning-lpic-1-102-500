@@ -2819,7 +2819,98 @@ The following is a partial list of the used files, terms and utilities:
 ##### ip - show / manipulate routing, network devices, interfaces and tunnels
 
 ```sh
+#list interfaces available
+ip a
+ip addr
+ip address
 
+#list the interface links available for configuration
+ip link
+ip link show eth1
+
+#disable or enable an interface.
+ip link set dev eth1 down
+ip link set dev eth1 up
+
+#configure interface
+sudo ip addr add 172.16.15.16/16 dev eth1 label eth1:vlan_prod
+sudo ip addr add 192.168.5.5/24 dev enp0s8
+sudo ip addr add 2001:db8::10/64 dev enp0s8
+
+#adjust an interface’s MTU
+sudo ip link set eth1 mtu 2000
+
+#configure spanning tree options
+ip link add link enp0s9 name enp0s9.50 type bridge priority 50
+
+#viewing a routing table ipv4
+ip route
+
+#viewing a routing table ipv6
+ip -6 route
+
+# add ipv4 route
+sudo ip route add 192.168.1.0/24 dev eth0
+
+# del ipv4 route
+sudo ip route del 192.168.1.0/24 dev eth0
+
+# add ipv6 route
+sudo ip route add 2001:db8:1::/64 via 2001:db8::3
+
+#del ipv6 route
+sudo ip route del 2001:db8:1::/64 via 2001:db8::3
+```
+
+##### ifconfig - configure a network interface
+
+```sh
+#list interfaces available
+sudo ifconfig -a
+
+#configure an interface ipv4
+sudo ifconfig enp1s0 192.168.50.50/24
+sudo ifconfig enp0s9:sub1 172.16.15.16/16
+sudo ifconfig eth2 192.168.50.50 netmask 255.255.255.0
+sudo ifconfig eth2 192.168.50.50 netmask 0xffffff00
+
+#configure an interface ipv6
+sudo ifconfig enp0s8 add 2001:db8::10/64
+
+#adjust an interface’s MTU
+sudo ifconfig eth1 mtu 130
+```
+
+##### route - show / manipulate the IP routing table
+
+```sh
+#viewing a routing table ipv4
+route
+
+#viewing a routing table ipv6
+route -6
+
+# add ipv4 route
+route add default gw 192.168.1.254 eth0
+
+#remove ipv4 route
+route del default gw 192.168.1.254 eth0
+
+# add ipv6 route
+route -6 add 2001:db8:1::/64 gw 2001:db8::3
+
+#remove ipv6 route
+route -6 del 2001:db8:1::/64 gw 2001:db8::3
+```
+
+##### netstat  - Print network connections, routing tables, interface statistics, masquerade connections, and multi‐cast memberships
+
+```sh
+#viewing a routing table ipv4
+netstat -r
+
+#viewing a routing table ipv6
+netstat -6r
 ```
 
 ##### hostname - show or set the system's host name
@@ -2847,24 +2938,6 @@ The following is a partial list of the used files, terms and utilities:
 ```
 
 ##### tracepath , tracepath6 - traces path to a network host discovering MTU along this path
-
-```sh
-
-```
-
-##### netstat  - Print network connections, routing tables, interface statistics, masquerade connections, and multi‐cast memberships
-
-```sh
-
-```
-
-##### ifconfig - configure a network interface
-
-```sh
-
-```
-
-##### route - show / manipulate the IP routing table
 
 ```sh
 
