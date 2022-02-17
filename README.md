@@ -2916,31 +2916,110 @@ netstat -6r
 ##### hostname - show or set the system's host name
 
 ```sh
+#print a hostname
+hostname
 
-```
+#print ips
+hostname -I
 
-##### ss - another utility to investigate sockets
-
-```sh
-
+#set the hostname
+sudo hostname NEW_HOSTNAME
 ```
 
 ##### ping , ping6 - send ICMP ECHO_REQUEST to network hosts
 
 ```sh
+#send an ICMP echo IPv4
+ping -c 2 192.168.0.130
 
+#send an ICMP echo IPv6
+ping6 -c 3 2001:db8::10
 ```
 
 ##### traceroute , traceroute6 - print the route packets trace to network host
 
 ```sh
+# example IPv4
+traceroute 192.168.1.20
 
+# example IPv6
+traceroute6  2001:db8::11
+
+#traceroute in specific interface
+traceroute -i eth1 learning.lpi.org
+
+#discovering MTU
+traceroute -I --mtu  learning.lpi.org
+```
+
+If you have access to root, the -I option will set traceroute to use ICMP echo requests instead of UDP packets.\
+This is often more effective than UDP because the destination host is more likely to respond to an ICMP echo request than the UDP packet:
+
+```sh
+traceroute -I learning.lpi.org
+```
+
+Some organizations block ICMP echo requests and replies.\
+To get around this, you can use TCP.\
+By using a known open TCP port, you can guarantee the destination host will respond.\
+To use TCP, use the -T option along with -p to specify the port.\
+As with ICMP echo requests, you must have access to root to do this:
+
+```sh
+sudo traceroute -m 60 -T -p 80  learning.lpi.org
 ```
 
 ##### tracepath , tracepath6 - traces path to a network host discovering MTU along this path
 
 ```sh
+#example IPv4
+tracepath 192.168.0.135
 
+#example IPv6
+tracepath 2001:db8::11
+```
+
+##### nc - TCP/IP swiss army knife
+
+```sh
+#listener
+nc -l 1234
+Hello friend server.
+```
+
+![image](https://user-images.githubusercontent.com/62715900/154553056-4acd8db3-e6d7-463d-926a-9b6cfd1334ab.png)
+
+```sh
+#send request for listener
+nc 192.168.0.135 1234
+```
+
+![image](https://user-images.githubusercontent.com/62715900/154553344-9139532c-675a-4441-98ba-53fbad066193.png)
+
+##### ss - another utility to investigate sockets
+
+```sh
+#viewing Current Connections
+ss -tulnp
+
+#any processes are listening on TCP port 22
+ss -ln | grep ":22"
+
+# find which process is listening on a port
+ss -lnp | grep ":22"
+```
+
+##### netstat
+
+```sh
+#viewing Current Connections
+netstat -tulnp
+
+#any processes are listening on TCP port 80
+netstat -ln | grep ":80"
+
+# find which process is listening on a port
+netstat -lnp | grep ":22"
 ```
 
 ### 109.4 Configure client side DNS

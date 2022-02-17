@@ -22,13 +22,15 @@ sudo dnf -y upgrade
 #sudo dnf makecache --refresh
 
 # Install packages
-sudo dnf -y install vim
-sudo dnf -y install net-tools
-sudo dnf -y install git
-sudo dnf -y install fortune-mod
+sudo dnf install -y vim
+sudo dnf install -y net-tools
+sudo dnf install -y traceroute
+sudo dnf install -y lsof
+sudo dnf install -y git
+sudo dnf install -y fortune-mod
 
 # Install and configure cowsay
-sudo dnf -y install cowsay
+sudo dnf install -y cowsay
 cd /tmp
 rm -rf cowsay-files
 git clone https://github.com/paulkaefer/cowsay-files.git
@@ -36,12 +38,12 @@ sudo cp -R /tmp/cowsay-files/cows/ /usr/share/cowsay/cows
 
 #Install X11 Server
 sudo dnf config-manager --set-enabled ol8_codeready_builder
-sudo dnf -y update
-sudo dnf -y install xorg-x11-server-Xorg.x86_64 xorg-x11-xauth.x86_64 \
+sudo dnf update -y
+sudo dnf install -y xorg-x11-server-Xorg.x86_64 xorg-x11-xauth.x86_64 \
     xorg-x11-server-utils.x86_64 xorg-x11-utils.x86_64 xorg-x11-apps.x86_64
 
 #intall and configure cups and pdf printer
-sudo dnf -y install cups cups-devel gcc gcc-c++ tar wget
+sudo dnf install -y cups cups-devel gcc gcc-c++ tar wget
 cd /tmp
 wget https://www.cups-pdf.de/src/cups-pdf_3.0.1.tar.gz
 tar -xvf cups-pdf_3.0.1.tar.gz
