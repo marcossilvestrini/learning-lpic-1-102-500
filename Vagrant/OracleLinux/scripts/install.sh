@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#Set secondary DNS server
-sudo cp -f /home/vagrant/configs/resolv.conf /etc
-
 #Set profile in /etc/profile
 sudo cp -f /home/vagrant/configs/profile /etc
 
