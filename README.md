@@ -3039,16 +3039,65 @@ The following is a partial list of the used files, terms and utilities:
 
 #### 109.4 Important Files
 
+#### 109.4 Important Commands
+
+##### getent - Get entries from administrative database
+
+```sh
+#find database hosts
+getent hosts
+getent hosts ol8-lpic-102
+getent -s files dns hosts ol8-lpic-102
+
+#find database paswd
+getent passwd
+getent passwd vagrant
+getent -s files passwd vagrant
+
+#find database networks
+getent networks
+getent networks default
+```
+
 ##### host - DNS lookup utility
 
+```sh
+#find  A, AAAA e MX DNS entry
+host wikipedia.org
+
+#find  NS entry
+host -t NS lpi.org
+
+#use specific dns server in search
+host -t MX lpi.org dns1.easydns.com
+```
+
 ##### dig - DNS lookup utility
+
+```sh
+#find A DNS entry
+dig learning.lpi.org
+
+#find a specifi DNS entry type
+dig -t SOA lpi.org
+
+#print only output
+dig +short lpi.org
+
+#disabled extension EDNS cookies
+dig +nocookie -t MX lpi.org
+
+#looks up the A record for lpi.org and displays only the query and response
+dig +noall +answer +question lpi.org
+
+```
 
 #### 109.4 Cited Objects
 
 >/etc/hosts
 /etc/resolv.conf\
-/etc/nsswitch.conf\
-getent
+/etc/nsswitch.conf
+
 
 ## Topic 110: Security
 
