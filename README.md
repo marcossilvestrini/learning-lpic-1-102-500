@@ -1263,6 +1263,22 @@ sudo passwd -l jon
 
 #unblock account
 sudo passwd -u jon
+
+#show status account
+passwd -S
+
+#lock account
+sudo passwd -l jon
+
+#unlock account
+sudo passwd -u jon
+
+#force update password next logon
+sudo passwd -e jon
+
+#delete password
+sudo passwd -d jon
+
 ```
 
 ##### useradd - create a new user or update default new user information
@@ -1300,6 +1316,12 @@ sudo userdel -r jon
 ```sh
 # add jon n group 1003
 sudo usermod -a -G 1003 jon
+
+#lock account
+sudo usermod -L jon
+
+#unlock account
+sudo usermod -U jon
 ```
 
 #### 107.1 Important Files
@@ -3098,7 +3120,6 @@ dig +noall +answer +question lpi.org
 /etc/resolv.conf\
 /etc/nsswitch.conf
 
-
 ## Topic 110: Security
 
 ### 110.1 Perform security administration tasks
@@ -3120,7 +3141,42 @@ Basic sudo configuration and usage.\
 
 ##### find
 
+```sh
+#find file with SUID permission
+find . -perm 4000
+find . -perm u+s
+sudo find /usr/bin -perm -4000
+
+#find file with SGID permission
+sudo find /usr/bin -perm -2000
+find . -perm g+s
+
+#find SUID and SGID
+sudo find /usr/bin -perm /6000
+
+```
+
 #### lsof - list open files
+
+```sh
+#list of all open internet network files
+sudo lsof -i
+
+#view open connection in specific host
+sudo lsof -i@192.168.0.134
+sudo lsof -i4@192.168.0.134
+
+#view all open connection in IPV4
+sudo lsof -i4
+
+#view all open connection in IPV6
+sudo lsof -i6
+
+#see all open connections by port
+sudo lsof -i :22
+sudo lsof -i :22,80,631
+sudo lsof -i@10.0.2.15:22,80
+```
 
 ##### fuser - identify processes using files or sockets
 
