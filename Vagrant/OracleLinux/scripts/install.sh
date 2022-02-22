@@ -21,6 +21,7 @@ sudo dnf -y upgrade
 # Install packages
 sudo dnf install -y vim
 sudo dnf install -y net-tools
+sudo dnf install -y bind-utils
 sudo dnf install -y traceroute
 sudo dnf install -y lsof
 sudo dnf install -y git
@@ -61,3 +62,8 @@ sudo systemctl start cups
 sudo systemctl enable cups
 cupsctl --remote-admin
 lpoptions -d PDF
+
+#Set DNS Server
+#https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/
+sudo sed -i '/\[main\]/a dns=none' /etc/NetworkManager/NetworkManager.conf
+sudo sed -i '/^nameserver 10.0.2.3/i nameserver 192.168.0.1' /etc/resolv.conf

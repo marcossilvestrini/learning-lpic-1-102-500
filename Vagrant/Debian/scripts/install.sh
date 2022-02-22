@@ -25,3 +25,11 @@ sudo mv /root/xorg.conf.new /etc/X11/xorg.conf
 sudo apt-get -y install cups cups-pdf
 sudo cp /home/vagrant/configs/cupsd.conf /etc/cups/
 sudo systemctl restart cups*
+
+#set prefered DNS servers
+sudo apt install -y resolvconf
+sudo systemctl enable resolvconf.service
+sudo systemctl start resolvconf.service
+sudo cp -f /home/vagrant/configs/head /etc/resolvconf/resolv.conf.d/
+sudo resolvconf --enable-updates
+sudo resolvconf -u
