@@ -2928,6 +2928,10 @@ route -6 del 2001:db8:1::/64 gw 2001:db8::3
 ##### netstat  - Print network connections, routing tables, interface statistics, masquerade connections, and multi‐cast memberships
 
 ```sh
+#list all connections
+netstat
+
+
 #viewing a routing table ipv4
 netstat -r
 
@@ -3179,6 +3183,30 @@ sudo lsof -i@10.0.2.15:22,80
 ```
 
 ##### fuser - identify processes using files or sockets
+
+```sh
+#View Processes Using A Directory
+fuser -v .
+sudo fuser -v /dev
+
+#view what process is using your tcp or udp socket
+fuser -v -n tcp 80
+sudo fuser -v -n udp 631
+sudo fuser -v -n tcp 631 22
+
+#view process using file user by username
+fuser -u script.sh
+
+#IPv6
+sudo fuser -v -n tcp -6 631
+
+#kill process in specific /port
+sudo fuser -k 631/tcp
+sudo fuser -i -k 631/tcp
+
+#find process accessing a file system
+fuser -v -m example.txt
+```
 
 ##### nmap - Network exploration tool and security / port scanner
 
