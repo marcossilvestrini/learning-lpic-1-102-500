@@ -16,6 +16,7 @@ sudo apt install -y net-tools
 sudo apt install -y network-manager
 sudo apt install -y iputils-tracepath
 sudo apt install -y psmisc
+sudo apt install -y nmap
 
 #Install X11 Server
 sudo apt install xserver-xorg -y

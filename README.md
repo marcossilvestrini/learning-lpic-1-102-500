@@ -148,6 +148,9 @@ sudo su root or sudo su
 
 #starts a shell without login as root.
 sudo -s or sudo -u root -s
+
+#execute a command with root in another user
+sudo -u vagrant whoami
 ```
 
 ##### env - run a program in a modified environment
@@ -2931,12 +2934,22 @@ route -6 del 2001:db8:1::/64 gw 2001:db8::3
 #list all connections
 netstat
 
-
 #viewing a routing table ipv4
 netstat -r
 
 #viewing a routing table ipv6
 netstat -6r
+
+#show listenning ports\sockets udp\tcp
+netstat -lu
+netstat -lt
+netstat -lute
+
+#only established connections
+netstat -ute
+
+#only numeric output
+netstat -uten
 ```
 
 ##### hostname - show or set the system's host name
@@ -3210,15 +3223,168 @@ fuser -v -m example.txt
 
 ##### nmap - Network exploration tool and security / port scanner
 
-##### sudo, sudoedit — execute a command as another user
+```sh
+#scanner a host
+nmap localhost
+nmap lpi.org
+nmap lpi.org -F
+nmap lpi.org -v
+nmap lpi.org -vv
 
-##### su - run a command with substitute user and group ID
+#scanner range\multiples of hosts
+nmap 192.168.0.10 172.24.24.10
+nmap 192.168.0.1-100
+nmap 192.168.0.1/24
+map 192.168.1.0/24 --exclude 192.168.1.7
+
+#scanner host by port
+nmap -p 22 localhost
+nmap -p ssh,80 localhost
+nmap -p 22-80 localhost
+```
+
+##### ulimit - get and set user limits
+
+```sh
+#displays the current user's flexible file blocks
+ulimit
+
+#shows all current soft limits
+ulimit -a
+
+#set ulimit (soft, hard)
+ulimit -f 500
+ulimit -Sf 200
+```
 
 ##### who, w, last
 
+```sh
+#prints a list of the last logged in users
+last
+
+#print logins in specific suser
+last vagrant
+
+#check for incorrect login attempts
+sudo lastb
+
+#displays who is logged in
+who
+who -H
+w
+w vagrant
+
+#displays the last system boot time
+who -b
+
+#displays the runlevel system
+who -r
+```
+
 #### 110.1 Important Files
 
-/etc/sudoers
+##### /var/log/wtmp
+
+The wtmp file records all logins and logouts
+
+##### /etc/sudoers
+
+sudo's main configuration file is /etc/sudoers(there is also the /etc/sudoers.d directory).\
+That is the place where users' sudo privileges are determined.\
+In other words, here you will specify who can run what commands as what users on what machines
+
+The privilege specification for the root user is ALL=(ALL:ALL) ALL.\
+This translates as: user root (root) can log in from all hosts (ALL), as all users and all groups ((ALL:ALL)), and run all commands (ALL).\
+The same is true for members of the sudo group\
+— note how group names are identified by a preceding percent sign (%).
+
+Thus, to have user carol be able to check apache2 status from any host as any user or group, you will add the following line in the sudoers file:
+
+```sh
+carol   ALL=(ALL:ALL) /usr/bin/systemctl status apache2\
+```
+
+You may want to save carol the inconvenience of having to provide her password to run the systemctl status apache2 command.\
+For that, you will modify the line to look like this:
+
+```sh
+carol   ALL=(ALL:ALL) NOPASSWD: /usr/bin/systemctl status apache2
+```
+
+Instead of editing /etc/sudoers directly, you should simply use the visudo command as root (e.g.: visudo), which will open /etc/sudoers using your predefined text editor.\
+To change the default text editor, you can add the editor option as a Defaults setting in /etc/sudoers.\
+For instance, to change the editor to nano, you will add the following line:
+
+```sh
+Defaults editor=/usr/bin/vim
+```
+
+Alternatively, you can specify a text editor via the EDITOR environment variable when using visudo (e.g.: EDITOR=/usr/bin/nano visudo)
+
+Aside from users and groups, you can also make use of aliases in /etc/sudoers. There are three main categories of aliases that you can define: host aliases (Host_Alias), user aliases (User_Alias) and command aliases (Cmnd_Alias). Here is an example:
+
+```sh
+# Host alias specification
+
+Host_Alias SERVERS = 192.168.1.7, server1, server2
+
+# User alias specification
+
+User_Alias REGULAR_USERS = john, mary, alex
+
+User_Alias PRIVILEGED_USERS = mimi, alex
+
+User_Alias ADMINS = carol, %sudo, PRIVILEGED_USERS, !REGULAR_USERS
+
+# Cmnd alias specification
+
+Cmnd_Alias SERVICES = /usr/bin/systemctl *
+
+# User privilege specification
+
+root    ALL=(ALL:ALL) ALL
+ADMINS  SERVERS=SERVICES
+
+# Allow members of group sudo to execute any command
+
+%sudo   ALL=(ALL:ALL) ALL
+```
+
+Considering this sample sudoers file, let us explain the three types of aliases in a bit more detail:
+
+**Host aliases**\
+They include a comma-separated list of hostnames, IP addresses, as well as networks and netgroups (preceded by +). Netmasks can be also specified. The SERVERS host alias includes an IP address and two hostnames:
+
+```sh
+Host_Alias SERVERS = 192.168.1.7, server1, server2
+```
+
+**User aliases**\
+They include a comma-separated list of users specified as usernames, groups (preceded by %) and netgroups (preceded by +).\
+You can exclude particular users with !.\
+The ADMINS user alias — for example — includes user carol, the members of the sudo group and those members of the PRIVILEGE_USERS user alias that do not belong in the REGULAR_USERS user alias:
+
+```sh
+User_Alias ADMINS = carol, %sudo, PRIVILEGED_USERS, !REGULAR_USERS
+```
+
+**Command aliases**\
+They include a comma-separated list of commands and directories.\
+If a directory is specified, any file in that directory will be included — subdirectories will be ignored, though.\
+The SERVICES command alias includes a single command with all its subcommands — as specified by the asterisk (*):
+
+```sh
+Cmnd_Alias SERVICES = /usr/bin/systemctl *
+```
+
+As a result of the alias specifications, the line
+
+```sh
+ ADMINS SERVERS=SERVICES
+```
+
+under the User privilege specification section translates as: all users belonging in ADMINS can use sudo to run any command in SERVICES on any server in SERVERS.
 
 #### 110.1 Cited Objects
 
@@ -3226,7 +3392,9 @@ fuser -v -m example.txt
 chage\
 netstat\
 usermod\
-ulimit
+ulimit\
+sudo\
+su
 
 ### 110.2 Setup host security
 

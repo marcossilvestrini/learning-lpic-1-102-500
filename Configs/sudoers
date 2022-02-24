@@ -1,0 +1,41 @@
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# Please consider adding local content in /etc/sudoers.d/ instead of
+# directly modifying this file.
+#
+# See the man page for details on how to write a sudoers file.
+#
+Defaults	env_reset
+Defaults	mail_badpass
+Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Defaults	editor=/usr/bin/vim
+Defaults timestamp_timeout=1
+
+# Host alias specification
+
+Host_Alias SERVERS = 192.168.1.7, server1, server2
+
+# User alias specification
+
+User_Alias REGULAR_USERS = john, mary, alex
+
+User_Alias PRIVILEGED_USERS = mimi, alex
+
+User_Alias ADMINS = carol, %sudo, PRIVILEGED_USERS, !REGULAR_USERS
+
+# Cmnd alias specification
+
+Cmnd_Alias SERVICES = /usr/bin/systemctl *
+
+# User privilege specification
+root    ALL=(ALL:ALL) ALL
+ADMINS  SERVERS=SERVICES
+
+# Allow members of group sudo to execute any command
+%sudo	ALL=(ALL:ALL) ALL
+
+# See sudoers(5) for more information on "@include" directives:
+
+@includedir /etc/sudoers.d
+
