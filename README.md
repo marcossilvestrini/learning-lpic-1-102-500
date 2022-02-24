@@ -1208,17 +1208,40 @@ chage -l vagrant
 #set the last password change date to your specified date
 sudo chage -d 2022-01-09 jon
 
+#make user change password on next login.
+sudo chage -d 0 mary
+sudo chage --lastday 0 mary
+
 #specify the date when the account should expire
 sudo chage -E 2022-01-11 jon
 
 #specify the maximum and minimum number of days between password change
 sudo chage -M 1 jon
 
+#set minimum number of days between password changes to 1.
+sudo chage -m 1 mary
+sudo chage --mindays 1 mary
+
+#enable user to change her password at any time.
+sudo chage -m 0 mary
+sudo chage --mindays 0 mary
+
 #specify the number of days the account should be inactive after its expiry
 sudo chage -I 3 jon
 
 #set number of days prior to the expiry date when the warning should be given
 sudo chage -W 5 jon
+
+#set warning period to 7 days and account expiration date to August, 20th 2050.
+sudo chage -W 7 -E 2050-08-20 mary
+sudo chage --warndays 7 --expiredate 2050-08-20 mary
+
+#make password will be valid for 365 days
+chage -M 365 vagrant
+
+#Disable password expiration.
+sudo chage -M 99999 mary
+sudo chage --maxdays 99999 mary
 ```
 
 ##### getent - get entries from Name Service Switch libraries
@@ -3156,17 +3179,23 @@ Basic sudo configuration and usage.\
 
 #### 110.1  Important Commands
 
-##### find
+##### find - search for files in a directory hierarchy
 
 ```sh
 #find file with SUID permission
-find . -perm 4000
-find . -perm u+s
+sudo find /usr/bin -perm /4000
 sudo find /usr/bin -perm -4000
+find . -perm -u+s
+
 
 #find file with SGID permission
+sudo find /usr/bin -perm /2000
 sudo find /usr/bin -perm -2000
-find . -perm g+s
+find . -perm -g+s
+
+#find file with sticky bit permission
+sudo find / -perm /1000
+sudo find / -perm -1000
 
 #find SUID and SGID
 sudo find /usr/bin -perm /6000
