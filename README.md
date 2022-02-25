@@ -3441,6 +3441,18 @@ Understand the role of TCP wrappers.\
 
 ##### /etc/nologin
 
+If the file /etc/nologin exists and is readable, login(1) will allow access only to root.\
+Other users will be shown the contents of this file and their logins will be refused.\
+This provides a simple way  of  temporarily disabling all unprivileged logins.
+
+In /etc/passwd, user not able to login:
+
+```ssh
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+```
+
 ##### /etc/xinetd.d/
 
 ##### /etc/xinetd.conf

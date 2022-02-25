@@ -28,6 +28,7 @@ sudo dnf install -y git
 sudo dnf install -y fortune-mod
 sudo dnf install -y psmisc
 sudo dnf install -y nmap
+sudo dnf install -y xinetd
 
 # Install and configure cowsay
 sudo dnf install -y cowsay
