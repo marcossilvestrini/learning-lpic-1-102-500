@@ -3455,15 +3455,44 @@ sys:x:3:3:sys:/dev:/usr/sbin/nologin
 
 ##### /etc/xinetd.d/
 
+The files in the /etc/xinetd.d/ directory contains the configuration files for each service managed by xinetd and the names of the files correlate to the service.\
+As with xinetd.conf, these files are read only when the xinetd service is started.\
+For any changes to take effect, the administrator must restart the xinetd service.
+
 ##### /etc/xinetd.conf
+
+Default configuration file of super daemon xinetd
 
 ##### /etc/inittab
 
+The /etc/inittab file is the configuration file used by the System V (SysV) initialization system in Linux.\
+This file defines three items for the init process:
+
+- the default runlevel
+- what processes to start, monitor, and restart if they terminate
+- what actions to take when the system enters a new runlevel
+
 ##### /etc/init.d/
 
-##### /etc/hosts.allow
+The init.d directory contains a number of start/stop scripts for various services on your system
 
-##### /etc/hosts.deny
+##### /etc/hosts.allow and /etc/hosts.deny
+
+Wrappers configuration files
+
+When a client attempts to connect to a network service on a remote system, these files are used to determine whether client access is allowed or denied.
+Use /etc/hosts.allow and /etc/hosts.deny to define rules that selectively allow or deny clients access to server daemons on local system.
+The format for entries is as follows for both files:
+
+```sh
+daemon_list : client_list [: command]
+```
+
+A description of each field follows:
+
+- daemon_list: A comma-separated list of daemons, or keyword ALL for all daemons
+- client_list: A comma-separated list of clients, or keyword ALL for all clients
+- command: An optional command that is executed when a client tries to access a server daemon
 
 #### 110.2 Cited Objects
 
@@ -3488,9 +3517,22 @@ The following is a partial list of the used files, terms and utilities:
 
 #### 110.3 Important Commands
 
-##### ssh
+##### sshsh — OpenSSH remote login client
 
-##### ssh-keygen
+```sh
+#simple connection in host
+ssh 192.168.0.134
+ssh vagrant@192.168.0.134
+
+#selects a file from which the identity (private key)
+ssh vagrant@192.168.0.134 -i .ssh/id_rsa
+
+#excute ssh command remotly
+ssh vagrant@192.168.0.134 ls /
+
+```
+
+##### ssh-keygen — OpenSSH authentication key utility
 
 ##### ssh-agent
 
