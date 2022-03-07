@@ -3517,7 +3517,7 @@ The following is a partial list of the used files, terms and utilities:
 
 #### 110.3 Important Commands
 
-##### sshsh — OpenSSH remote login client
+##### ssh — OpenSSH remote login client
 
 ```sh
 #simple connection in host
@@ -3534,9 +3534,46 @@ ssh vagrant@192.168.0.134 ls /
 
 ##### ssh-keygen — OpenSSH authentication key utility
 
-##### ssh-agent
+```sh
+#generate RSA pair key
+ssh-keygen
 
-##### ssh-add
+#generate a ecdsa pair keys
+ssh-keygen -t ecdsa -b 521
+
+#view the fingerprints of the keys
+ssh-keygen -l -f ~/.ssh/id_rsa
+ssh-keygen -l -f ~/.ssh/id_rsa.pub
+ssh-keygen -l -f /etc/ssh/ssh_host_ed25519_key
+
+```
+
+listing the four types of public-key algorithms that can be specified with ssh-keygen:
+
+- RSA
+Named after its creators Ron Rivest, Adi Shamir and Leonard Adleman, it was published in 1977. It is considered secure and still widely used today. Its minimum key size is 1024 bits (default is 2048).
+
+- DSA
+The Digital Signature Algorithm has proven to be insecure and it was deprecated as of OpenSSH 7.0. DSA keys must be exaclty 1024 bits in length.
+
+- ecdsa
+The Elliptic Curve Digital Signature Algorithm is an improvement on DSA and — therefore — considered more secure. It uses elliptic curve cryptography. ECDSA key length is determined by one of the three possible elliptic curve sizes in bits: 256, 384 or 521.
+
+- ed25519
+It is an implementation of EdDSA — Edwards-curve Digital Signature Algorithm — that uses the stronger 25519 curve. It is considered the most secure of all. All Ed25519 keys have a fixed length of 256 bits.
+
+Their name pattern is as follows:
+
+**Private keys**
+ssh_host_ prefix + algorithm + key suffix (e.g.: ssh_host_rsa_key)
+
+**Public keys (or public key fingerprints)**
+ssh_host_ prefix + algorithm + key.pub suffix (e.g.: ssh_host_rsa_key.pub)
+
+**Permissions**
+Folder .ssh: 0700
+Private Key: 0600
+Public Key: 0644
 
 ##### gpg - OpenPGP encryption and signing tool
 
@@ -3544,24 +3581,32 @@ ssh vagrant@192.168.0.134 ls /
 
 #### 110.3 Important Files
 
-##### ~/.ssh/id_dsa and id_dsa.pub
-
-##### ~/.ssh/id_ecdsa and id_ecdsa.pub
-
-##### ~/.ssh/id_ed25519 and id_ed25519.pub
-
-##### /etc/ssh/ssh_host_rsa_key and ssh_host_rsa_key.pub
-
-##### /etc/ssh/ssh_host_dsa_key and ssh_host_dsa_key.pub
-
-##### /etc/ssh/ssh_host_ecdsa_key and ssh_host_ecdsa_key.pub
-
-##### /etc/ssh/ssh_host_ed25519_key and ssh_host_ed25519_key.pub
-
 ##### ~/.ssh/authorized_keys
+
+Foo
 
 ##### ssh_known_hosts
 
+Foo
+
 ##### ~/.gnupg/
 
+Foo
 
+##### /etc/ssh
+
+The global configuration directory for OpenSSH
+
+##### /etc/ssh/ssh_config
+
+Configuration files for the client ssh
+
+##### /etc/ssh/sshd_config
+
+Configuration file for the server ssh
+
+110.3 - Cited Objects
+
+>ssh-agent\
+ssh-add\
+/etc/ssh

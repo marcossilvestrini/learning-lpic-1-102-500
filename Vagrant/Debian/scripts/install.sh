@@ -12,6 +12,7 @@ cat /home/vagrant/security/id_rsa.pub >>/home/vagrant/.ssh/authorized_keys
 
 # Install packages
 sudo apt install -y vim
+sudo apt install -y tree
 sudo apt install -y net-tools
 sudo apt install -y network-manager
 sudo apt install -y iputils-tracepath
