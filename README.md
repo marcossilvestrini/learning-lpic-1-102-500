@@ -3512,8 +3512,56 @@ Perform basic OpenSSH 2 client configuration and usage.\
 Understand the role of OpenSSH 2 server host keys.\
 Perform basic GnuPG configuration, usage and revocation.\
 Use GPG to encrypt, decrypt, sign and verify files.\
-Understand SSH port tunnels (including X11 tunnels).\
-The following is a partial list of the used files, terms and utilities:
+Understand SSH port tunnels (including X11 tunnels).
+
+#### SSH Diretives (/etc/ssh/sshd_config)
+
+AllowAgentForwarding yes - Use ssh-agent
+AllowTcpForwarding yes - Use local SSH port tunnels
+GatewayPorts yes - Use remote SSH port tunnels
+X11Forwarding yes - Use X11forwarding
+
+#### SSH Port Tunnels
+
+##### Local Port Tunnel
+
+You define a port locally to forward traffic to the destination host through the SSH process which sits in between.\
+The SSH process can run on the local host or on a remote server.\
+For instance, if for some reason you wanted to tunnel a connection to www.gnu.org through SSH using port 8585 on your local machine, you would do something like this:
+
+```sh
+carol@debian:~$ ssh -L 8585:www.gnu.org:80 debian
+```
+
+The explanation is as follows: with the -L switch, we specify the local port 8585 to connect to http port 80 on www.gnu.org using the SSH process running on debian — our localhost. We could have written ssh -L 8585:www.gnu.org:80 localhost with the same effect. If you now use a web browser to go to <http://localhost:8585>, you will be forwarded to www.gnu.org
+
+If you wanted to do the exact same thing but connecting through an SSH process running on halof, you would have proceeded like so:
+
+```sh
+carol@debian:~$ ssh -L 8585:www.gnu.org:80 -Nf ina@192.168.1.77
+```
+
+##### Remote Port Tunnel
+
+In remote port tunnelling (or reverse port forwarding) the traffic coming on a port on the remote server is forwarded to the SSH process running on your local host, and from there to the specified port on the destination server (which may also be your local machine). For example, say you wanted to let someone from outside your network access the Apache web server running on your local host through port 8585 of the SSH server running on halof (192.168.1.77). You would proceed with the following command:
+
+```sh
+carol@debian:~$ ssh -R 8585:localhost:80 -Nf ina@192.168.1.77
+```
+
+##### X11 Tunnels
+
+Now that you understand port tunnels, let us round this lesson off by discussing X11 tunnelling (also known as X11forwarding). Through an X11 tunnel, the X Window System on the remote host is forwarded to your local machine. For that, you just need to pass ssh the -X option:
+
+```sh
+carol@debian:~$ ssh -X ina@halof
+```
+
+If you start a new SSH session with the -x option instead, X11forwarding will be disabled
+
+```sh
+ssh -x ina@halof
+```
 
 #### 110.3 Important Commands
 
@@ -3529,8 +3577,29 @@ ssh vagrant@192.168.0.134 -i .ssh/id_rsa
 
 #excute ssh command remotly
 ssh vagrant@192.168.0.134 ls /
-
 ```
+
+##### ssh-agent and ssh-add
+
+Example user ssh-agent :
+
+- Step 1:
+On the client, create a key pair using ssh-keygen.
+
+- Step 2:
+If it does not already exist, create ~/.ssh for the user you want to login as on the server.
+
+- Step 3:
+Add your client’s public key to the ~/.ssh/authorized_keys file of the user you want to login as on the remote host.
+
+- Step 4:
+On the client, start a new Bash shell for the authentication agent with ssh-agent /bin/bash.
+
+- Step 5:
+On the client, add your private key to a secure area of memory with ssh-add.
+
+- Step 6:
+Connect to the remote server.
 
 ##### ssh-keygen — OpenSSH authentication key utility
 
@@ -3545,10 +3614,15 @@ ssh-keygen -t ecdsa -b 521
 ssh-keygen -l -f ~/.ssh/id_rsa
 ssh-keygen -l -f ~/.ssh/id_rsa.pub
 ssh-keygen -l -f /etc/ssh/ssh_host_ed25519_key
+ssh-keygen -lv -f /etc/ssh/ssh_host_ed25519_key.pub
+
+#remove the offending key
+ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "192.168.0.135"
+ssh-keygen -R 192.168.0.135
 
 ```
 
-listing the four types of public-key algorithms that can be specified with ssh-keygen:
+Listing the four types of public-key algorithms that can be specified with ssh-keygen:
 
 - RSA
 Named after its creators Ron Rivest, Adi Shamir and Leonard Adleman, it was published in 1977. It is considered secure and still widely used today. Its minimum key size is 1024 bits (default is 2048).
@@ -3574,6 +3648,13 @@ ssh_host_ prefix + algorithm + key.pub suffix (e.g.: ssh_host_rsa_key.pub)
 Folder .ssh: 0700
 Private Key: 0600
 Public Key: 0644
+
+##### ssh-copy-id — use locally available keys to uthorise logins on a remote machine
+
+```sh
+# transfer the client’s public key over to the server
+ssh-copy-id
+```
 
 ##### gpg - OpenPGP encryption and signing tool
 
@@ -3607,6 +3688,4 @@ Configuration file for the server ssh
 
 110.3 - Cited Objects
 
->ssh-agent\
-ssh-add\
-/etc/ssh
+>/etc/ssh
