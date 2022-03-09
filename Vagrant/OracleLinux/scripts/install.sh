@@ -1,72 +1,81 @@
 #!/bin/bash
 
+cd /home/vagrant
+
+#Set password account
+usermod --password $(echo vagrant | openssl passwd -1 -stdin) vagrant
+
 #Set profile in /etc/profile
-sudo cp -f /home/vagrant/configs/profile /etc
+cp -f configs/profile /etc
 
 # Set bash session
-rm /home/vagrant/.bashrc
-cp -f /home/vagrant/configs/.bashrc /home/vagrant
+rm .bashrc
+cp -f configs/.bashrc .
 
 # SSH,FIREWALLD AND SELINUX
-cat /home/vagrant/security/id_rsa.pub >>/home/vagrant/.ssh/authorized_keys
-sudo systemctl stop firewalld
-sudo systemctl disable firewalld
-sudo setenforce Permissive
+cat security/id_rsa.pub >>.ssh/authorized_keys
+ssh-keygen -q -t ecdsa -b 531 -N '' -f .ssh/id_ecdsa <<<y >/dev/null 2>&1
+sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+systemctl restart sshd
+systemctl stop firewalld
+systemctl disable firewalld
+setenforce Permissive
 
 # Enable Epel repo
-sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
-sudo dnf -y upgrade
-#sudo dnf makecache --refresh
+dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+dnf -y upgrade
+#dnf makecache --refresh
 
 # Install packages
-sudo dnf install -y vim
-sudo dnf install -y net-tools
-sudo dnf install -y bind-utils
-sudo dnf install -y traceroute
-sudo dnf install -y lsof
-sudo dnf install -y git
-sudo dnf install -y fortune-mod
-sudo dnf install -y psmisc
-sudo dnf install -y nmap
-sudo dnf install -y xinetd
+dnf install -y vim
+dnf install -y sshpass
+dnf install -y net-tools
+dnf install -y bind-utils
+dnf install -y traceroute
+dnf install -y lsof
+dnf install -y git
+dnf install -y fortune-mod
+dnf install -y psmisc
+dnf install -y nmap
+dnf install -y xinetd
 
 # Install and configure cowsay
-sudo dnf install -y cowsay
+dnf install -y cowsay
 cd /tmp
 rm -rf cowsay-files
 git clone https://github.com/paulkaefer/cowsay-files.git
-sudo cp -R /tmp/cowsay-files/cows/ /usr/share/cowsay/cows
+cp -R /tmp/cowsay-files/cows/ /usr/share/cowsay/cows
 
 #Install X11 Server
-sudo dnf config-manager --set-enabled ol8_codeready_builder
-sudo dnf update -y
-sudo dnf install -y xorg-x11-server-Xorg.x86_64 xorg-x11-xauth.x86_64 \
+dnf config-manager --set-enabled ol8_codeready_builder
+dnf update -y
+dnf install -y xorg-x11-server-Xorg.x86_64 xorg-x11-xauth.x86_64 \
     xorg-x11-server-utils.x86_64 xorg-x11-utils.x86_64 xorg-x11-apps.x86_64
 
 #intall and configure cups and pdf printer
-sudo dnf install -y cups cups-devel gcc gcc-c++ tar wget
+dnf install -y cups cups-devel gcc gcc-c++ tar wget
 cd /tmp
 wget https://www.cups-pdf.de/src/cups-pdf_3.0.1.tar.gz
 tar -xvf cups-pdf_3.0.1.tar.gz
 cd cups-pdf-3.0.1/src/
 gcc -O9 -s cups-pdf.c -o cups-pdf -lcups
-sudo chmod 700 cups-pdf
-sudo cp -p cups-pdf /usr/lib/cups/backend/
+chmod 700 cups-pdf
+cp -p cups-pdf /usr/lib/cups/backend/
 cd ../extra
-sudo cp cups-pdf.conf /etc/cups/
-sudo cp CUPS-PDF_opt.ppd /usr/share/cups/model/
-sudo systemctl stop cups
-sudo cp -f /home/vagrant/configs/cupsd.conf /etc/cups/
-#sudo cp -f /home/vagrant/configs/printers.conf /etc/cups/
-sudo sed -i "s/Allow \@LOCAL/Allow all/g" /etc/cups/cupsd.conf
+cp cups-pdf.conf /etc/cups/
+cp CUPS-PDF_opt.ppd /usr/share/cups/model/
+systemctl stop cups
+cp -f configs/cupsd.conf /etc/cups/
+#cp -f configs/printers.conf /etc/cups/
+sed -i "s/Allow \@LOCAL/Allow all/g" /etc/cups/cupsd.conf
 #firewall-cmd –zone=public –add-port=631/tcp –permanent
 #firewall-cmd –reload
-sudo systemctl start cups
-sudo systemctl enable cups
+systemctl start cups
+systemctl enable cups
 cupsctl --remote-admin
 lpoptions -d PDF
 
 #Set DNS Server
 #https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/
-sudo sed -i '/\[main\]/a dns=none' /etc/NetworkManager/NetworkManager.conf
-sudo sed -i '/^nameserver 10.0.2.3/i nameserver 192.168.0.1' /etc/resolv.conf
+sed -i '/\[main\]/a dns=none' /etc/NetworkManager/NetworkManager.conf
+sed -i '/^nameserver 10.0.2.3/i nameserver 192.168.0.1' /etc/resolv.conf

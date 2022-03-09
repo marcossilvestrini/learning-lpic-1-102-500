@@ -1,14 +1,23 @@
 #!/bin/bash
 
+cd /home/vagrant
+
+#Set password account
+usermod --password $(echo vagrant | openssl passwd -1 -stdin) vagrant
+
 #Set profile in /etc/profile
-sudo cp -f /home/vagrant/configs/profile /etc
+sudo cp -f configs/profile /etc
 
 # Set bash session
-rm /home/vagrant/.bashrc
-cp -f /home/vagrant/configs/.bashrc /home/vagrant
+rm .bashrc
+cp -f configs/.bashrc .
 
 # Set ssh
-cat /home/vagrant/security/id_rsa.pub >>/home/vagrant/.ssh/authorized_keys
+cat security/id_rsa.pub >>.ssh/authorized_keys
+ssh-keygen -q -t ecdsa -b 531 -N '' -f .ssh/id_ecdsa <<<y >/dev/null 2>&1
+#sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+ssh-keyscan 192.168.0.135 >>.ssh/known_hosts
+cat ~/.ssh/id_ecdsa.pub | sshpass "vagrant" ssh vagrant@192.168.0.135 "cat >> ~/.ssh/authorized_keys"
 
 # Install packages
 sudo apt install -y vim
@@ -27,13 +36,13 @@ sudo mv /root/xorg.conf.new /etc/X11/xorg.conf
 
 #install cups and drivers
 sudo apt-get -y install cups cups-pdf
-sudo cp /home/vagrant/configs/cupsd.conf /etc/cups/
+sudo cp configs/cupsd.conf /etc/cups/
 sudo systemctl restart cups*
 
 #set prefered DNS servers
 sudo apt install -y resolvconf
 sudo systemctl enable resolvconf.service
 sudo systemctl start resolvconf.service
-sudo cp -f /home/vagrant/configs/head /etc/resolvconf/resolv.conf.d/
+sudo cp -f configs/head /etc/resolvconf/resolv.conf.d/
 sudo resolvconf --enable-updates
 sudo resolvconf -u
