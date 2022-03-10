@@ -9,3 +9,6 @@ ctr+k,v
 #comment\descomment line or block
 ctr+k, c
 ctr+k, U
+
+#save without Formatting
+ctr+k, ctr+shift+s

@@ -14,7 +14,7 @@ cp -f configs/.bashrc .
 
 # SSH,FIREWALLD AND SELINUX
 cat security/id_rsa.pub >>.ssh/authorized_keys
-ssh-keygen -q -t ecdsa -b 531 -N '' -f .ssh/id_ecdsa <<<y >/dev/null 2>&1
+echo vagrant | $(su -c "ssh-keygen -q -t ecdsa -b 521 -N '' -f .ssh/id_ecdsa <<<y >/dev/null 2>&1" -s /bin/bash vagrant)
 sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 systemctl restart sshd
 systemctl stop firewalld

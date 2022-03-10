@@ -1,0 +1,56 @@
+#!/bin/bash
+
+cd /home/vagrant
+
+#Set password account
+usermod --password $(echo vagrant | openssl passwd -1 -stdin) vagrant
+
+#Set profile in /etc/profile
+# cp -f configs/profile /etc
+
+# Set bash session
+# rm .bashrc
+# cp -f configs/.bashrc .
+
+# Install packages
+# apt install -y sshpass
+# apt install -y vim
+# apt install -y tree
+# apt install -y net-tools
+# apt install -y network-manager
+# apt install -y iputils-tracepath
+# apt install -y psmisc
+# apt install -y nmap
+# apt install -y xinetd
+
+# Set ssh
+# cat security/id_rsa.pub >>.ssh/authorized_keys
+echo vagrant | $(su -c "ssh-keygen -q -t ecdsa -b 521 -N '' -f .ssh/id_ecdsa <<<y >/dev/null 2>&1" -s /bin/bash vagrant)
+ssh-keyscan 192.168.0.135 >>.ssh/known_hosts
+
+echo "-----------------Copy SSH Public Key for clients-------------------------"
+echo vagrant | $(su -c "cat /home/vagrant/.ssh/id_ecdsa.pub | sshpass -p "vagrant" ssh vagrant@192.168.0.135 "cat -s /bin/bash vagrant >>/home/vagrant/.ssh/authorized_keys"")
+#ssh-copy-id -i /home/vagrant/.ssh/id_ecdsa.pub vagrant@192.168.0.135
+
+#cat .ssh/id_ecdsa.pub | sshpass -p "vagrant" ssh vagrant@192.168.0.135 "cat >> /home/vagrant/.ssh/authorized_keys"
+#echo vagrant | sudo -S -u vagrant cat /home/vagrant/.ssh/id_ecdsa.pub | sshpass -p "vagrant" ssh vagrant@192.168.0.135 "cat >> /home/vagrant/.ssh/authorized_keys"
+
+journalctl -n 5
+
+# #Install X11 Server
+# apt install xserver-xorg -y
+# Xorg -configure
+# mv /root/xorg.conf.new /etc/X11/xorg.conf
+
+# #install cups and drivers
+# apt-get -y install cups cups-pdf
+# cp configs/cupsd.conf /etc/cups/
+# systemctl restart cups*
+
+# #set prefered DNS servers
+# apt install -y resolvconf
+# systemctl enable resolvconf.service
+# systemctl start resolvconf.service
+# cp -f configs/head /etc/resolvconf/resolv.conf.d/
+# resolvconf --enable-updates
+# resolvconf -u
