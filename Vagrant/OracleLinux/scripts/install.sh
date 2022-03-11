@@ -12,23 +12,12 @@ cp -f configs/profile /etc
 rm .bashrc
 cp -f configs/.bashrc .
 
-# SSH,FIREWALLD AND SELINUX
-cat security/id_rsa.pub >>.ssh/authorized_keys
-echo vagrant | $(su -c "ssh-keygen -q -t ecdsa -b 521 -N '' -f .ssh/id_ecdsa <<<y >/dev/null 2>&1" -s /bin/bash vagrant)
-sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-systemctl restart sshd
-systemctl stop firewalld
-systemctl disable firewalld
-setenforce Permissive
-
-# Enable Epel repo
+# # Enable Epel repo
 dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
-dnf -y upgrade
-#dnf makecache --refresh
+# #dnf -y upgrade
 
 # Install packages
 dnf install -y vim
-dnf install -y sshpass
 dnf install -y net-tools
 dnf install -y bind-utils
 dnf install -y traceroute
@@ -39,16 +28,34 @@ dnf install -y psmisc
 dnf install -y nmap
 dnf install -y xinetd
 
-# Install and configure cowsay
-dnf install -y cowsay
-cd /tmp
-rm -rf cowsay-files
-git clone https://github.com/paulkaefer/cowsay-files.git
-cp -R /tmp/cowsay-files/cows/ /usr/share/cowsay/cows
+# SSH,FIREWALLD AND SELINUX
+sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+cat security/id_ecdsa.pub >>.ssh/authorized_keys
+echo vagrant | $(su -c "ssh-keygen -q -t ecdsa -b 521 -N '' -f .ssh/id_ecdsa <<<y >/dev/null 2>&1" -s /bin/bash vagrant)
+systemctl restart sshd
+systemctl stop firewalld
+systemctl disable firewalld
+setenforce Permissive
+
+#Set DNS Server
+#https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/
+sed -i '/^nameserver 10.0.2.3/i nameserver 192.168.0.1' /etc/resolv.conf
+
+#Set Networkmanager
+#sed -i '/\[main\]/a dns=none' /etc/NetworkManager/NetworkManager.conf
+cp -f configs/01-NetworkManager-custom.conf /etc/NetworkManager/conf.d/
+systemctl restart NetworkManager
+
+# # Install and configure cowsay
+# dnf install -y cowsay
+# cd /tmp
+# rm -rf cowsay-files
+# git clone https://github.com/paulkaefer/cowsay-files.git
+# cp -R /tmp/cowsay-files/cows/ /usr/share/cowsay/cows
 
 #Install X11 Server
 dnf config-manager --set-enabled ol8_codeready_builder
-dnf update -y
+#dnf update -y
 dnf install -y xorg-x11-server-Xorg.x86_64 xorg-x11-xauth.x86_64 \
     xorg-x11-server-utils.x86_64 xorg-x11-utils.x86_64 xorg-x11-apps.x86_64
 
@@ -74,8 +81,3 @@ systemctl start cups
 systemctl enable cups
 cupsctl --remote-admin
 lpoptions -d PDF
-
-#Set DNS Server
-#https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/
-sed -i '/\[main\]/a dns=none' /etc/NetworkManager/NetworkManager.conf
-sed -i '/^nameserver 10.0.2.3/i nameserver 192.168.0.1' /etc/resolv.conf

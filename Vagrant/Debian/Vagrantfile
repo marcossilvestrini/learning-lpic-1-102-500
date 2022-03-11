@@ -13,7 +13,7 @@ end
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "debian/bullseye64"
 
-  # VM ubuntu-server
+  # VM Debian Server
   config.vm.define "debian_lpic_102"  do |debian_lpic_102|
 
     # VARIABLE HOSTNAME

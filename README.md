@@ -3516,10 +3516,20 @@ Understand SSH port tunnels (including X11 tunnels).
 
 #### SSH Diretives (/etc/ssh/sshd_config)
 
-AllowAgentForwarding yes - Use ssh-agent
-AllowTcpForwarding yes - Use local SSH port tunnels
-GatewayPorts yes - Use remote SSH port tunnels
+AllowAgentForwarding yes - Use ssh-agent\
+AllowTcpForwarding yes - Use local SSH port tunnels\
+GatewayPorts yes - Use remote SSH port tunnels\
 X11Forwarding yes - Use X11forwarding
+
+##### List directives
+
+```ssh
+#all
+sudo sshd -T
+
+#filter specif
+sshd -T | grep permitroot
+```
 
 #### SSH Port Tunnels
 
@@ -3575,7 +3585,7 @@ ssh vagrant@192.168.0.134
 #selects a file from which the identity (private key)
 ssh vagrant@192.168.0.134 -i .ssh/id_rsa
 
-#excute ssh command remotly
+#execute ssh command remotly
 ssh vagrant@192.168.0.134 ls /
 ```
 
@@ -3638,13 +3648,13 @@ It is an implementation of EdDSA — Edwards-curve Digital Signature Algorit
 
 Their name pattern is as follows:
 
-**Private keys**
+**Private keys**\
 ssh_host_ prefix + algorithm + key suffix (e.g.: ssh_host_rsa_key)
 
-**Public keys (or public key fingerprints)**
+**Public keys (or public key fingerprints)**\
 ssh_host_ prefix + algorithm + key.pub suffix (e.g.: ssh_host_rsa_key.pub)
 
-**Permissions**
+**Permissions**\
 Folder .ssh: 0700
 Private Key: 0600
 Public Key: 0644
@@ -3664,11 +3674,11 @@ ssh-copy-id
 
 ##### ~/.ssh/authorized_keys
 
-Foo
+Containing public keys for public key authentication
 
-##### ssh_known_hosts
+##### ssh_known_hosts, ~/.ssh/known_hosts
 
-Foo
+The /etc/ssh/ssh_known hosts and ~/.ssh/known_hosts files contain the host public keys for all known hosts.
 
 ##### ~/.gnupg/
 
