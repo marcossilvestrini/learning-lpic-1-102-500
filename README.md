@@ -3668,6 +3668,12 @@ ssh-copy-id
 
 ##### gpg - OpenPGP encryption and signing tool
 
+```ssh
+#generate a pair keyn GnuPG
+gpg --gen-key
+
+```
+
 ##### gpg-agent - Secret key management for GnuPG
 
 #### 110.3 Important Files

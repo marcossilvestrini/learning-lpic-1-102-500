@@ -37,6 +37,9 @@ systemctl stop firewalld
 systemctl disable firewalld
 setenforce Permissive
 
+#Set GnuGP
+echo vagrant | $(su -c "gpg --batch --gen-key configs/gen-key-script" -s /bin/bash vagrant)
+
 #Set DNS Server
 #https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/
 sed -i '/^nameserver 10.0.2.3/i nameserver 192.168.0.1' /etc/resolv.conf
@@ -46,12 +49,12 @@ sed -i '/^nameserver 10.0.2.3/i nameserver 192.168.0.1' /etc/resolv.conf
 cp -f configs/01-NetworkManager-custom.conf /etc/NetworkManager/conf.d/
 systemctl restart NetworkManager
 
-# # Install and configure cowsay
-# dnf install -y cowsay
-# cd /tmp
-# rm -rf cowsay-files
-# git clone https://github.com/paulkaefer/cowsay-files.git
-# cp -R /tmp/cowsay-files/cows/ /usr/share/cowsay/cows
+# Install and configure cowsay
+dnf install -y cowsay
+cd /tmp
+rm -rf cowsay-files
+git clone https://github.com/paulkaefer/cowsay-files.git
+cp -R /tmp/cowsay-files/cows/ /usr/share/cowsay/cows
 
 #Install X11 Server
 dnf config-manager --set-enabled ol8_codeready_builder
