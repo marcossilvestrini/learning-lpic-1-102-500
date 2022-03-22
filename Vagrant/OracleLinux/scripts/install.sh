@@ -38,7 +38,7 @@ systemctl disable firewalld
 setenforce Permissive
 
 #Set GnuGP
-echo vagrant | $(su -c "gpg --batch --gen-key configs/gen-key-script" -s /bin/bash vagrant)
+echo vagrant | $(su -c "gpg -k" -s /bin/bash vagrant)
 
 #Set DNS Server
 #https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/

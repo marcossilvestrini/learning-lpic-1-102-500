@@ -3672,9 +3672,58 @@ ssh-copy-id
 #generate a pair keyn GnuPG
 gpg --gen-key
 
-```
+#export specifc key
+gpg --export vagrant > vagrant.pub.key
 
-##### gpg-agent - Secret key management for GnuPG
+#export all public keys
+gpg --export --output all.key
+gpg --export -o all.key
+
+#export all private key
+gpg --export-secret-keys --output all_private.key
+gpg --export-secret-keys -o all_private.key
+
+#import key
+gpg --import vagrant.pub.key
+
+#list all keys content
+gpg --list-keys
+
+#list public key content
+gpg --list-keys
+
+#show fingerprint
+gpg --fingerprint USER-ID
+gpg --fingerprint vagrant
+
+#send keys to keyserver
+gpg --keyserver keyserver-name --send-keys KEY-ID
+
+#download key from serverkey
+gpg --keyserver keyserver-name --recv-keys KEY-ID
+
+#key revogation
+gpg --output revocation_file.asc --gen-revoke vagrant
+gpg --import revocation_file.asc
+
+#encrypting files
+gpg --output encrypted-message --recipient vagrant --armor --encrypt unencrypted-message
+
+#decrypting files
+gpg --decrypt encrypted-message
+gpg --output unencrypted-message --decrypt encrypted-message
+
+#sign message
+echo "This is the message to sign ..." > message
+gpg --output message.sig --sign message
+
+#verify sign\message
+gpg --verify message.sig
+
+#decrypt sign\message
+gpg --output message --decrypt message.sig
+
+```
 
 #### 110.3 Important Files
 
@@ -3688,7 +3737,21 @@ The /etc/ssh/ssh_known hosts and ~/.ssh/known_hosts files contain the host publi
 
 ##### ~/.gnupg/
 
-Foo
+The directory ~/.gnupg is where configuration files for GnuPG, the GNU Privacy Guard, reside.
+
+Explain the file in this folder:
+
+- opengp-revocs.d
+The revocation certificate that was created along with the key pair is kept here. The permissions on this directory are quite restrictive as anyone who has access to the certificate could revoke the key (more on key revocation in the next subsection).
+
+- private-keys-v1.d
+This is the directory that keeps your private keys, therefore permissions are restrictive.
+
+- pubring.kbx
+This is your public keyring. It stores your own as well as any other imported public keys.
+
+- trustdb.gpg
+The trust database. This has to do with the concept of Web of Trust (which is outside the scope of this lesson).
 
 ##### /etc/ssh
 
@@ -3705,3 +3768,4 @@ Configuration file for the server ssh
 110.3 - Cited Objects
 
 >/etc/ssh
+gpg-agent
