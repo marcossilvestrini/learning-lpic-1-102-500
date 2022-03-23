@@ -122,7 +122,7 @@ su user2
 su - root or su
 
 #starts an interactive shell without login as root
-su root ou su
+su root or su
 ```
 
 ##### sudo, sudoedit — execute a command as another user
