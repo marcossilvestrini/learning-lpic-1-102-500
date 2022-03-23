@@ -2,19 +2,22 @@
 
 ![102-500_ Linux Administrator - 102 (LPIC-1 102)](https://user-images.githubusercontent.com/62715900/145818895-3740afd9-d871-4731-8578-2baecc3f5970.png)
 
->This project aims to help students or professionals to learn the main concepts of GNU \ Linux and free software\
-Some GNU \ Linux distributions like Debian and RPM will be covered\
-Installation and configuration of some packages will also be covered\
 >***Four Essential Freedoms:***\
 >0.The freedom to run the program as you wish, for any purpose (freedom 0).\
 >1.The freedom to study how the program works, and change it so it does your computing as you wish (freedom 1).\
 >Access to the source code is a precondition for this.\
 >2.The freedom to redistribute copies so you can help others (freedom 2).\
->3.freedom to distribute copies of your modified versions to others (freedom 3).\
+>3.freedom to distribute copies of your modified versions to others (freedom 3).
+
+>This project aims to help students or professionals to learn the main concepts of GNU \ Linux and free software\
+Some GNU \ Linux distributions like Debian and RPM will be covered\
+Installation and configuration of some packages will also be covered\
 >By doing this you can give the whole community a chance to benefit from your changes.\
->Access to the source code is a precondition for this.
+>Access to the source code is a precondition for this.\
 >Use vagrant for up machines and execute labs and practice content in this article.\
 >I have published in folder Vagrant a Vagrantfile with what is necessary for you to upload an environment for studies
+
+>Many thanks lpi.org for all the content made available for the preparation of this document.
 
 ## Authors
 
