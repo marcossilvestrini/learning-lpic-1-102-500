@@ -25,6 +25,7 @@ apt install -y xinetd
 
 # Set ssh
 cp -f configs/01-sshd-custom.conf /etc/ssh/sshd_config.d
+systemctl restart sshd
 cat security/id_ecdsa.pub >>.ssh/authorized_keys
 echo vagrant | $(su -c "ssh-keygen -q -t ecdsa -b 521 -N '' -f .ssh/id_ecdsa <<<y >/dev/null 2>&1" -s /bin/bash vagrant)
 echo vagrant | $(su -c "ssh-keyscan 192.168.0.135 >>.ssh/known_hosts" -s /bin/bash vagrant)
