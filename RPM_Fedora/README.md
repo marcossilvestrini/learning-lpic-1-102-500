@@ -1,6 +1,6 @@
 # FEDORA
 
-![102-500_ Linux Administrator - 102 (LPIC-1 102)](https://user-images.githubusercontent.com/62715900/145818627-0b62429b-2a55-4992-8a49-0fcbb26cb809.png)
+![fedora](https://user-images.githubusercontent.com/62715900/159807707-b5c2ec6a-491d-49f1-ba17-77441b99ae68.png)
 
 Fedora is a popular open source Linux-based operating system.\
 Fedora is designed as a secure, general purpose operating system. The operating system is developed on a six-month release cycle, under the auspices of the Fedora Project. Fedora is sponsored by Red Hat.\
