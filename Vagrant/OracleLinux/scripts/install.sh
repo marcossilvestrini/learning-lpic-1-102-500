@@ -27,6 +27,7 @@ dnf install -y fortune-mod
 dnf install -y psmisc
 dnf install -y nmap
 dnf install -y xinetd
+dnf install -y at
 
 # SSH,FIREWALLD AND SELINUX
 sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config

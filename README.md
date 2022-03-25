@@ -1521,7 +1521,7 @@ The time field uses 24 hours format. So, for 8 AM use 8, and for 8 PM use 20.
 Ideally you may not have a requirement to schedule a job every minute. But understanding this example will will help you understand the other examples.
 
 ```sh
-* * * * * CMD\
+* * * * * CMD
 ```
 
 The * means all the possible unit — i.e every minute of every hour through out the year. More than using this * directly, you will find it very useful in the following cases.
@@ -1706,16 +1706,6 @@ Cron is controlled by a set of files called "crontabs". The master (system-wide)
 
 The crontab file, /etc/crontab, automatically executes items in several subdirectories (as specified in the crontab file, shown below) at regular periods.
 
-##### /etc/cron.allow ,/etc/cron.deny
-
-To allow or deny access to specific users, crontab uses the files /etc/cron.allow and /etc/cron.deny.\
-Based on the existence of /etc/cron.allow and /etc/cron.deny files, crontab decides whom to give access to cron in following order.
-
-If cron.allow exists – only the users listed in the file cron.allow will get an access to crontab.\
-If cron.allow does not exist – all users except the users listed into cron.deny can use crontab
-If neither of the file exists – only the root can use crontab\
-If a user is listed in both cron.allow and cron.deny – that user can use crontab.
-
 ##### /var/spool/cron/ , /etc/cron.d
 
 /var/spool/cron is where the individual user crontabs live. As user, crontab -e edits the corresponding file in /var/spool/cron.
@@ -1809,7 +1799,7 @@ sudo hwclock --systohc
 locale
 ```
 
-Some localisation settings change how programs deal with alphabetical ordering and number formats.\
+>Some localisation settings change how programs deal with alphabetical ordering and number formats.\
 Whilst conventional programs are usually prepared to correctly choose a common locale for such situations, scripts can behave unexpectedly when trying to correctly alphabetically order a list of items, for example.\
 For this reason, it is recommended to set the environment variable LANG to the common C locale, as in LANG=C, so the script produces unambiguous results, regardless the localisation definitions used in the system where it is executed.\
 The C locale only conducts a simple bytewise comparison, so it will also perform better than the others.
@@ -1944,7 +1934,7 @@ Delete old systemd journal data.\
 Retrieve systemd journal data from a rescue system or file system copy.\
 Understand interaction of rsyslog with systemd-journald.\
 Configuration of logrotate.\
-Awareness of syslog and syslog-ng.\
+Awareness of syslog and syslog-ng.
 
 #### Rsyslog Facility Table
 
@@ -2152,7 +2142,7 @@ systemd-cat -p emerg echo "This is not a real emergency."
 
 ```sh
 #print btmp content
-utmpdump /var/log/btmp
+sudo utmpdump /var/log/btmp
 
 ```
 
@@ -2195,7 +2185,7 @@ When logrotate runs, it reads its configuration files to determine where to find
 
 ##### /etc/logrotate.d/
 
-That directory contains most of the pplication-specific configuration files.\
+That directory contains most of the application-specific configuration files.\
 Depending on how much is installed on your server, this directory might contain no files or several.\
 In general, applications that are installed through your package manager will also create a config file in /etc/logrotate.d.
 
@@ -2246,12 +2236,12 @@ Create a model
 
 ```sh
 #Some Templates for implement
-#1-
+#Examples 1
 $template RemoteLogs,"/var/log/remotehosts/%HOSTNAME%/%$NOW%.%syslogseverity-text%.log"
 if $FROMHOST-IP=='YOUR_CLIENT_IP' then ?RemoteLogs
 & stop
 
-#2-
+#Example 2
 $template RemoteLogs,"/var/log/RemoteLogs/%HOSTNAME%/%PROGRAMNAME%.log"
 *.* ?RemoteLogs
 & stop
@@ -2361,7 +2351,8 @@ Knowledge of commonly available MTA programs (postfix, sendmail, exim) (no confi
 ##### ~/.forward
 
 When mail is sent to a local user, the sendmail command checks for the $HOME/.forward file.\
-The $HOME/.forward file can contain one or more addresses or aliases. If the file exists, the message is not sent to the user.\
+The $HOME/.forward file can contain one or more addresses or aliases.\
+If the file exists, the message is not sent to the user.\
 The message is sent to the addresses or aliases in the .forward file.
 
 #### 108.3 Cited Objects
@@ -2533,7 +2524,7 @@ Knowledge of the differences between private and public "dotted quad" IP address
 Knowledge about common TCP and UDP ports and services (20, 21, 22, 23, 25, 53, 80, 110, 123, 139, 143, 161, 162, 389, 443, 465, 514, 636, 993, 995).\
 Knowledge about the differences and major features of UDP, TCP and ICMP.\
 Knowledge of the major differences between IPv4 and IPv6.\
-Knowledge of the basic features of IPv6.\
+Knowledge of the basic features of IPv6.
 
 #### Ip Classes
 
@@ -2544,6 +2535,14 @@ Knowledge of the basic features of IPv6.\
 |Class C   |192.0.1.1 to 223.255.254.254  |Supports 254 hosts on each of 2 million networks.|
 |Class D   |224.0.0.0 to 239.255.255.255  |Reserved for multicast groups.|
 |Class E   |240.0.0.0 to 254.255.255.254  |Reserved for future use, or research and development purposes.|
+
+#### Private Ip Range
+
+|CLASS     | ADDRESS RANGE                |
+|:------   |:---------------------------  |
+|Class A   |10.0.0.0 — 10.255.255.255     |
+|Class B   |172.16.0.0 — 172.31.255.255   |
+|Class C   |192.168.0.0 — 192.168.255.255 |
 
 #### IP class standard mask
 
@@ -3012,6 +3011,16 @@ netstat -ute
 
 #only numeric output
 netstat -uten
+
+#viewing Current Connections
+netstat -tulnp
+
+#any processes are listening on TCP port 80
+netstat -ln | grep ":80"
+
+# find which process is listening on a port
+netstat -lnp | grep ":22"
+
 ```
 
 ##### hostname - show or set the system's host name
@@ -3109,20 +3118,6 @@ ss -ln | grep ":22"
 # find which process is listening on a port
 ss -lnp | grep ":22"
 ```
-
-##### netstat
-
-```sh
-#viewing Current Connections
-netstat -tulnp
-
-#any processes are listening on TCP port 80
-netstat -ln | grep ":80"
-
-# find which process is listening on a port
-netstat -lnp | grep ":22"
-```
-
 ### 109.4 Configure client side DNS
 
 **Weight:** 2
@@ -3137,8 +3132,6 @@ Modify the order in which name resolution is done.\
 Debug errors related to name resolution.\
 Awareness of systemd-resolved.\
 The following is a partial list of the used files, terms and utilities:
-
-#### 109.4 Important Files
 
 #### 109.4 Important Commands
 
@@ -3195,7 +3188,7 @@ dig +noall +answer +question lpi.org
 
 #### 109.4 Cited Objects
 
->/etc/hosts
+>/etc/hosts\
 /etc/resolv.conf\
 /etc/nsswitch.conf
 

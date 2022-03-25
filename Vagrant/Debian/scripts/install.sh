@@ -22,6 +22,7 @@ apt install -y iputils-tracepath
 apt install -y psmisc
 apt install -y nmap
 apt install -y xinetd
+apt install -y at
 
 # Set ssh
 cp -f configs/01-sshd-custom.conf /etc/ssh/sshd_config.d
