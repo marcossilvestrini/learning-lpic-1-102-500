@@ -1708,10 +1708,16 @@ The crontab file, /etc/crontab, automatically executes items in several subdirec
 
 ##### /var/spool/cron/ , /etc/cron.d
 
-/var/spool/cron is where the individual user crontabs live. As user, crontab -e edits the corresponding file in /var/spool/cron.
+/var/spool/cron\
+Is where the individual user crontabs live. As user, crontab -e edits the corresponding file in /var/spool/cron.
 
-/etc/cron.d is a directory that is scanned for modular crontab files. The syntax is slightly different for files in that directory.\
+/etc/cron.d\
+Is a directory that is scanned for modular crontab files. The syntax is slightly different for files in that directory.\
 The cron entries have an additional field for a user to run the cron entries as. This is the same as a systemwide /etc/crontab file.
+
+##### /etc/cron.allow,/etc/cron.deny
+
+In Linux the /etc/cron.allow and /etc/cron.deny files are used to set crontab restrictions. In particular, they are used to allow or disallow the scheduling of cron jobs for different users. If /etc/cron.allow exists, only non-root users listed within it can schedule cron jobs using the crontab command. If /etc/cron.allow does not exist but /etc/cron.deny exists, only non-root users listed within this file cannot schedule cron jobs using the crontab command (in this case an empty /etc/cron.deny means that each user is allowed to schedule cron jobs with crontab). If neither of these files exist, the user’s access to cron job scheduling depends on the distribution used.
 
 ##### /etc/at.deny , /etc/at.allow
 

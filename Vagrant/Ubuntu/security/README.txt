@@ -1,2 +1,2 @@
-file: id_rsa.pub
+file: id_ecdsa.pub
 Your pub key for ssh access

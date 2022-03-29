@@ -14,30 +14,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "gusztavvargadr/ubuntu-server-lts"
 
   # VM ubuntu-server
-  config.vm.define "ubuntuServer"  do |ubuntuServer|
+  config.vm.define "ubuntuServer-lpic-102"  do |ubuntuServer_lpic_102|
 
     # VARIABLE HOSTNAME
-    APP_NAME= "ubuntuServer"
+    APP_NAME= "ubuntuServer-lpic-102"
 
     # HOSTNAME
-    ubuntuServer.vm.hostname = APP_NAME
+    ubuntuServer_lpic_102.vm.hostname = APP_NAME
 
     # NETWORK
-    ubuntuServer.vm.network "public_network" ,ip: "192.168.0.134",mode: "bridge" ,bridge: [
+    ubuntuServer_lpic_102.vm.network "public_network" ,ip: "192.168.0.137",mode: "bridge" ,bridge: [
     "ens32",
     "Marvell AQtion 5Gbit Network Adapter"
     ]
-    # Forward Port
-    # ubuntuServer.vm.network "forwarded_port", guest: 8020, host: 9020, adapter: 1, guest_ip: "192.168.0.134" ,host_ip: "192.168.0.33"
-    # ubuntuServer.vm.network "forwarded_port", guest: 2234, host: 3234, adapter: 1, guest_ip: "192.168.0.134" ,host_ip: "192.168.0.33"
 
     # MOUNTS
-    ubuntuServer.vm.synced_folder ".", "/vagrant", disabled: true
-    ubuntuServer.vm.synced_folder "./security", "/security"
-    #ubuntuServer.vm.synced_folder "./install", "/totvs/install", type: "rsync",rsync__args: ["-r", "--include=*"]
+    ubuntuServer_lpic_102.vm.synced_folder ".", "/vagrant", disabled: true
+    ubuntuServer_lpic_102.vm.synced_folder "../security", "/home/vagrant//security"
+    ubuntuServer_lpic_102.vm.synced_folder "../configs", "/home/vagrant/configs"
 
     # PROVIDER
-    ubuntuServer.vm.provider "virtualbox" do |vb|
+    ubuntuServer_lpic_102.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
       vb.name = APP_NAME
       vb.memory = 2048
@@ -45,15 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     # PROVISION
-    # SSH,FIREWALLD AND SELINUX
-    ubuntuServer.vm.provision "shell", inline: <<-SHELL
-      cat /security/id_rsa.pub >> .ssh/authorized_keys
-    SHELL
-
-    # # PACKAGES FOR PROVISION
-    # ubuntuServer.vm.provision "shell", inline: <<-SHELL
-    #   dnf install python3 -y
-    # SHELL
+    ubuntuServer_lpic_102.vm.provision "shell", path: "../scripts/install.sh"
 
   end
 

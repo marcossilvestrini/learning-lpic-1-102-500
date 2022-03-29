@@ -11,47 +11,39 @@ unless Vagrant.has_plugin?("vagrant-reload")
 end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "fedora/33-cloud-base"
-  config.vm.box_version = "33.20201019.0"
+  config.vm.box = "generic/fedora28"
 
   # VM srv01
-  config.vm.define "srv01"  do |srv01|
+  config.vm.define "fedora-lpic-102"  do |fedora_lic_102|
 
     # VARIABLE HOSTNAME
-    APP_NAME= "fedora-serv01"
+    APP_NAME= "fedora-lpic-102"
 
     # HOSTNAME
-    srv01.vm.hostname = APP_NAME
+    fedora_lic_102.vm.hostname = APP_NAME
 
     # NETWORK
-    srv01.vm.network "public_network" ,ip: "192.168.0.133",mode: "bridge",,bridge: [
+    fedora_lic_102.vm.network "public_network" ,ip: "192.168.0.139",mode: "bridge",bridge: [
     "ens32",
     "Marvell AQtion 5Gbit Network Adapter"
     ]
 
     # MOUNTS
-    srv01.vm.synced_folder ".", "/vagrant", disabled: true
-    srv01.vm.synced_folder "./security", "/security"
+    fedora_lic_102.vm.synced_folder ".", "/vagrant", disabled: true
+    fedora_lic_102.vm.synced_folder "./security", "/home/vagrant/security"
+    fedora_lic_102.vm.synced_folder "./configs", "/home/vagrant/configs"
 
     # PROVIDER
-    srv01.vm.provider "virtualbox" do |vb|
+    fedora_lic_102.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
       vb.name = APP_NAME
       vb.memory = 2048
       vb.cpus = 1
     end
 
-    # PROVISION
-    # SSH,FIREWALLD AND SELINUX
-    srv01.vm.provision "shell", inline: <<-SHELL
-      cat /security/id_rsa.pub >> .ssh/authorized_keys
-    SHELL
-
-    # # PACKAGES FOR PROVISION
-    srv01.vm.provision "shell", inline: <<-SHELL
-      # yum install python3 -y
-      yum install  xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-apps -y
-    SHELL
+   # SHELL PROVISIONING
+    # SSH,FIREWALLD,SELINUX, UPDATES AND PROFILE
+    fedora_lic_102.vm.provision "shell", path: "scripts/install.sh"
 
   end
 

@@ -23,15 +23,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     openSUSE_lpic_102_500.vm.hostname = APP_NAME
 
     # NETWORK
-    openSUSE_lpic_102_500.vm.network "public_network" ,ip: "192.168.0.136",mode: "bridge" ,bridge: [
+    openSUSE_lpic_102_500.vm.network "public_network" ,ip: "192.168.0.140",mode: "bridge" ,bridge: [
     "ens32",
     "Marvell AQtion 5Gbit Network Adapter"
     ]
 
     # MOUNTS
     openSUSE_lpic_102_500.vm.synced_folder ".", "/vagrant", disabled: true
-    openSUSE_lpic_102_500.vm.synced_folder "./security", "/security"
-    #openSUSE_lpic_102_500.vm.synced_folder "./install", "/totvs/install", type: "rsync",rsync__args: ["-r", "--include=*"]
+    openSUSE_lpic_102_500.vm.synced_folder "./security", "/home/vagrant/security"
+    openSUSE_lpic_102_500.vm.synced_folder "./configs", "/home/vagrant/configs"
 
     # PROVIDER
     openSUSE_lpic_102_500.vm.provider "virtualbox" do |vb|
@@ -41,16 +41,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.cpus = 1
     end
 
-    # PROVISION
-    # SSH,FIREWALLD AND SELINUX
-    openSUSE_lpic_102_500.vm.provision "shell", inline: <<-SHELL
-      cat /security/id_rsa.pub >> .ssh/authorized_keys
-    SHELL
-
-    # # PACKAGES FOR PROVISION
-    # openSUSE_lpic_102_500.vm.provision "shell", inline: <<-SHELL
-    #   dnf install python3 -y
-    # SHELL
+   # SHELL PROVISIONING
+   # SSH,FIREWALLD,SELINUX, UPDATES AND PROFILE
+   openSUSE_lpic_102_500.vm.provision "shell", path: "scripts/install.sh"
 
   end
 
